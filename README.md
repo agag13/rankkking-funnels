@@ -35,6 +35,15 @@ Every submission passes through these checks — all invisible to real visitors:
 
 Spam is never stored and never emailed; duplicates are stored (for visibility) but don't notify. To add Cloudflare Turnstile later (Tier 2), create a site key at cloudflare.com → Turnstile and ask Claude to wire it in.
 
+## Lead magnet — The Free Listings Vault
+
+- **Offer**: 200+ sites where any brand/startup can list itself free (data: [content/leadmagnets/listing-sites.ts](content/leadmagnets/listing-sites.ts), sourced from the SaaS-directories CSV, cleaned + categorized).
+- **Where it shows**: the timed/exit-intent popup on the main LP is the lead-magnet gate (name + email + WhatsApp required).
+- **Delivery**: on submit the visitor is redirected to `/free-listing-sites/` (noindex) AND n8n emails them the link ("Send List To Lead" node). Team notification still fires for new leads.
+- **Funnel id**: these leads arrive with `funnel: free-listing-sites`, `source_form: leadmagnet-popup` in the same "Rankkking Leads" table.
+- **Form validation (all forms)**: name = letters only (live-stripped), phone = 10-digit Indian mobile, agency field normalizes any URL to a bare domain (`https://www.x.com/page` → `x.com`); hero form also has a direct WhatsApp button.
+- After DNS cutover, update the list URL inside the n8n "Send List To Lead" node to lp.rankkking.com.
+
 ## Tracking
 
 GTM `GTM-WFLR2PF` (GA4 + Clarity flow through it, same as the old page) and Meta Pixel `1034815105967725` are injected in [components/Analytics.tsx](components/Analytics.tsx). IDs live in the funnel config.

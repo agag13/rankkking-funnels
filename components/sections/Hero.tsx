@@ -3,7 +3,7 @@ import type { FunnelConfig } from "@/content/types";
 import LeadForm from "@/components/LeadForm";
 
 export default function Hero({ config }: { config: FunnelConfig }) {
-  const { hero, form, logo, whatsapp } = config;
+  const { hero, form, logo } = config;
   return (
     <div className="hero-gradient">
       <header className="mx-auto flex max-w-6xl items-center px-5 pt-6">
@@ -35,19 +35,8 @@ export default function Hero({ config }: { config: FunnelConfig }) {
           <h2 className="text-xl font-bold text-slate-900">{form.heading}</h2>
           <p className="mt-1.5 text-sm text-slate-600">{form.subheading}</p>
           <div className="mt-5">
-            <LeadForm config={config} sourceForm="hero" />
+            <LeadForm config={config} sourceForm="hero" showWhatsAppButton />
           </div>
-          <p className="mt-4 text-center text-sm text-slate-600">
-            {form.chatPrompt}{" "}
-            <a
-              href={`https://wa.me/${whatsapp.number}?text=${encodeURIComponent(whatsapp.prefill)}`}
-              target="_blank"
-              rel="noopener"
-              className="font-semibold text-[#128C7E] underline"
-            >
-              WhatsApp us →
-            </a>
-          </p>
         </div>
       </div>
     </div>

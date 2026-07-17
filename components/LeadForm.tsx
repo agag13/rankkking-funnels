@@ -5,40 +5,55 @@ import { useRouter } from "next/navigation";
 import type { FunnelConfig } from "@/content/types";
 import { submitLead } from "@/lib/submitLead";
 import { trackLead, dataLayerPush } from "@/lib/track";
+import { INDIAN_MOBILE, sanitizeName, isValidName, normalizePhone, extractDomain } from "@/lib/validate";
 
 interface Props {
   config: FunnelConfig;
   sourceForm: "hero" | "popup";
   submitLabel?: string;
+  /** show a direct WhatsApp button under the submit button */
+  showWhatsAppButton?: boolean;
 }
 
-/** Indian mobile: 10 digits starting 6-9 */
-const INDIAN_MOBILE = /^[6-9]\d{9}$/;
+type FieldError = "name" | "phone" | "agency" | null;
 
-export default function LeadForm({ config, sourceForm, submitLabel }: Props) {
+export default function LeadForm({ config, sourceForm, submitLabel, showWhatsAppButton }: Props) {
   const router = useRouter();
   const [status, setStatus] = useState<"idle" | "submitting" | "error">("idle");
-  const [phoneError, setPhoneError] = useState(false);
+  const [fieldError, setFieldError] = useState<FieldError>(null);
   // Anti-spam: timestamp when the form mounted; bots submit near-instantly
   const renderedAt = useRef<number>(Date.now());
   const { form } = config;
+  const waHref = `https://wa.me/${config.whatsapp.number}?text=${encodeURIComponent(config.whatsapp.prefill)}`;
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     if (status === "submitting") return;
     const fd = new FormData(e.currentTarget);
-    const rawPhone = String(fd.get("phone") ?? "").replace(/\D/g, "").replace(/^(91|0)(?=[6-9]\d{9}$)/, "");
-    if (!INDIAN_MOBILE.test(rawPhone)) {
-      setPhoneError(true);
+
+    const name = sanitizeName(String(fd.get("name") ?? "")).trim().replace(/\s+/g, " ");
+    if (!isValidName(name)) {
+      setFieldError("name");
       return;
     }
-    setPhoneError(false);
+    const rawPhone = normalizePhone(String(fd.get("phone") ?? ""));
+    if (!INDIAN_MOBILE.test(rawPhone)) {
+      setFieldError("phone");
+      return;
+    }
+    const domain = extractDomain(String(fd.get("agency") ?? ""));
+    if (!domain) {
+      setFieldError("agency");
+      return;
+    }
+    setFieldError(null);
+
     const fields = {
-      name: String(fd.get("name") ?? "").trim(),
+      name,
       email: String(fd.get("email") ?? "").trim(),
       phone: `+91${rawPhone}`,
       city: String(fd.get("city") ?? ""),
-      agency: String(fd.get("agency") ?? "").trim(),
+      agency: domain,
     };
     const antiSpam = {
       website: String(fd.get("website") ?? ""), // honeypot
@@ -57,6 +72,7 @@ export default function LeadForm({ config, sourceForm, submitLabel }: Props) {
 
   const inputCls =
     "w-full rounded-lg border border-slate-300 bg-white px-4 py-3 text-[15px] text-slate-900 placeholder:text-slate-400 outline-none transition focus:border-brand-500 focus:ring-2 focus:ring-brand-500/30";
+  const errCls = "border-red-500 ring-2 ring-red-500/30";
 
   return (
     <form onSubmit={handleSubmit} className="flex flex-col gap-3" noValidate={false}>
@@ -67,7 +83,22 @@ export default function LeadForm({ config, sourceForm, submitLabel }: Props) {
           <input name="website" type="text" tabIndex={-1} autoComplete="off" defaultValue="" />
         </label>
       </div>
-      <input name="name" type="text" required placeholder={form.namePlaceholder} className={inputCls} autoComplete="name" />
+      <input
+        name="name"
+        type="text"
+        required
+        placeholder={form.namePlaceholder}
+        className={`${inputCls} ${fieldError === "name" ? errCls : ""}`}
+        autoComplete="name"
+        onChange={(e) => {
+          const clean = sanitizeName(e.target.value);
+          if (clean !== e.target.value) e.target.value = clean;
+          if (fieldError === "name") setFieldError(null);
+        }}
+      />
+      {fieldError === "name" && (
+        <p className="-mt-1 text-xs font-medium text-red-600">Please enter your name (letters only).</p>
+      )}
       <input name="email" type="email" placeholder={form.emailPlaceholder} className={inputCls} autoComplete="email" />
       <div className="flex">
         <span className="inline-flex items-center rounded-l-lg border border-r-0 border-slate-300 bg-slate-50 px-3 text-[15px] font-medium text-slate-600">
@@ -79,12 +110,16 @@ export default function LeadForm({ config, sourceForm, submitLabel }: Props) {
           required
           inputMode="numeric"
           placeholder={form.phonePlaceholder}
-          className={`${inputCls} rounded-l-none ${phoneError ? "border-red-500 ring-2 ring-red-500/30" : ""}`}
+          className={`${inputCls} rounded-l-none ${fieldError === "phone" ? errCls : ""}`}
           autoComplete="tel-national"
-          onChange={() => phoneError && setPhoneError(false)}
+          onChange={(e) => {
+            const clean = e.target.value.replace(/[^\d\s]/g, "");
+            if (clean !== e.target.value) e.target.value = clean;
+            if (fieldError === "phone") setFieldError(null);
+          }}
         />
       </div>
-      {phoneError && (
+      {fieldError === "phone" && (
         <p className="-mt-1 text-xs font-medium text-red-600">
           Please enter a valid 10-digit Indian mobile number (starts with 6–9).
         </p>
@@ -99,7 +134,20 @@ export default function LeadForm({ config, sourceForm, submitLabel }: Props) {
           </option>
         ))}
       </select>
-      <input name="agency" type="text" required placeholder={form.agencyPlaceholder} className={inputCls} autoComplete="url" />
+      <input
+        name="agency"
+        type="text"
+        required
+        placeholder={form.agencyPlaceholder}
+        className={`${inputCls} ${fieldError === "agency" ? errCls : ""}`}
+        autoComplete="url"
+        onChange={() => fieldError === "agency" && setFieldError(null)}
+      />
+      {fieldError === "agency" && (
+        <p className="-mt-1 text-xs font-medium text-red-600">
+          Please enter your agency&apos;s website domain, e.g. <span className="font-semibold">myagency.com</span>
+        </p>
+      )}
       <button
         type="submit"
         disabled={status === "submitting"}
@@ -107,15 +155,24 @@ export default function LeadForm({ config, sourceForm, submitLabel }: Props) {
       >
         {status === "submitting" ? "Sending…" : (submitLabel ?? form.submitLabel)}
       </button>
+      {showWhatsAppButton && (
+        <a
+          href={waHref}
+          target="_blank"
+          rel="noopener"
+          onClick={() => dataLayerPush("whatsapp_click", { source: `${sourceForm}_form` })}
+          className="flex items-center justify-center gap-2 rounded-lg border-2 border-[#25d366] bg-[#25d366]/10 px-6 py-3 text-[15px] font-bold text-[#128C7E] transition hover:bg-[#25d366] hover:text-white"
+        >
+          <svg viewBox="0 0 32 32" className="h-5 w-5 fill-current" aria-hidden="true">
+            <path d="M16.004 3C8.832 3 3 8.83 3 16.002c0 2.29.6 4.53 1.74 6.5L3 29l6.66-1.72a13.03 13.03 0 0 0 6.34 1.62h.01c7.17 0 13-5.83 13-13S23.175 3 16.004 3Zm0 23.7h-.01a10.7 10.7 0 0 1-5.45-1.49l-.39-.23-4.05 1.05 1.08-3.95-.25-.4a10.66 10.66 0 0 1-1.64-5.68c0-5.9 4.81-10.7 10.72-10.7 2.86 0 5.55 1.11 7.57 3.14a10.64 10.64 0 0 1 3.13 7.57c0 5.9-4.8 10.7-10.71 10.7Zm5.87-8.02c-.32-.16-1.9-.94-2.2-1.05-.29-.11-.51-.16-.72.16-.21.32-.83 1.05-1.02 1.26-.19.21-.37.24-.7.08-.32-.16-1.36-.5-2.58-1.6-.96-.85-1.6-1.9-1.79-2.22-.19-.32-.02-.5.14-.66.15-.14.32-.37.48-.56.16-.19.21-.32.32-.53.11-.21.05-.4-.03-.56-.08-.16-.72-1.74-.99-2.39-.26-.62-.53-.54-.72-.55h-.61c-.21 0-.56.08-.85.4-.29.32-1.12 1.09-1.12 2.66 0 1.57 1.14 3.09 1.3 3.3.16.21 2.25 3.44 5.45 4.82.76.33 1.36.53 1.82.67.77.25 1.46.21 2.01.13.61-.09 1.9-.78 2.16-1.53.27-.75.27-1.39.19-1.53-.08-.13-.29-.21-.61-.37Z" />
+          </svg>
+          Chat on WhatsApp Instead
+        </a>
+      )}
       {status === "error" && (
         <p className="text-center text-sm text-red-600">
           Something went wrong.{" "}
-          <a
-            href={`https://wa.me/${config.whatsapp.number}?text=${encodeURIComponent(config.whatsapp.prefill)}`}
-            className="font-semibold underline"
-            target="_blank"
-            rel="noopener"
-          >
+          <a href={waHref} className="font-semibold underline" target="_blank" rel="noopener">
             Message us on WhatsApp instead →
           </a>
         </p>

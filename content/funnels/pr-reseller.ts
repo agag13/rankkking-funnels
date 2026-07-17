@@ -42,7 +42,7 @@ export const prReseller: FunnelConfig = {
     namePlaceholder: "Your Name",
     emailPlaceholder: "Email ID",
     phonePlaceholder: "WhatsApp Number",
-    agencyPlaceholder: "Agency Website URL",
+    agencyPlaceholder: "Agency Website (e.g. myagency.com)",
     cityLabel: "--Select your city--",
     cities: [
       "Mumbai",
@@ -301,6 +301,36 @@ export const prReseller: FunnelConfig = {
       "Income figures based on partner-reported averages. Individual results vary.",
   },
   popup: { heading: "Get the Free Wholesale Rate Card", delaySeconds: 14 },
+  leadMagnet: {
+    funnelId: "free-listing-sites",
+    badge: "FREE DOWNLOAD · WORTH ₹15,000 IN AGENCY HOURS",
+    heading: "Wait — Take the Free Listings Vault With You 🎁",
+    subheading:
+      "200+ hand-picked websites where you can list any brand or startup for FREE — launch platforms, review sites, and high-authority directories that bring backlinks, referral traffic, and AI-search visibility.",
+    bullets: [
+      "200+ sites, organised into 8 ready-to-work categories",
+      "Use it for your own agency AND every client you manage",
+      "Free backlinks + brand mentions that ChatGPT & Google actually pick up",
+    ],
+    namePlaceholder: "Your Name",
+    emailPlaceholder: "Email (we'll send the list here)",
+    phonePlaceholder: "WhatsApp Number",
+    submitLabel: "Send Me the Free List →",
+    privacyNote: "Instant access. No spam, ever — unsubscribe anytime.",
+    deliveryPath: "/free-listing-sites/",
+    page: {
+      title: "The Free Listings Vault — 200+ Sites to List Any Brand for Free",
+      metaDescription:
+        "200+ hand-picked directories, launch platforms and review sites where you can list any startup or brand free of cost.",
+      intro:
+        "Every site below lets you create a listing, profile, or launch post free of cost. Work through one category at a time — each listing is a permanent brand mention that compounds into backlinks, referral traffic, and visibility in Google and AI search engines like ChatGPT and Perplexity.",
+      tip: "Pro tip: keep your brand name, one-liner, logo, and website URL in a doc, then batch 10–15 submissions per sitting. Most listings take under 5 minutes each.",
+      ctaTitle: "Want PR placements in 2,500+ real news sites too?",
+      ctaBody:
+        "Directories build your base — press coverage builds your brand. Resell our white-label PR under your own agency's name and keep ₹11,501+ margin per placement.",
+      ctaButton: "See the White-Label PR Program →",
+    },
+  },
   thankYou: {
     title: "✅ Opening WhatsApp…",
     subtitle:

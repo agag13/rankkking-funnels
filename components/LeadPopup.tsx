@@ -2,12 +2,17 @@
 
 import { useCallback, useEffect, useState } from "react";
 import type { FunnelConfig } from "@/content/types";
-import LeadForm from "./LeadForm";
+import LeadMagnetForm from "./LeadMagnetForm";
 
 const SEEN_KEY = "lead_popup_seen";
 
+/**
+ * Timed + exit-intent popup offering the free listings lead magnet
+ * (email + WhatsApp gate). Shows once per session.
+ */
 export default function LeadPopup({ config }: { config: FunnelConfig }) {
   const [open, setOpen] = useState(false);
+  const { leadMagnet: lm } = config;
 
   const show = useCallback(() => {
     try {
@@ -41,7 +46,7 @@ export default function LeadPopup({ config }: { config: FunnelConfig }) {
       }}
       role="dialog"
       aria-modal="true"
-      aria-label={config.popup.heading}
+      aria-label={lm.heading}
     >
       <div className="relative max-h-[92vh] w-full max-w-md overflow-y-auto rounded-2xl bg-white p-6 shadow-2xl sm:p-8">
         <button
@@ -51,10 +56,20 @@ export default function LeadPopup({ config }: { config: FunnelConfig }) {
         >
           ×
         </button>
-        <h2 className="pr-6 text-xl font-bold text-slate-900">{config.popup.heading}</h2>
-        <p className="mt-1.5 text-sm text-slate-600">{config.form.subheading}</p>
-        <div className="mt-5">
-          <LeadForm config={config} sourceForm="popup" submitLabel={config.form.popupSubmitLabel} />
+        <span className="inline-block rounded-full bg-accent-500/15 px-3 py-1 text-[10px] font-bold tracking-[0.15em] text-emerald-700">
+          {lm.badge}
+        </span>
+        <h2 className="mt-3 pr-6 text-xl font-extrabold leading-snug text-slate-900">{lm.heading}</h2>
+        <p className="mt-2 text-sm leading-relaxed text-slate-600">{lm.subheading}</p>
+        <ul className="mt-3 space-y-1.5">
+          {lm.bullets.map((b) => (
+            <li key={b} className="flex gap-2 text-[13px] leading-snug text-slate-700">
+              <span className="text-emerald-600">✓</span> {b}
+            </li>
+          ))}
+        </ul>
+        <div className="mt-4">
+          <LeadMagnetForm config={config} />
         </div>
       </div>
     </div>

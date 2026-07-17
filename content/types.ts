@@ -128,6 +128,30 @@ export interface FunnelConfig {
     disclaimer: string;
   };
   popup: { heading: string; delaySeconds: number };
+  leadMagnet: {
+    /** internal funnel id sent to the webhook so n8n can branch on it */
+    funnelId: string;
+    badge: string;
+    heading: string;
+    subheading: string;
+    bullets: string[];
+    namePlaceholder: string;
+    emailPlaceholder: string;
+    phonePlaceholder: string;
+    submitLabel: string;
+    privacyNote: string;
+    /** page the visitor is redirected to (and emailed) */
+    deliveryPath: string;
+    page: {
+      title: string;
+      metaDescription: string;
+      intro: string;
+      tip: string;
+      ctaTitle: string;
+      ctaBody: string;
+      ctaButton: string;
+    };
+  };
   thankYou: {
     title: string;
     subtitle: string;

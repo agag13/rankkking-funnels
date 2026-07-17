@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import type { FunnelConfig } from "@/content/types";
 import { submitLead } from "@/lib/submitLead";
@@ -12,26 +12,42 @@ interface Props {
   submitLabel?: string;
 }
 
+/** Indian mobile: 10 digits starting 6-9 */
+const INDIAN_MOBILE = /^[6-9]\d{9}$/;
+
 export default function LeadForm({ config, sourceForm, submitLabel }: Props) {
   const router = useRouter();
   const [status, setStatus] = useState<"idle" | "submitting" | "error">("idle");
+  const [phoneError, setPhoneError] = useState(false);
+  // Anti-spam: timestamp when the form mounted; bots submit near-instantly
+  const renderedAt = useRef<number>(Date.now());
   const { form } = config;
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     if (status === "submitting") return;
     const fd = new FormData(e.currentTarget);
+    const rawPhone = String(fd.get("phone") ?? "").replace(/\D/g, "").replace(/^(91|0)(?=[6-9]\d{9}$)/, "");
+    if (!INDIAN_MOBILE.test(rawPhone)) {
+      setPhoneError(true);
+      return;
+    }
+    setPhoneError(false);
     const fields = {
       name: String(fd.get("name") ?? "").trim(),
       email: String(fd.get("email") ?? "").trim(),
-      phone: `+91${String(fd.get("phone") ?? "").replace(/\D/g, "").slice(-10)}`,
+      phone: `+91${rawPhone}`,
       city: String(fd.get("city") ?? ""),
       agency: String(fd.get("agency") ?? "").trim(),
+    };
+    const antiSpam = {
+      website: String(fd.get("website") ?? ""), // honeypot
+      form_seconds: Math.round((Date.now() - renderedAt.current) / 1000),
     };
     setStatus("submitting");
     dataLayerPush("lead_form_submit_attempt", { source_form: sourceForm });
     try {
-      await submitLead(config.webhookUrl, config.id, sourceForm, fields);
+      await submitLead(config.webhookUrl, config.id, sourceForm, fields, antiSpam);
       trackLead(config.id, { source_form: sourceForm });
       router.push("/thank-you/");
     } catch {
@@ -44,6 +60,13 @@ export default function LeadForm({ config, sourceForm, submitLabel }: Props) {
 
   return (
     <form onSubmit={handleSubmit} className="flex flex-col gap-3" noValidate={false}>
+      {/* Honeypot — hidden from real users; bots that fill it are dropped */}
+      <div aria-hidden="true" className="absolute -left-[9999px] top-auto h-px w-px overflow-hidden">
+        <label>
+          Website
+          <input name="website" type="text" tabIndex={-1} autoComplete="off" defaultValue="" />
+        </label>
+      </div>
       <input name="name" type="text" required placeholder={form.namePlaceholder} className={inputCls} autoComplete="name" />
       <input name="email" type="email" placeholder={form.emailPlaceholder} className={inputCls} autoComplete="email" />
       <div className="flex">
@@ -55,12 +78,17 @@ export default function LeadForm({ config, sourceForm, submitLabel }: Props) {
           type="tel"
           required
           inputMode="numeric"
-          pattern="[0-9\s]{10,12}"
           placeholder={form.phonePlaceholder}
-          className={`${inputCls} rounded-l-none`}
+          className={`${inputCls} rounded-l-none ${phoneError ? "border-red-500 ring-2 ring-red-500/30" : ""}`}
           autoComplete="tel-national"
+          onChange={() => phoneError && setPhoneError(false)}
         />
       </div>
+      {phoneError && (
+        <p className="-mt-1 text-xs font-medium text-red-600">
+          Please enter a valid 10-digit Indian mobile number (starts with 6–9).
+        </p>
+      )}
       <select name="city" defaultValue="" className={`${inputCls} text-slate-600`}>
         <option value="" disabled>
           {form.cityLabel}

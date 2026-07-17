@@ -21,6 +21,20 @@ Fast, static, config-driven lead-gen landing pages built with **Next.js 16 + Tai
 4. Visitor is redirected to `/thank-you/` (fires `generate_lead` + Meta `Lead` events — **use this URL as the Google Ads conversion page**), then auto-opens WhatsApp (+91 86303 22204).
 5. If the webhook ever fails, the form shows a WhatsApp fallback link — no lead is silently lost.
 
+## Anti-spam (Tier 1)
+
+Every submission passes through these checks — all invisible to real visitors:
+
+| Check | Where | Behavior |
+|---|---|---|
+| Honeypot (`website` field, hidden offscreen) | form + n8n | Filled → silently dropped (bot still gets a 200) |
+| Time-to-fill < 5s | form sends `form_seconds`, n8n checks | Dropped silently |
+| Indian mobile format (10 digits, starts 6–9) | form (blocks with error) + n8n regex | Form shows error; anything slipping past is dropped in n8n |
+| Disposable email domains (mailinator, yopmail, …) | n8n | Dropped silently |
+| Duplicate phone | n8n checks the data table | Saved with `status: duplicate`, **no email sent**; new leads get `status: new` + email |
+
+Spam is never stored and never emailed; duplicates are stored (for visibility) but don't notify. To add Cloudflare Turnstile later (Tier 2), create a site key at cloudflare.com → Turnstile and ask Claude to wire it in.
+
 ## Tracking
 
 GTM `GTM-WFLR2PF` (GA4 + Clarity flow through it, same as the old page) and Meta Pixel `1034815105967725` are injected in [components/Analytics.tsx](components/Analytics.tsx). IDs live in the funnel config.

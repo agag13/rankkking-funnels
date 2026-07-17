@@ -8,13 +8,22 @@ export interface LeadFields {
   agency: string;
 }
 
+export interface AntiSpamFields {
+  /** honeypot — must be empty for real users */
+  website: string;
+  /** seconds between form render and submit */
+  form_seconds: number;
+}
+
 export interface LeadPayload extends LeadFields {
   funnel: string;
   source_form: string;
   page: string;
   submitted_at: string;
   user_agent: string;
-  [key: string]: string;
+  website: string;
+  form_seconds: number;
+  [key: string]: string | number;
 }
 
 /**
@@ -26,12 +35,14 @@ export async function submitLead(
   funnelId: string,
   sourceForm: string,
   fields: LeadFields,
+  antiSpam: AntiSpamFields,
 ): Promise<void> {
   const attribution = getAttribution();
   const payload: LeadPayload = {
     funnel: funnelId,
     source_form: sourceForm,
     ...fields,
+    ...antiSpam,
     page: typeof window !== "undefined" ? window.location.href : "",
     submitted_at: new Date().toISOString(),
     user_agent: typeof navigator !== "undefined" ? navigator.userAgent : "",

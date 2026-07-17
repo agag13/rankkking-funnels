@@ -1,36 +1,58 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Rankkking Funnels — React Landing Page System
 
-## Getting Started
+Fast, static, config-driven lead-gen landing pages built with **Next.js 16 + Tailwind 4**, deployed on **Netlify**, with leads captured by an **n8n webhook**. Built to replace FlexiFunnels pages with something you fully own and can manage from Claude Code.
 
-First, run the development server:
+## Live system
+
+| Piece | Where |
+|---|---|
+| Live site | https://lp-rankkking.netlify.app (point `lp.rankkking.com` here when ready) |
+| Netlify project | `lp-rankkking` — https://app.netlify.com/projects/lp-rankkking |
+| Lead webhook | `https://n8n-main-u34424.vm.elestio.app/webhook/rankkking-lead` |
+| n8n workflow | "Rankkking LP — Lead Capture" — https://n8n-main-u34424.vm.elestio.app/workflow/ryhZR7Ct3ZxNJoE3 |
+| Leads storage | n8n Data Table **"Rankkking Leads"** (n8n → Data Tables) |
+| Notifications | Gmail (credential "Mayur") → info@rankkking.com on every lead |
+
+## Lead flow
+
+1. Visitor lands (UTM params + gclid/fbclid are captured to sessionStorage).
+2. Submits the hero form or popup form → JSON POST to the n8n webhook with full ad attribution.
+3. n8n saves the row to the "Rankkking Leads" data table, responds 200, and emails the team.
+4. Visitor is redirected to `/thank-you/` (fires `generate_lead` + Meta `Lead` events — **use this URL as the Google Ads conversion page**), then auto-opens WhatsApp (+91 86303 22204).
+5. If the webhook ever fails, the form shows a WhatsApp fallback link — no lead is silently lost.
+
+## Tracking
+
+GTM `GTM-WFLR2PF` (GA4 + Clarity flow through it, same as the old page) and Meta Pixel `1034815105967725` are injected in [components/Analytics.tsx](components/Analytics.tsx). IDs live in the funnel config.
+
+## How to change copy / prices / FAQ
+
+Everything on the page is in **one file**: [content/funnels/pr-reseller.ts](content/funnels/pr-reseller.ts). Edit text there — no component changes needed. Then rebuild + deploy (below).
+
+## How to create a NEW funnel page
+
+1. Copy `content/funnels/pr-reseller.ts` → `content/funnels/<new-funnel>.ts`, change the copy/IDs.
+2. Add its logos/images to `public/logos/`.
+3. Point `app/page.tsx` (or a new route folder) at the new config.
+4. Create a new n8n webhook path (duplicate the "Rankkking LP — Lead Capture" workflow, change the path), put the URL in the config.
+5. Deploy — new Netlify site per funnel, or a route on this one.
+
+## Build & deploy
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm run dev          # local preview on :3000
+npm run build        # static export to out/
+npx netlify-cli deploy --prod --dir=out   # deploy (already linked to lp-rankkking)
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+The deploy account is `hi@ankushgupta.xyz` (Netlify team hi-udqj89k).
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## DNS cutover (when ready to go live)
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+In your DNS for `rankkking.com`, change the `lp` record to a **CNAME → `lp-rankkking.netlify.app`**, then add `lp.rankkking.com` as a custom domain in the Netlify project settings (Netlify auto-provisions SSL). The old FlexiFunnels page keeps working until you flip this.
 
-## Learn More
+## Notes
 
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- Env override: set `NEXT_PUBLIC_LEAD_WEBHOOK_URL` at build time to change the webhook without editing the config.
+- Test leads named "TEST LEAD (Claude setup — ignore)" and "BROWSER TEST (Claude — ignore)" exist in the data table from setup verification — delete them in n8n.
+- An empty duplicate Netlify project `rankkking-lp` exists on the other Netlify account (ankush-ksf7ei4 team, created via the connector before its deploy proxy failed) — safe to delete.

@@ -2,6 +2,7 @@
 
 import { useEffect } from "react";
 import Image from "next/image";
+import Link from "next/link";
 import type { FunnelConfig } from "@/content/types";
 import { dataLayerPush } from "@/lib/track";
 
@@ -31,9 +32,9 @@ export default function ThankYouClient({ config }: { config: FunnelConfig }) {
         </svg>
         {config.thankYou.whatsappCta}
       </a>
-      <a href="/" className="mt-6 text-sm text-slate-400 underline hover:text-white">
+      <Link href="/" className="mt-6 text-sm text-slate-400 underline hover:text-white">
         ← Back to the page
-      </a>
+      </Link>
     </main>
   );
 }

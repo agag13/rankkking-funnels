@@ -8,7 +8,7 @@ export const prReseller: FunnelConfig = {
     title: "White-Label PR Reseller Program for Agencies | Rankkking",
     description:
       "Resell PR under your brand across 2,500+ news sites & 60,000+ guest post sites. Keep ₹11,501+ per placement. Zero contracts, zero minimums. 300+ agencies in.",
-    ogImage: "/logos/og-image.webp",
+    ogImage: "/logos/og-image.png",
     url: "https://lp.rankkking.com",
   },
   tracking: {

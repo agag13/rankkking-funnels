@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import type { FunnelConfig } from "@/content/types";
 import { submitLead } from "@/lib/submitLead";
@@ -22,7 +22,10 @@ export default function LeadForm({ config, sourceForm, submitLabel, showWhatsApp
   const [status, setStatus] = useState<"idle" | "submitting" | "error">("idle");
   const [fieldError, setFieldError] = useState<FieldError>(null);
   // Anti-spam: timestamp when the form mounted; bots submit near-instantly
-  const renderedAt = useRef<number>(Date.now());
+  const renderedAt = useRef<number>(0);
+  useEffect(() => {
+    renderedAt.current = Date.now();
+  }, []);
   const { form } = config;
   const waHref = `https://wa.me/${config.whatsapp.number}?text=${encodeURIComponent(config.whatsapp.prefill)}`;
 
@@ -57,7 +60,7 @@ export default function LeadForm({ config, sourceForm, submitLabel, showWhatsApp
     };
     const antiSpam = {
       website: String(fd.get("website") ?? ""), // honeypot
-      form_seconds: Math.round((Date.now() - renderedAt.current) / 1000),
+      form_seconds: renderedAt.current ? Math.round((Date.now() - renderedAt.current) / 1000) : 60,
     };
     setStatus("submitting");
     dataLayerPush("lead_form_submit_attempt", { source_form: sourceForm });

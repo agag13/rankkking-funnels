@@ -1,8 +1,10 @@
 import type { Metadata } from "next";
 import Image from "next/image";
+import Link from "next/link";
 import { prReseller as funnel } from "@/content/funnels/pr-reseller";
 import { listingSites, listingSiteCount } from "@/content/leadmagnets/listing-sites";
 import WhatsAppFloat from "@/components/WhatsAppFloat";
+import VaultViewTracker from "./VaultViewTracker";
 
 const lm = funnel.leadMagnet;
 
@@ -42,11 +44,12 @@ export default function FreeListingSitesPage() {
 
   return (
     <main>
+      <VaultViewTracker />
       <div className="hero-gradient px-5 pb-14 pt-8">
         <div className="mx-auto max-w-5xl">
-          <a href="/">
+          <Link href="/">
             <Image src={funnel.logo.src} alt={funnel.logo.alt} width={150} height={38} className="h-8 w-auto" />
-          </a>
+          </Link>
           <span className="mt-8 inline-block rounded-full border border-accent-500/40 bg-accent-500/10 px-4 py-1.5 text-[11px] font-bold tracking-[0.2em] text-accent-400">
             ✅ YOU&apos;RE IN — THE FREE LISTINGS VAULT
           </span>
@@ -90,12 +93,12 @@ export default function FreeListingSitesPage() {
         <section className="mt-14 rounded-2xl border border-brand-500/40 bg-brand-600/10 p-8 text-center sm:p-10">
           <h2 className="text-2xl font-extrabold text-white sm:text-3xl">{lm.page.ctaTitle}</h2>
           <p className="mx-auto mt-3 max-w-2xl text-[15px] leading-relaxed text-slate-300">{lm.page.ctaBody}</p>
-          <a
+          <Link
             href="/"
             className="mt-6 inline-block rounded-xl bg-brand-600 px-8 py-4 text-base font-semibold text-white shadow-lg shadow-brand-600/30 transition hover:bg-brand-500"
           >
             {lm.page.ctaButton}
-          </a>
+          </Link>
         </section>
 
         <p className="mt-10 text-center text-xs text-slate-500">

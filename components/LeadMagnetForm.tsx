@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import type { FunnelConfig } from "@/content/types";
 import { submitLead } from "@/lib/submitLead";
@@ -15,7 +15,10 @@ export default function LeadMagnetForm({ config }: { config: FunnelConfig }) {
   const router = useRouter();
   const [status, setStatus] = useState<"idle" | "submitting" | "error">("idle");
   const [fieldError, setFieldError] = useState<FieldError>(null);
-  const renderedAt = useRef<number>(Date.now());
+  const renderedAt = useRef<number>(0);
+  useEffect(() => {
+    renderedAt.current = Date.now();
+  }, []);
   const { leadMagnet: lm } = config;
   const waHref = `https://wa.me/${config.whatsapp.number}?text=${encodeURIComponent(config.whatsapp.prefill)}`;
 
@@ -51,7 +54,7 @@ export default function LeadMagnetForm({ config }: { config: FunnelConfig }) {
         { name, email, phone: `+91${rawPhone}`, city: "", agency: "" },
         {
           website: String(fd.get("website") ?? ""),
-          form_seconds: Math.round((Date.now() - renderedAt.current) / 1000),
+          form_seconds: renderedAt.current ? Math.round((Date.now() - renderedAt.current) / 1000) : 60,
         },
       );
       trackLead(lm.funnelId, { source_form: "leadmagnet-popup" });

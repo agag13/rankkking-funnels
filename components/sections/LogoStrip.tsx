@@ -22,7 +22,7 @@ export default function LogoStrip({
               alt={logo.alt}
               loading="lazy"
               style={{ height: logo.height ?? 24 }}
-              className={`w-auto opacity-60 transition hover:opacity-100 ${logo.invert ? "brightness-0 invert" : ""}`}
+              className={`w-auto opacity-60 transition hover:opacity-100 ${logo.invert ? "brightness-0 invert" : "grayscale brightness-[1.8]"}`}
             />
           ))}
         </div>

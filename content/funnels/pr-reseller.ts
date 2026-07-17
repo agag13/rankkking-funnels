@@ -74,7 +74,7 @@ export const prReseller: FunnelConfig = {
       { src: "/logos/indiacom.svg", alt: "India.com", height: 22, invert: true },
       { src: "/logos/primex.png", alt: "Primex News Network", height: 28, invert: true },
       { src: "/logos/wordscloud.webp", alt: "Wordscloud", height: 22, invert: true },
-      { src: "/logos/inters.avif", alt: "Inters", height: 22, invert: true },
+      { src: "/logos/moneycontrol.png", alt: "Moneycontrol", height: 20, invert: false },
     ],
   },
   problem: {
@@ -188,11 +188,11 @@ export const prReseller: FunnelConfig = {
     },
     logosTitle: "TRUSTED BY 300+ PARTNER AGENCIES",
     partnerLogos: [
-      { src: "/logos/partner1.png", alt: "Partner Agency", height: 30, invert: true },
+      { src: "/logos/partner1.png", alt: "OmniCart", height: 30, invert: true },
       { src: "/logos/wordscloud.webp", alt: "Wordscloud", height: 22, invert: true },
-      { src: "/logos/partner2.png", alt: "Partner Agency", height: 30, invert: true },
+      { src: "/logos/partner2.png", alt: "Suflex Media", height: 30, invert: true },
       { src: "/logos/primex.png", alt: "Primex News Network", height: 28, invert: true },
-      { src: "/logos/rankkking-alt.webp", alt: "Rankkking", height: 26, invert: true },
+      { src: "/logos/lusterpr.png", alt: "LusterPR", height: 26, invert: false },
     ],
   },
   features: {

@@ -12,8 +12,8 @@ export const prReseller: FunnelConfig = {
     url: "https://lp.rankkking.com",
   },
   tracking: {
-    gtmId: "GTM-WFLR2PF",
-    metaPixelId: "1034815105967725",
+    gtmId: "GTM-MG9X9FR9",
+    metaPixelId: "1036469968890220",
   },
   whatsapp: {
     number: WHATSAPP_NUMBER,

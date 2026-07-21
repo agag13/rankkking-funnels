@@ -46,7 +46,7 @@ Spam is never stored and never emailed; duplicates are stored (for visibility) b
 
 ## Tracking
 
-GTM `GTM-WFLR2PF` (GA4 + Clarity flow through it, same as the old page) and Meta Pixel `1034815105967725` are injected in [components/Analytics.tsx](components/Analytics.tsx). IDs live in the funnel config.
+GTM `GTM-MG9X9FR9` (GA4 + Clarity flow through it, same as the old page) and Meta Pixel `1036469968890220` are injected in [components/Analytics.tsx](components/Analytics.tsx). IDs live in the funnel config.
 
 ## How to change copy / prices / FAQ
 

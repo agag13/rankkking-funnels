@@ -18,6 +18,10 @@ export default function Analytics({
 
   return (
     <>
+      <Script id="ga4-src" strategy="afterInteractive" src="https://www.googletagmanager.com/gtag/js?id=G-5VYJVWM7ZF" />
+      <Script id="ga4-config" strategy="afterInteractive">
+        {`window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-5VYJVWM7ZF');`}
+      </Script>
       <Script id="gtm" strategy="afterInteractive">
         {`(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','${gtmId}');`}
       </Script>

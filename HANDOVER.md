@@ -114,8 +114,8 @@ Important behaviors:
 
 | Tool | ID | Notes |
 |---|---|---|
-| GTM | `GTM-WFLR2PF` | GA4 (`G-WV14GDHQ5S`) and MS Clarity (`eriuz1tb45`) load through it |
-| Meta Pixel | `1034815105967725` | Base code direct in [Analytics.tsx](components/Analytics.tsx) |
+| GTM | `GTM-MG9X9FR9` | GA4 (`G-WV14GDHQ5S`) and MS Clarity (`eriuz1tb45`) load through it |
+| Meta Pixel | `1036469968890220` | Base code direct in [Analytics.tsx](components/Analytics.tsx) |
 
 Custom events pushed to `dataLayer` (wire GTM triggers to these):
 - `lead_form_submit_attempt` (any form, before webhook)
@@ -206,7 +206,7 @@ npx netlify-cli deploy --prod --dir=out    # deploy
 | Netlify | team `hi-udqj89k` / project `lp-rankkking` | Ankush (hi@ankushgupta.xyz) |
 | n8n | instance login + workflow + data table | Mayur (mayur@rankkking.net) |
 | GTM / GA4 / Clarity | containers listed in §5 | whoever owns the Google/MS accounts |
-| Meta Business | pixel `1034815105967725` | Rankkking's Meta Business Manager admin |
+| Meta Business | pixel `1036469968890220` | Rankkking's Meta Business Manager admin |
 | DNS | rankkking.com zone (for the `lp` record) | domain registrar owner |
 | WhatsApp | +91 86303 22204 receives all lead chats | Rankkking team |
 

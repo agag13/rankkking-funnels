@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <base href="/portfolio/" />
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Abhi — AI Video Ads & Commercials</title>
+  <meta name="description" content="Cinematic brand films, product showcase videos and UGC-style ads that stop the scroll." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <!-- NAV -->
+  <header class="nav" id="nav">
+    <a class="brand" href="#top"><img class="brand-logo" id="brandLogo" src="brand.jpg" alt="logo" /><span class="brand-text" id="brandText">Portfolio</span></a>
+    <nav class="nav-links">
+      <a href="#work">Work</a>
+      <a href="#services">Services</a>
+      <a href="#pricing">Pricing</a>
+      <a href="#about">About</a>
+      <a class="nav-cta" href="#contact" id="navCta">Get a Quote</a>
+    </nav>
+  </header>
+
+  <!-- HERO -->
+  <section class="hero" id="top">
+    <div class="hero-inner">
+      <div class="hero-copy">
+        <p class="kicker" id="heroKicker"></p>
+        <h1 id="heroTitle"></h1>
+        <p class="hero-sub" id="heroSub"></p>
+        <div class="hero-btns">
+          <a class="btn btn-primary" href="#contact" id="heroPrimary">Get a Quote</a>
+          <a class="btn btn-ghost" href="#work" id="heroSecondary">View Work</a>
+        </div>
+        <div class="stats" id="stats"></div>
+      </div>
+    </div>
+    <a class="scroll-hint" href="#work" aria-label="scroll">▼</a>
+  </section>
+
+  <!-- WORK -->
+  <section class="section" id="work">
+    <div class="section-head">
+      <p class="eyebrow">The Reel</p>
+      <h2>Selected Work</h2>
+      <p class="section-sub">Har video yahi page pe play hoti hai — click karke sound ke saath dekho.</p>
+    </div>
+    <div class="filters" id="filters"></div>
+    <div class="grid" id="grid"></div>
+  </section>
+
+  <!-- SERVICES -->
+  <section class="section alt" id="services">
+    <div class="section-head">
+      <p class="eyebrow">What I do</p>
+      <h2>Services</h2>
+    </div>
+    <div class="services" id="services-grid"></div>
+  </section>
+
+  <!-- PRICING -->
+  <section class="section" id="pricing">
+    <div class="section-head">
+      <p class="eyebrow">Packages</p>
+      <h2>Simple, flexible pricing</h2>
+      <p class="section-sub">Har project alag hota hai — apni need batao, custom quote bhej dunga.</p>
+    </div>
+    <div class="packages" id="packages"></div>
+  </section>
+
+  <!-- ABOUT -->
+  <section class="section alt" id="about">
+    <div class="about" id="about"></div>
+  </section>
+
+  <!-- CONTACT -->
+  <section class="section contact" id="contact">
+    <div class="contact-card" id="contact-card"></div>
+  </section>
+
+  <footer class="foot">
+    <span id="footName">Abhi</span> · AI Video Ads &amp; Commercials
+    <span class="foot-dot">•</span> <span id="footYear"></span>
+  </footer>
+
+  <!-- LIGHTBOX -->
+  <div class="lightbox" id="lightbox" aria-hidden="true">
+    <button class="lb-close" id="lbClose" aria-label="close">✕</button>
+    <div class="lb-stage" id="lbStage"></div>
+    <div class="lb-caption" id="lbCaption"></div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>

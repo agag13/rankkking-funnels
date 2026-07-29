@@ -1,0 +1,100 @@
+{
+  "_readme": "Ye file edit karke poori site ka content badal sakte ho. Change karne ke baad site refresh karo (ya `node build.mjs` chalao). Price daalni ho to packages ke price field me daal do — khaali chhodo to 'On Request' dikhega.",
+
+  "brand": {
+    "logoText": "ABHI",
+    "navText": "Portfolio",
+    "name": "Abhi",
+    "role": "AI Video Ads & Motion",
+    "tagline": "Scroll-stopping video ads for brands that want to sell."
+  },
+
+  "hero": {
+    "kicker": "AI VIDEO ADS · COMMERCIALS · UGC",
+    "title": "Ads that stop the scroll.",
+    "subtitle": "Cinematic brand films, product showcases and UGC-style ads — produced fast, priced for performance. Sab kuch neeche play karke dekho.",
+    "primaryCta": "Get a Quote",
+    "secondaryCta": "View Work",
+    "featured": "blinkit.mp4",
+    "image": "brand.jpg"
+  },
+
+  "stats": [
+    { "value": "12+", "label": "Videos in this reel" },
+    { "value": "3", "label": "Formats · Brand / Product / UGC" },
+    { "value": "48h", "label": "Typical turnaround" }
+  ],
+
+  "services": [
+    { "icon": "🎬", "title": "AI Brand Commercials", "desc": "Cinematic, TVC-style brand films — concept to final cut, no shoot needed." },
+    { "icon": "📦", "title": "Product Showcase Videos", "desc": "Hero product & botanical clips that make e-com listings and ads pop." },
+    { "icon": "🗣️", "title": "UGC-Style Ad Videos", "desc": "Authentic talking-head & testimonial ads that convert on Reels & Shorts." },
+    { "icon": "🖼️", "title": "Ad Creatives / Statics", "desc": "High-converting Meta & Instagram static ad creatives, on brief." },
+    { "icon": "📸", "title": "Product Photography (AI)", "desc": "Studio-grade AI product shots — any angle, any background, in hours." },
+    { "icon": "🎠", "title": "IG Carousels / Social", "desc": "Premium carousel & social content designed to grow and sell." }
+  ],
+
+  "packages": [
+    {
+      "name": "Starter",
+      "price": "",
+      "period": "per video",
+      "tagline": "One clean, ready-to-run ad.",
+      "features": ["1 video ad (up to 20s)", "1 format (Reel / Feed / Story)", "1 round of revisions", "Delivered in 3–4 days"],
+      "highlight": false
+    },
+    {
+      "name": "Growth",
+      "price": "",
+      "period": "per month",
+      "tagline": "A steady feed of scroll-stoppers.",
+      "features": ["6 video ads / month", "Brand + Product + UGC mix", "All aspect ratios (9:16 / 1:1 / 16:9)", "2 rounds of revisions", "Priority 48h turnaround"],
+      "highlight": true
+    },
+    {
+      "name": "Premium",
+      "price": "",
+      "period": "custom",
+      "tagline": "Full creative partner.",
+      "features": ["Unlimited* videos + statics", "Dedicated creative direction", "Ad creatives + carousels included", "Same-day rush available", "Monthly strategy call"],
+      "highlight": false
+    }
+  ],
+
+  "about": {
+    "heading": "Behind the work",
+    "body": "Main AI aur editing dono use karke aise video ads banata hoon jo bina badi shoot ke bhi premium lagen aur actually sell karen. Brand commercials se lekar UGC tak — fast, affordable, aur performance-focused.",
+    "photo": "",
+    "photoNote": "Apni photo yahan daal do (content.json → about.photo me file ka path)."
+  },
+
+  "contact": {
+    "heading": "Let's make your next ad.",
+    "subtitle": "Ek video chahiye ya poori monthly reel — WhatsApp pe message karo, quote bhej dunga.",
+    "whatsapp": "+91 8750798330",
+    "email": "",
+    "instagram": "ai.with_abhiii",
+    "quoteButton": "Get a Quote"
+  },
+
+  "categories": {
+    "brand commercial ads": { "slug": "brand", "label": "Brand Commercials", "blurb": "Cinematic, TVC-style brand films." },
+    "product showcase": { "slug": "product", "label": "Product Showcase", "blurb": "Hero product & botanical clips." },
+    "Ugc": { "slug": "ugc", "label": "UGC Ads", "blurb": "Authentic talking-head & testimonial ads." }
+  },
+
+  "videoTitles": {
+    "blinkit.mp4": { "title": "Blinkit", "client": "Quick-Commerce · Brand Film" },
+    "eno.mp4": { "title": "Eno", "client": "FMCG · Brand Film" },
+    "fevikvik.mp4": { "title": "Fevikwik", "client": "FMCG · Brand Film" },
+    "maggi.mp4": { "title": "Maggi", "client": "FMCG · Brand Film" },
+    "masale.mp4": { "title": "Masala", "client": "Food · Brand Film" },
+    "FINAL MAMRA ALMAND.mp4": { "title": "Mamra Almonds", "client": "Dry Fruits · Product" },
+    "ajwa new _gwr_video_mvp.mp4": { "title": "Ajwa Dates", "client": "Dry Fruits · Product" },
+    "test _gwr_video_mvp.mp4": { "title": "Medjool Dates", "client": "Dry Fruits · Product" },
+    "ugc.1.mp4": { "title": "Kitchen Testimonial", "client": "UGC · Reels" },
+    "ugc.2.mp4": { "title": "Creator Review", "client": "UGC · Reels" },
+    "ugc.3.mp4": { "title": "Home Try-On", "client": "UGC · Reels" },
+    "ugc.4.mp4": { "title": "Fitness UGC", "client": "UGC · Reels" }
+  }
+}

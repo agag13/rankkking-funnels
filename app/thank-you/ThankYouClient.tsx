@@ -9,14 +9,11 @@ import { dataLayerPush } from "@/lib/track";
 export default function ThankYouClient({ config }: { config: FunnelConfig }) {
   const waHref = `https://wa.me/${config.whatsapp.number}?text=${encodeURIComponent(config.whatsapp.prefill)}`;
 
-  useEffect(() => {
+    useEffect(() => {
     // Conversion signal for Google Ads / GA4 via GTM
     dataLayerPush("lead_thank_you", { funnel_id: config.id });
-    const t = window.setTimeout(() => {
-      window.location.href = waHref;
-    }, 1800);
-    return () => window.clearTimeout(t);
-  }, [config.id, waHref]);
+    // Auto-redirect to WhatsApp disabled — visitor opens it manually via the button below.
+  }, [config.id]);
 
   return (
     <main className="hero-gradient flex min-h-screen flex-col items-center justify-center px-5 text-center">

@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import type { FunnelConfig } from "@/content/types";
 import { submitLead } from "@/lib/submitLead";
 import { trackLead, dataLayerPush } from "@/lib/track";
-import { INDIAN_MOBILE, sanitizeName, isValidName, normalizePhone, extractDomain } from "@/lib/validate";
+import { INDIAN_MOBILE, EMAIL, sanitizeName, isValidName, normalizePhone, extractDomain } from "@/lib/validate";
 
 interface Props {
   config: FunnelConfig;
@@ -15,7 +15,7 @@ interface Props {
   showWhatsAppButton?: boolean;
 }
 
-type FieldError = "name" | "phone" | "agency" | null;
+type FieldError = "name" | "email" | "phone" | "city" | "agency" | null;
 
 export default function LeadForm({ config, sourceForm, submitLabel, showWhatsAppButton }: Props) {
   const router = useRouter();
@@ -34,14 +34,24 @@ export default function LeadForm({ config, sourceForm, submitLabel, showWhatsApp
     if (status === "submitting") return;
     const fd = new FormData(e.currentTarget);
 
-    const name = sanitizeName(String(fd.get("name") ?? "")).trim().replace(/\s+/g, " ");
+        const name = sanitizeName(String(fd.get("name") ?? "")).trim().replace(/\s+/g, " ");
     if (!isValidName(name)) {
       setFieldError("name");
+      return;
+    }
+    const email = String(fd.get("email") ?? "").trim();
+    if (!EMAIL.test(email)) {
+      setFieldError("email");
       return;
     }
     const rawPhone = normalizePhone(String(fd.get("phone") ?? ""));
     if (!INDIAN_MOBILE.test(rawPhone)) {
       setFieldError("phone");
+      return;
+    }
+    const city = String(fd.get("city") ?? "");
+    if (!city) {
+      setFieldError("city");
       return;
     }
     const domain = extractDomain(String(fd.get("agency") ?? ""));
@@ -53,9 +63,9 @@ export default function LeadForm({ config, sourceForm, submitLabel, showWhatsApp
 
     const fields = {
       name,
-      email: String(fd.get("email") ?? "").trim(),
+      email,
       phone: `+91${rawPhone}`,
-      city: String(fd.get("city") ?? ""),
+      city,
       agency: domain,
     };
     const antiSpam = {
@@ -102,7 +112,18 @@ export default function LeadForm({ config, sourceForm, submitLabel, showWhatsApp
       {fieldError === "name" && (
         <p className="-mt-1 text-xs font-medium text-red-600">Please enter your name (letters only).</p>
       )}
-      <input name="email" type="email" placeholder={form.emailPlaceholder} className={inputCls} autoComplete="email" />
+            <input
+        name="email"
+        type="email"
+        required
+        placeholder={form.emailPlaceholder}
+        className={`${inputCls} ${fieldError === "email" ? errCls : ""}`}
+        autoComplete="email"
+        onChange={() => fieldError === "email" && setFieldError(null)}
+      />
+      {fieldError === "email" && (
+        <p className="-mt-1 text-xs font-medium text-red-600">Please enter a valid email address.</p>
+      )}
       <div className="flex">
         <span className="inline-flex items-center rounded-l-lg border border-r-0 border-slate-300 bg-slate-50 px-3 text-[15px] font-medium text-slate-600">
           🇮🇳 +91
@@ -127,7 +148,13 @@ export default function LeadForm({ config, sourceForm, submitLabel, showWhatsApp
           Please enter a valid 10-digit Indian mobile number (starts with 6–9).
         </p>
       )}
-      <select name="city" defaultValue="" className={`${inputCls} text-slate-600`}>
+            <select
+        name="city"
+        defaultValue=""
+        required
+        className={`${inputCls} text-slate-600 ${fieldError === "city" ? errCls : ""}`}
+        onChange={() => fieldError === "city" && setFieldError(null)}
+      >
         <option value="" disabled>
           {form.cityLabel}
         </option>
@@ -137,6 +164,10 @@ export default function LeadForm({ config, sourceForm, submitLabel, showWhatsApp
           </option>
         ))}
       </select>
+      {fieldError === "city" && (
+        <p className="-mt-1 text-xs font-medium text-red-600">Please select your city.</p>
+      )}
+
       <input
         name="agency"
         type="text"

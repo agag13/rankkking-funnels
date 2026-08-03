@@ -3,6 +3,9 @@
 /** Indian mobile: 10 digits starting 6-9 */
 export const INDIAN_MOBILE = /^[6-9]\d{9}$/;
 
+/** Basic email format */
+export const EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
 /** Letters (incl. common Indian name chars), spaces, dots, apostrophes, hyphens */
 export const NAME_ALLOWED = /[^A-Za-zÀ-ɏ\s.'-]/g;
 

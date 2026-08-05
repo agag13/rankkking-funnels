@@ -5,9 +5,9 @@ import { useRouter } from "next/navigation";
 import type { FunnelConfig } from "@/content/types";
 import { submitLead } from "@/lib/submitLead";
 import { trackLead, dataLayerPush } from "@/lib/track";
-import { INDIAN_MOBILE, sanitizeName, isValidName, normalizePhone } from "@/lib/validate";
+import { INDIAN_MOBILE, sanitizeName, isValidName, normalizePhone, extractDomain } from "@/lib/validate";
 
-type FieldError = "name" | "email" | "phone" | null;
+type FieldError = "name" | "email" | "phone" | "agency" | null;
 
 const EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
 
@@ -37,9 +37,14 @@ export default function LeadMagnetForm({ config }: { config: FunnelConfig }) {
       setFieldError("email");
       return;
     }
-    const rawPhone = normalizePhone(String(fd.get("phone") ?? ""));
+        const rawPhone = normalizePhone(String(fd.get("phone") ?? ""));
     if (!INDIAN_MOBILE.test(rawPhone)) {
       setFieldError("phone");
+      return;
+    }
+    const domain = extractDomain(String(fd.get("agency") ?? ""));
+    if (!domain) {
+      setFieldError("agency");
       return;
     }
     setFieldError(null);
@@ -51,7 +56,7 @@ export default function LeadMagnetForm({ config }: { config: FunnelConfig }) {
         config.webhookUrl,
         lm.funnelId,
         "leadmagnet-popup",
-        { name, email, phone: `+91${rawPhone}`, city: "", agency: "" },
+                { name, email, phone: `+91${rawPhone}`, city: "", agency: domain },
         {
           website: String(fd.get("website") ?? ""),
           form_seconds: renderedAt.current ? Math.round((Date.now() - renderedAt.current) / 1000) : 60,
@@ -126,6 +131,20 @@ export default function LeadMagnetForm({ config }: { config: FunnelConfig }) {
       {fieldError === "phone" && (
         <p className="-mt-1 text-xs font-medium text-red-600">
           Please enter a valid 10-digit Indian mobile number (starts with 6–9).
+        </p>
+      )}
+            <input
+        name="agency"
+        type="text"
+        required
+        placeholder="Agency Website (e.g. myagency.com)"
+        className={`${inputCls} ${fieldError === "agency" ? errCls : ""}`}
+        autoComplete="url"
+        onChange={() => fieldError === "agency" && setFieldError(null)}
+      />
+      {fieldError === "agency" && (
+        <p className="-mt-1 text-xs font-medium text-red-600">
+          Please enter your agency&apos;s website domain, e.g. <span className="font-semibold">myagency.com</span>
         </p>
       )}
       <button

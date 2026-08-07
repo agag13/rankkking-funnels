@@ -6,6 +6,7 @@ import type { FunnelConfig } from "@/content/types";
 import { submitLead } from "@/lib/submitLead";
 import { trackLead, dataLayerPush } from "@/lib/track";
 import { INDIAN_MOBILE, EMAIL, sanitizeName, isValidName, normalizePhone, extractDomain } from "@/lib/validate";
+import { alreadySubmitted, markSubmitted } from "@/lib/dedupe";
 
 interface Props {
   config: FunnelConfig;
@@ -19,7 +20,7 @@ type FieldError = "name" | "email" | "phone" | "city" | "agency" | null;
 
 export default function LeadForm({ config, sourceForm, submitLabel, showWhatsAppButton }: Props) {
   const router = useRouter();
-  const [status, setStatus] = useState<"idle" | "submitting" | "error">("idle");
+  const [status, setStatus] = useState<"idle" | "submitting" | "error" | "duplicate">("idle");
   const [fieldError, setFieldError] = useState<FieldError>(null);
   // Anti-spam: timestamp when the form mounted; bots submit near-instantly
   const renderedAt = useRef<number>(0);
@@ -34,7 +35,7 @@ export default function LeadForm({ config, sourceForm, submitLabel, showWhatsApp
     if (status === "submitting") return;
     const fd = new FormData(e.currentTarget);
 
-        const name = sanitizeName(String(fd.get("name") ?? "")).trim().replace(/\s+/g, " ");
+    const name = sanitizeName(String(fd.get("name") ?? "")).trim().replace(/\s+/g, " ");
     if (!isValidName(name)) {
       setFieldError("name");
       return;
@@ -68,6 +69,13 @@ export default function LeadForm({ config, sourceForm, submitLabel, showWhatsApp
       city,
       agency: domain,
     };
+
+    // Block re-submit with the same phone/email from this browser
+    if (alreadySubmitted(fields.phone, fields.email)) {
+      setStatus("duplicate");
+      return;
+    }
+
     const antiSpam = {
       website: String(fd.get("website") ?? ""), // honeypot
       form_seconds: renderedAt.current ? Math.round((Date.now() - renderedAt.current) / 1000) : 60,
@@ -77,6 +85,7 @@ export default function LeadForm({ config, sourceForm, submitLabel, showWhatsApp
     try {
       await submitLead(config.webhookUrl, config.id, sourceForm, fields, antiSpam);
       trackLead(config.id, { source_form: sourceForm });
+      markSubmitted(fields.phone, fields.email);
       router.push("/thank-you/");
     } catch {
       setStatus("error");
@@ -112,7 +121,7 @@ export default function LeadForm({ config, sourceForm, submitLabel, showWhatsApp
       {fieldError === "name" && (
         <p className="-mt-1 text-xs font-medium text-red-600">Please enter your name (letters only).</p>
       )}
-            <input
+      <input
         name="email"
         type="email"
         required
@@ -148,7 +157,7 @@ export default function LeadForm({ config, sourceForm, submitLabel, showWhatsApp
           Please enter a valid 10-digit Indian mobile number (starts with 6–9).
         </p>
       )}
-            <select
+      <select
         name="city"
         defaultValue=""
         required
@@ -167,7 +176,6 @@ export default function LeadForm({ config, sourceForm, submitLabel, showWhatsApp
       {fieldError === "city" && (
         <p className="-mt-1 text-xs font-medium text-red-600">Please select your city.</p>
       )}
-
       <input
         name="agency"
         type="text"
@@ -202,6 +210,14 @@ export default function LeadForm({ config, sourceForm, submitLabel, showWhatsApp
           </svg>
           Chat on WhatsApp Instead
         </a>
+      )}
+      {status === "duplicate" && (
+        <p className="text-center text-sm text-amber-600">
+          You&apos;ve already submitted these details — we&apos;ve got them.{" "}
+          <a href={waHref} className="font-semibold underline" target="_blank" rel="noopener">
+            Message us on WhatsApp →
+          </a>
+        </p>
       )}
       {status === "error" && (
         <p className="text-center text-sm text-red-600">

@@ -6,6 +6,7 @@ import type { FunnelConfig } from "@/content/types";
 import { submitLead } from "@/lib/submitLead";
 import { trackLead, dataLayerPush } from "@/lib/track";
 import { INDIAN_MOBILE, sanitizeName, isValidName, normalizePhone, extractDomain } from "@/lib/validate";
+import { alreadySubmitted, markSubmitted } from "@/lib/dedupe";
 
 type FieldError = "name" | "email" | "phone" | "agency" | null;
 
@@ -13,7 +14,7 @@ const EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
 
 export default function LeadMagnetForm({ config }: { config: FunnelConfig }) {
   const router = useRouter();
-  const [status, setStatus] = useState<"idle" | "submitting" | "error">("idle");
+  const [status, setStatus] = useState<"idle" | "submitting" | "error" | "duplicate">("idle");
   const [fieldError, setFieldError] = useState<FieldError>(null);
   const renderedAt = useRef<number>(0);
   useEffect(() => {
@@ -37,7 +38,7 @@ export default function LeadMagnetForm({ config }: { config: FunnelConfig }) {
       setFieldError("email");
       return;
     }
-        const rawPhone = normalizePhone(String(fd.get("phone") ?? ""));
+    const rawPhone = normalizePhone(String(fd.get("phone") ?? ""));
     if (!INDIAN_MOBILE.test(rawPhone)) {
       setFieldError("phone");
       return;
@@ -49,6 +50,14 @@ export default function LeadMagnetForm({ config }: { config: FunnelConfig }) {
     }
     setFieldError(null);
 
+    const phone = `+91${rawPhone}`;
+
+    // Cross-form block: same phone/email already submitted (hero OR popup) on this browser
+    if (alreadySubmitted(phone, email)) {
+      setStatus("duplicate");
+      return;
+    }
+
     setStatus("submitting");
     dataLayerPush("lead_form_submit_attempt", { source_form: "leadmagnet-popup" });
     try {
@@ -56,13 +65,14 @@ export default function LeadMagnetForm({ config }: { config: FunnelConfig }) {
         config.webhookUrl,
         lm.funnelId,
         "leadmagnet-popup",
-                { name, email, phone: `+91${rawPhone}`, city: "", agency: domain },
+        { name, email, phone, city: "", agency: domain },
         {
           website: String(fd.get("website") ?? ""),
           form_seconds: renderedAt.current ? Math.round((Date.now() - renderedAt.current) / 1000) : 60,
         },
       );
       trackLead(lm.funnelId, { source_form: "leadmagnet-popup" });
+      markSubmitted(phone, email);
       router.push(`${lm.deliveryPath}?src=popup`);
     } catch {
       setStatus("error");
@@ -133,7 +143,7 @@ export default function LeadMagnetForm({ config }: { config: FunnelConfig }) {
           Please enter a valid 10-digit Indian mobile number (starts with 6–9).
         </p>
       )}
-            <input
+      <input
         name="agency"
         type="text"
         required
@@ -154,6 +164,14 @@ export default function LeadMagnetForm({ config }: { config: FunnelConfig }) {
       >
         {status === "submitting" ? "Unlocking…" : lm.submitLabel}
       </button>
+      {status === "duplicate" && (
+        <p className="text-center text-sm text-amber-600">
+          You&apos;ve already submitted these details — we&apos;ve got them.{" "}
+          <a href={waHref} className="font-semibold underline" target="_blank" rel="noopener">
+            Message us on WhatsApp →
+          </a>
+        </p>
+      )}
       {status === "error" && (
         <p className="text-center text-sm text-red-600">
           Something went wrong.{" "}

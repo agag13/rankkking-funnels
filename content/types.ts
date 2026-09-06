@@ -53,6 +53,10 @@ export interface FunnelConfig {
   tracking: {
     gtmId: string;
     metaPixelId: string;
+    /** GA4 measurement id (G-XXXX); omit to skip the direct gtag snippet */
+    ga4Id?: string;
+    /** Microsoft Clarity project id; omit to skip Clarity */
+    clarityId?: string;
   };
   whatsapp: {
     number: string; // digits only, with country code
@@ -77,6 +81,12 @@ export interface FunnelConfig {
     emailPlaceholder: string;
     phonePlaceholder: string;
     agencyPlaceholder: string;
+    /**
+     * How the "agency" field is treated:
+     * "domain" (default) — required, must be a valid website domain (PR funnels);
+     * "text-optional" — optional free text (e.g. ORM: name/brand/link of concern).
+     */
+    agencyMode?: "domain" | "text-optional";
     cityLabel: string;
     cities: string[];
     submitLabel: string;

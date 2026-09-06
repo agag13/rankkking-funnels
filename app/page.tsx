@@ -1,4 +1,4 @@
-import { prReseller as funnel } from "@/content/funnels/pr-reseller";
+import { ormIndia as funnel } from "@/content/funnels/orm-india";
 import AnnouncementBar from "@/components/sections/AnnouncementBar";
 import Hero from "@/components/sections/Hero";
 import LogoStrip from "@/components/sections/LogoStrip";

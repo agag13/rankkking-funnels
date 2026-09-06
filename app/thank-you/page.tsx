@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
 import ThankYouClient from "./ThankYouClient";
-import { prReseller as funnel } from "@/content/funnels/pr-reseller";
+import { ormIndia as funnel } from "@/content/funnels/orm-india";
 
 export const metadata: Metadata = {
-  title: "Thank You | Rankkking",
+  title: "Thank You | FameNinja",
   robots: { index: false },
 };
 

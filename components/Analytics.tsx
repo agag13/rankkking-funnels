@@ -8,9 +8,13 @@ import { captureAttribution } from "@/lib/attribution";
 export default function Analytics({
   gtmId,
   metaPixelId,
+  ga4Id,
+  clarityId,
 }: {
   gtmId: string;
   metaPixelId: string;
+  ga4Id?: string;
+  clarityId?: string;
 }) {
   useEffect(() => {
     captureAttribution();
@@ -18,13 +22,19 @@ export default function Analytics({
 
   return (
     <>
-      <Script id="ga4-src" strategy="afterInteractive" src="https://www.googletagmanager.com/gtag/js?id=G-5VYJVWM7ZF" />
-      <Script id="ga4-config" strategy="afterInteractive">
-        {`window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-5VYJVWM7ZF');`}
-      </Script>
-      <Script id="ms-clarity" strategy="afterInteractive">
-        {`(function(c,l,a,r,i,t,y){c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);})(window,document,"clarity","script","eriuz1tb45");`}
-      </Script>
+      {ga4Id && (
+        <>
+          <Script id="ga4-src" strategy="afterInteractive" src={`https://www.googletagmanager.com/gtag/js?id=${ga4Id}`} />
+          <Script id="ga4-config" strategy="afterInteractive">
+            {`window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','${ga4Id}');`}
+          </Script>
+        </>
+      )}
+      {clarityId && (
+        <Script id="ms-clarity" strategy="afterInteractive">
+          {`(function(c,l,a,r,i,t,y){c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);})(window,document,"clarity","script","${clarityId}");`}
+        </Script>
+      )}
       <Script id="gtm" strategy="afterInteractive">
         {`(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','${gtmId}');`}
       </Script>

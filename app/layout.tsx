@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
-import { prReseller as funnel } from "@/content/funnels/pr-reseller";
+import { ormIndia as funnel } from "@/content/funnels/orm-india";
 import Analytics from "@/components/Analytics";
 
 const inter = Inter({
@@ -47,7 +47,12 @@ export default function RootLayout({
           />
         </noscript>
         {children}
-        <Analytics gtmId={funnel.tracking.gtmId} metaPixelId={funnel.tracking.metaPixelId} />
+        <Analytics
+          gtmId={funnel.tracking.gtmId}
+          metaPixelId={funnel.tracking.metaPixelId}
+          ga4Id={funnel.tracking.ga4Id}
+          clarityId={funnel.tracking.clarityId}
+        />
       </body>
     </html>
   );

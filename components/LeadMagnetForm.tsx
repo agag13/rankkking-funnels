@@ -43,10 +43,15 @@ export default function LeadMagnetForm({ config }: { config: FunnelConfig }) {
       setFieldError("phone");
       return;
     }
-    const domain = extractDomain(String(fd.get("agency") ?? ""));
-    if (!domain) {
-      setFieldError("agency");
-      return;
+    const agencyRaw = String(fd.get("agency") ?? "").trim();
+    let agencyValue = agencyRaw;
+    if ((config.form.agencyMode ?? "domain") === "domain") {
+      const domain = extractDomain(agencyRaw);
+      if (!domain) {
+        setFieldError("agency");
+        return;
+      }
+      agencyValue = domain;
     }
     setFieldError(null);
 
@@ -65,7 +70,7 @@ export default function LeadMagnetForm({ config }: { config: FunnelConfig }) {
         config.webhookUrl,
         lm.funnelId,
         "leadmagnet-popup",
-        { name, email, phone, city: "", agency: domain },
+        { name, email, phone, city: "", agency: agencyValue },
         {
           website: String(fd.get("website") ?? ""),
           form_seconds: renderedAt.current ? Math.round((Date.now() - renderedAt.current) / 1000) : 60,
@@ -146,8 +151,8 @@ export default function LeadMagnetForm({ config }: { config: FunnelConfig }) {
       <input
         name="agency"
         type="text"
-        required
-        placeholder="Agency Website (e.g. myagency.com)"
+        required={(config.form.agencyMode ?? "domain") === "domain"}
+        placeholder={config.form.agencyPlaceholder}
         className={`${inputCls} ${fieldError === "agency" ? errCls : ""}`}
         autoComplete="url"
         onChange={() => fieldError === "agency" && setFieldError(null)}

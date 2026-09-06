@@ -14,6 +14,8 @@ export const prReseller: FunnelConfig = {
   tracking: {
     gtmId: "GTM-MG9X9FR9",
     metaPixelId: "1036469968890220",
+    ga4Id: "G-5VYJVWM7ZF",
+    clarityId: "eriuz1tb45",
   },
   whatsapp: {
     number: WHATSAPP_NUMBER,

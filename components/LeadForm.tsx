@@ -55,10 +55,15 @@ export default function LeadForm({ config, sourceForm, submitLabel, showWhatsApp
       setFieldError("city");
       return;
     }
-    const domain = extractDomain(String(fd.get("agency") ?? ""));
-    if (!domain) {
-      setFieldError("agency");
-      return;
+    const agencyRaw = String(fd.get("agency") ?? "").trim();
+    let agencyValue = agencyRaw;
+    if ((config.form.agencyMode ?? "domain") === "domain") {
+      const domain = extractDomain(agencyRaw);
+      if (!domain) {
+        setFieldError("agency");
+        return;
+      }
+      agencyValue = domain;
     }
     setFieldError(null);
 
@@ -67,7 +72,7 @@ export default function LeadForm({ config, sourceForm, submitLabel, showWhatsApp
       email,
       phone: `+91${rawPhone}`,
       city,
-      agency: domain,
+      agency: agencyValue,
     };
 
     // Block re-submit with the same phone/email from this browser (shared with popup)
@@ -179,7 +184,7 @@ export default function LeadForm({ config, sourceForm, submitLabel, showWhatsApp
       <input
         name="agency"
         type="text"
-        required
+        required={(form.agencyMode ?? "domain") === "domain"}
         placeholder={form.agencyPlaceholder}
         className={`${inputCls} ${fieldError === "agency" ? errCls : ""}`}
         autoComplete="url"

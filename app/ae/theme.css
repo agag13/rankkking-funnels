@@ -77,3 +77,8 @@
 .theme-ae .section-gradient {
   background: linear-gradient(180deg, #1e1a13 0%, #15120d 100%);
 }
+
+/* Official 01Wire logo is dark ink on transparent — render it cream on the dark theme */
+.theme-ae img[alt="01Wire"] {
+  filter: brightness(0) invert(0.94);
+}

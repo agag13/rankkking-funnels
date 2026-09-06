@@ -43,10 +43,9 @@ export const prResellerAe: FunnelConfig = {
     text: "Q4 cohort — we onboard 5 UAE partner agencies per quarter · 3 slots left",
     cta: "Claim a Slot",
   },
-  // No 01Wire logo asset exists in /public/logos yet, so the page renders a
-  // Baloo 2 text wordmark ("01WIRE" + coral dot). Drop a real file in
-  // /public/logos and remove `wordmark` to switch to an image. [PLACEHOLDER-LOGO]
-  logo: { src: "", alt: "01Wire", wordmark: "01WIRE" },
+  // Official 01Wire logo pulled from 01wire.com (dark ink on transparent —
+  // theme.css inverts it to cream on the dark /ae theme).
+  logo: { src: "/logos/ae/01wire.png", alt: "01Wire" },
   hero: {
     badge: "WHITE-LABEL PR · FOR AGENCIES IN THE UAE",
     titlePre: "Add ",
@@ -90,13 +89,13 @@ export const prResellerAe: FunnelConfig = {
   },
   pressLogos: {
     title: "PLACEMENTS YOUR CLIENTS WILL RECOGNISE",
-    // Styled text wordmarks — swap in real logo files when licensing is confirmed.
+    // Official publication logos, rendered monochrome via `invert` for the dark theme.
     logos: [
-      { src: "", alt: "Khaleej Times", text: "Khaleej Times", height: 24 },
-      { src: "", alt: "Gulf News", text: "Gulf News", height: 24 },
-      { src: "", alt: "Arabian Business", text: "Arabian Business", height: 22 },
-      { src: "", alt: "Forbes Middle East", text: "Forbes Middle East", height: 22 },
-      { src: "", alt: "Entrepreneur Middle East", text: "Entrepreneur ME", height: 22 },
+      { src: "/logos/ae/khaleej-times.svg", alt: "Khaleej Times", height: 26, invert: true },
+      { src: "/logos/ae/gulf-news.svg", alt: "Gulf News", height: 26, invert: true },
+      { src: "/logos/ae/arabian-business.png", alt: "Arabian Business", height: 22, invert: true },
+      { src: "/logos/ae/forbes-me.svg", alt: "Forbes Middle East", height: 22, invert: true },
+      { src: "/logos/ae/entrepreneur-me.png", alt: "Entrepreneur Middle East", height: 20, invert: true },
       { src: "", alt: "And 2,500 more publications worldwide", text: "+2,500 more worldwide", height: 15 },
     ],
   },

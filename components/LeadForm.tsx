@@ -27,6 +27,9 @@ export default function LeadForm({ config, sourceForm, submitLabel, showWhatsApp
     renderedAt.current = Date.now();
   }, []);
   const { form } = config;
+  // Optional per-funnel form behavior — defaults reproduce the India form exactly.
+  const phoneCountry = form.phoneCountry;
+  const dialCode = phoneCountry?.dialCode ?? "+91";
   const waHref = `https://wa.me/${config.whatsapp.number}?text=${encodeURIComponent(config.whatsapp.prefill)}`;
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
@@ -39,13 +42,28 @@ export default function LeadForm({ config, sourceForm, submitLabel, showWhatsApp
       setFieldError("name");
       return;
     }
-    const rawPhone = normalizePhone(String(fd.get("phone") ?? ""));
-    if (!INDIAN_MOBILE.test(rawPhone)) {
-      setFieldError("phone");
-      return;
+    let rawPhone: string;
+    if (phoneCountry) {
+      const digits = String(fd.get("phone") ?? "").replace(/\D/g, "");
+      rawPhone = phoneCountry.stripPrefix
+        ? digits.replace(new RegExp(phoneCountry.stripPrefix), "")
+        : digits;
+      if (!new RegExp(phoneCountry.pattern).test(rawPhone)) {
+        setFieldError("phone");
+        return;
+      }
+    } else {
+      rawPhone = normalizePhone(String(fd.get("phone") ?? ""));
+      if (!INDIAN_MOBILE.test(rawPhone)) {
+        setFieldError("phone");
+        return;
+      }
     }
-    const domain = extractDomain(String(fd.get("agency") ?? ""));
-    if (!domain) {
+    const agencyRaw = String(fd.get("agency") ?? "").trim();
+    const agency = form.agencyMode === "name"
+      ? (agencyRaw.replace(/\s+/g, " ").length >= 2 ? agencyRaw.replace(/\s+/g, " ") : null)
+      : extractDomain(agencyRaw);
+    if (!agency) {
       setFieldError("agency");
       return;
     }
@@ -54,10 +72,13 @@ export default function LeadForm({ config, sourceForm, submitLabel, showWhatsApp
     const fields = {
       name,
       email: String(fd.get("email") ?? "").trim(),
-      phone: `+91${rawPhone}`,
+      phone: `${dialCode}${rawPhone}`,
       city: String(fd.get("city") ?? ""),
-      agency: domain,
+      agency,
     };
+    const extra: Record<string, string> = {};
+    if (form.timeline) extra.timeline = String(fd.get("timeline") ?? "");
+    if (form.clientCount) extra.client_count = String(fd.get("client_count") ?? "");
     const antiSpam = {
       website: String(fd.get("website") ?? ""), // honeypot
       form_seconds: renderedAt.current ? Math.round((Date.now() - renderedAt.current) / 1000) : 60,
@@ -65,9 +86,9 @@ export default function LeadForm({ config, sourceForm, submitLabel, showWhatsApp
     setStatus("submitting");
     dataLayerPush("lead_form_submit_attempt", { source_form: sourceForm });
     try {
-      await submitLead(config.webhookUrl, config.id, sourceForm, fields, antiSpam);
+      await submitLead(config.webhookUrl, config.id, sourceForm, fields, antiSpam, extra);
       trackLead(config.id, { source_form: sourceForm });
-      router.push("/thank-you/");
+      router.push(form.thankYouPath ?? "/thank-you/");
     } catch {
       setStatus("error");
     }
@@ -102,10 +123,12 @@ export default function LeadForm({ config, sourceForm, submitLabel, showWhatsApp
       {fieldError === "name" && (
         <p className="-mt-1 text-xs font-medium text-red-600">Please enter your name (letters only).</p>
       )}
-      <input name="email" type="email" placeholder={form.emailPlaceholder} className={inputCls} autoComplete="email" />
+      {!form.hideEmail && (
+        <input name="email" type="email" placeholder={form.emailPlaceholder} className={inputCls} autoComplete="email" />
+      )}
       <div className="flex">
         <span className="inline-flex items-center rounded-l-lg border border-r-0 border-slate-300 bg-slate-50 px-3 text-[15px] font-medium text-slate-600">
-          🇮🇳 +91
+          {phoneCountry ? `${phoneCountry.flag} ${phoneCountry.dialCode}` : "🇮🇳 +91"}
         </span>
         <input
           name="phone"
@@ -124,7 +147,7 @@ export default function LeadForm({ config, sourceForm, submitLabel, showWhatsApp
       </div>
       {fieldError === "phone" && (
         <p className="-mt-1 text-xs font-medium text-red-600">
-          Please enter a valid 10-digit Indian mobile number (starts with 6–9).
+          {phoneCountry?.errorMessage ?? "Please enter a valid 10-digit Indian mobile number (starts with 6–9)."}
         </p>
       )}
       <select name="city" defaultValue="" className={`${inputCls} text-slate-600`}>
@@ -143,13 +166,50 @@ export default function LeadForm({ config, sourceForm, submitLabel, showWhatsApp
         required
         placeholder={form.agencyPlaceholder}
         className={`${inputCls} ${fieldError === "agency" ? errCls : ""}`}
-        autoComplete="url"
+        autoComplete={form.agencyMode === "name" ? "organization" : "url"}
         onChange={() => fieldError === "agency" && setFieldError(null)}
       />
       {fieldError === "agency" && (
         <p className="-mt-1 text-xs font-medium text-red-600">
-          Please enter your agency&apos;s website domain, e.g. <span className="font-semibold">myagency.com</span>
+          {form.agencyMode === "name" ? (
+            <>Please enter your agency&apos;s name.</>
+          ) : (
+            <>
+              Please enter your agency&apos;s website domain, e.g. <span className="font-semibold">myagency.com</span>
+            </>
+          )}
         </p>
+      )}
+      {form.timeline && (
+        <fieldset className="rounded-lg border border-slate-300 bg-white px-4 pb-3 pt-1.5">
+          <legend className="px-1 text-xs font-semibold text-slate-500">{form.timeline.label}</legend>
+          <div className="flex flex-wrap gap-x-5 gap-y-2">
+            {form.timeline.options.map((opt, i) => (
+              <label key={opt} className="flex cursor-pointer items-center gap-2 text-[14px] font-medium text-slate-700">
+                <input
+                  type="radio"
+                  name="timeline"
+                  value={opt}
+                  defaultChecked={i === 0}
+                  className="h-4 w-4 accent-brand-600"
+                />
+                {opt}
+              </label>
+            ))}
+          </div>
+        </fieldset>
+      )}
+      {form.clientCount && (
+        <select name="client_count" defaultValue="" className={`${inputCls} text-slate-600`}>
+          <option value="" disabled>
+            {form.clientCount.label}
+          </option>
+          {form.clientCount.options.map((o) => (
+            <option key={o} value={o}>
+              {o}
+            </option>
+          ))}
+        </select>
       )}
       <button
         type="submit"

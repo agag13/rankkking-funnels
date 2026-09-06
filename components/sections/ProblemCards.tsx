@@ -9,7 +9,7 @@ export default function ProblemCards({ config }: { config: FunnelConfig }) {
         <Kicker>{problem.kicker}</Kicker>
         <SectionTitle lines={problem.title} />
       </div>
-      <div className="mt-12 grid gap-6 sm:grid-cols-3">
+      <div className={`mt-12 grid gap-6 ${problem.columns === 4 ? "sm:grid-cols-2 lg:grid-cols-4" : "sm:grid-cols-3"}`}>
         {problem.cards.map((card) => (
           <div
             key={card.title}

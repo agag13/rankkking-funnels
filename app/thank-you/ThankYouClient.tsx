@@ -20,7 +20,13 @@ export default function ThankYouClient({ config }: { config: FunnelConfig }) {
 
   return (
     <main className="hero-gradient flex min-h-screen flex-col items-center justify-center px-5 text-center">
-      <Image src={config.logo.src} alt={config.logo.alt} width={160} height={40} className="h-9 w-auto" />
+      {config.logo.wordmark ? (
+        <span className="lp-wordmark text-[27px] font-extrabold leading-none tracking-tight text-white" aria-label={config.logo.alt}>
+          {config.logo.wordmark}
+        </span>
+      ) : (
+        <Image src={config.logo.src} alt={config.logo.alt} width={160} height={40} className="h-9 w-auto" />
+      )}
       <h1 className="mt-10 text-3xl font-extrabold text-white sm:text-4xl">{config.thankYou.title}</h1>
       <p className="mt-4 max-w-md text-[15px] leading-relaxed text-slate-300">{config.thankYou.subtitle}</p>
       <a
@@ -32,7 +38,7 @@ export default function ThankYouClient({ config }: { config: FunnelConfig }) {
         </svg>
         {config.thankYou.whatsappCta}
       </a>
-      <Link href="/" className="mt-6 text-sm text-slate-400 underline hover:text-white">
+      <Link href={config.thankYou.backHref ?? "/"} className="mt-6 text-sm text-slate-400 underline hover:text-white">
         ← Back to the page
       </Link>
     </main>

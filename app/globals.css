@@ -2,6 +2,15 @@
 
 @theme inline {
   --font-sans: var(--font-inter);
+}
+
+/*
+ * Colors live in a non-inline @theme block so utilities compile to
+ * var(--color-*) references. Values are unchanged — the India page renders
+ * identically — but route themes (e.g. .theme-ae on /ae) can re-skin by
+ * overriding the variables inside a scoped wrapper class.
+ */
+@theme {
   --color-navy-950: #050b1d;
   --color-navy-900: #081431;
   --color-navy-800: #0c1e4a;

@@ -7,7 +7,13 @@ export default function Hero({ config }: { config: FunnelConfig }) {
   return (
     <div className="hero-gradient">
       <header className="mx-auto flex max-w-6xl items-center px-5 pt-6">
-        <Image src={logo.src} alt={logo.alt} width={160} height={40} className="h-9 w-auto" priority />
+        {logo.wordmark ? (
+          <span className="lp-wordmark text-[27px] font-extrabold leading-none tracking-tight text-white" aria-label={logo.alt}>
+            {logo.wordmark}
+          </span>
+        ) : (
+          <Image src={logo.src} alt={logo.alt} width={160} height={40} className="h-9 w-auto" priority />
+        )}
       </header>
 
       <div className="mx-auto grid max-w-6xl grid-cols-1 items-center gap-12 px-5 pb-20 pt-10 sm:pt-14 lg:grid-cols-[1.15fr_0.85fr]">

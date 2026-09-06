@@ -4,6 +4,8 @@ export interface LogoItem {
   /** relative visual height in px at desktop */
   height?: number;
   invert?: boolean;
+  /** OPTIONAL: render a styled text wordmark instead of an image (src is ignored; pass "") */
+  text?: string;
 }
 
 export interface IconCard {
@@ -42,6 +44,47 @@ export interface ComparisonRow {
   values: [string, string, string];
 }
 
+/** OPTIONAL non-Indian phone-field config for LeadForm. Omit for the default 🇮🇳 +91 behavior. */
+export interface PhoneCountry {
+  /** flag emoji shown in the input prefix, e.g. "🇦🇪" */
+  flag: string;
+  /** dial code prepended to the stored lead phone, e.g. "+971" */
+  dialCode: string;
+  /** regex source the national number must match after normalization, e.g. "^5\\d{8}$" */
+  pattern: string;
+  /** regex source stripped off the front of the typed digits, e.g. "^(?:971|0)(?=5)" */
+  stripPrefix?: string;
+  /** validation error shown under the field */
+  errorMessage: string;
+}
+
+/** Market card for the ThreeMarkets section. */
+export interface MarketCard {
+  icon: string;
+  title: string;
+  subtitle: string;
+  points: string[];
+}
+
+/** Tier card for the PartnerTiers section. */
+export interface PartnerTier {
+  name: string;
+  tagline: string;
+  /** small pill shown above the card, e.g. "★ RECOMMENDED" */
+  badge?: string;
+  /** highlights the card (accent border + raised background) */
+  recommended?: boolean;
+  features: string[];
+}
+
+/** Placement-screenshot placeholder slot rendered as a browser-frame mockup. */
+export interface ScreenshotSlot {
+  outlet: string;
+  /** address-bar text, e.g. "khaleejtimes.com/business/…" */
+  url: string;
+  caption: string;
+}
+
 export interface FunnelConfig {
   id: string;
   meta: {
@@ -60,7 +103,8 @@ export interface FunnelConfig {
   };
   webhookUrl: string;
   announcement: { text: string; cta: string };
-  logo: { src: string; alt: string };
+  /** wordmark (OPTIONAL): render styled text instead of the image logo (src is then ignored) */
+  logo: { src: string; alt: string; wordmark?: string };
   hero: {
     badge: string;
     /** parts of the H1; `highlight` gets accent color */
@@ -83,9 +127,22 @@ export interface FunnelConfig {
     popupSubmitLabel: string;
     privacyNote: string;
     chatPrompt: string;
+    /** OPTIONAL: non-Indian phone prefix + validation; omit for 🇮🇳 +91 */
+    phoneCountry?: PhoneCountry;
+    /** OPTIONAL: "domain" (default) validates a website; "name" accepts a plain agency name */
+    agencyMode?: "domain" | "name";
+    /** OPTIONAL: hide the email field */
+    hideEmail?: boolean;
+    /** OPTIONAL: radio group (e.g. start timeline); sent as `timeline` in the payload */
+    timeline?: { label: string; options: string[] };
+    /** OPTIONAL: extra select (e.g. clients who'd buy PR); sent as `client_count` */
+    clientCount?: { label: string; options: string[] };
+    /** OPTIONAL: post-submit redirect (default "/thank-you/") */
+    thankYouPath?: string;
   };
   pressLogos: { title: string; logos: LogoItem[] };
-  problem: { kicker: string; title: string[]; cards: IconCard[] };
+  /** columns (OPTIONAL): 4 renders a 2×2 → 4-across grid; default is 3-across */
+  problem: { kicker: string; title: string[]; cards: IconCard[]; columns?: 3 | 4 };
   howItWorks: { kicker: string; title: string[]; steps: Step[]; cta: string };
   math: {
     kicker: string;
@@ -108,6 +165,39 @@ export interface FunnelConfig {
     caseStudy: { stats: Stat[]; quote: string; author: string };
     logosTitle: string;
     partnerLogos: LogoItem[];
+  };
+  /** OPTIONAL SECTION: "One Partner. Three Markets." (used by /ae) */
+  threeMarkets?: {
+    kicker: string;
+    title: string[];
+    markets: MarketCard[];
+    note: string;
+  };
+  /** OPTIONAL SECTION: partner program tiers (used by /ae) */
+  partnerTiers?: {
+    kicker: string;
+    title: string[];
+    subtitle?: string;
+    tiers: PartnerTier[];
+    /** CTA label used on every tier card */
+    cta: string;
+    note: string;
+  };
+  /** OPTIONAL SECTION: money-back guarantee statement (used by /ae) */
+  guarantee?: {
+    kicker: string;
+    icon: string;
+    title: string;
+    body: string;
+    note: string;
+  };
+  /** OPTIONAL SECTION: stats + placement-screenshot slots + testimonials (used by /ae) */
+  socialProofAe?: {
+    kicker: string;
+    title: string[];
+    stats: Stat[];
+    screenshots: ScreenshotSlot[];
+    testimonials: Testimonial[];
   };
   features: { kicker: string; title: string; cards: IconCard[]; cta: string };
   comparison: {
@@ -156,5 +246,7 @@ export interface FunnelConfig {
     title: string;
     subtitle: string;
     whatsappCta: string;
+    /** OPTIONAL: "back to page" link target (default "/") */
+    backHref?: string;
   };
 }

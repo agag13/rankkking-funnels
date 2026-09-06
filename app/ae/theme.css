@@ -1,0 +1,79 @@
+/*
+ * 01Wire dark theme — scoped to the /ae route via the .theme-ae wrapper class.
+ * The India page (navy theme) is untouched: nothing here applies outside .theme-ae.
+ *
+ * Palette (extracted from 01wire.com):
+ *   paper      #15120D  warm black          raised   #1E1A13
+ *   ink        #F3ECDD  cream               soft     #B3A996   faint #756B5A
+ *   signal     #EE5B61  coral (primary CTA, white text)
+ *   wire-blue  #8FB0DA  links & highlights
+ *   success    #3F7D5C  ·  WhatsApp #25d366 (kept)
+ */
+
+.theme-ae {
+  /* Surface + brand variables consumed by the shared Tailwind utilities */
+  --color-navy-950: #15120d;
+  --color-navy-900: #1e1a13;
+  --color-navy-800: #1e1a13;
+  --color-navy-700: #2a2419;
+  --color-brand-600: #ee5b61; /* signal coral — primary CTA */
+  --color-brand-500: #f2777c; /* coral hover */
+  --color-brand-400: #8fb0da; /* wire-blue — kickers, highlights, links */
+  --color-brand-300: #aecbee;
+  --color-accent-500: #3f7d5c;
+  --color-accent-400: #63a585;
+
+  /* Cream ink: drives text-white, and turns white/10 borders + white/5
+     surfaces into the subtle cream-at-low-opacity look of the 01wire brand */
+  --color-white: #f3ecdd;
+  --color-slate-200: #d9d0be;
+  --color-slate-300: #b3a996;
+  --color-slate-400: #b3a996;
+  --color-slate-500: #756b5a;
+  --color-slate-600: #756b5a;
+  --color-slate-700: #4a4234;
+  --color-slate-900: #15120d;
+  --color-slate-50: #efe7d6;
+  --color-blue-50: #eae1cd; /* announcement CTA hover (hover:bg-blue-50) */
+  --color-amber-400: #e0b45c; /* star ratings, warmed */
+
+  background: #15120d;
+  color: #f3ecdd;
+  min-height: 100dvh;
+  font-family: var(--font-manrope), var(--font-sans), system-ui, sans-serif;
+}
+
+/* Headings in Baloo 2 (600–800), body stays Manrope */
+.theme-ae h1,
+.theme-ae h2,
+.theme-ae h3 {
+  font-family: var(--font-baloo), var(--font-manrope), system-ui, sans-serif;
+}
+
+/* Text wordmark: "01WIRE" in Baloo 2 with a coral full stop */
+.theme-ae .lp-wordmark {
+  font-family: var(--font-baloo), var(--font-manrope), system-ui, sans-serif;
+}
+.theme-ae .lp-wordmark::after {
+  content: ".";
+  color: var(--color-brand-600);
+}
+
+/* Coral CTAs keep pure white text (text-white resolves to cream inside .theme-ae) */
+.theme-ae a[class*="bg-brand-6"],
+.theme-ae button[class*="bg-brand-6"],
+.theme-ae .bg-whatsapp {
+  color: #fff;
+}
+
+/* Repo glow aesthetic re-hued: coral + wire-blue glows on warm black */
+.theme-ae .hero-gradient {
+  background:
+    radial-gradient(1200px 600px at 80% -10%, rgba(238, 91, 97, 0.17), transparent 60%),
+    radial-gradient(900px 500px at 10% 110%, rgba(143, 176, 218, 0.1), transparent 60%),
+    linear-gradient(160deg, #1e1a13 0%, #15120d 70%);
+}
+
+.theme-ae .section-gradient {
+  background: linear-gradient(180deg, #1e1a13 0%, #15120d 100%);
+}

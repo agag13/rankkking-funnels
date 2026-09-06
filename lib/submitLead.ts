@@ -36,6 +36,8 @@ export async function submitLead(
   sourceForm: string,
   fields: LeadFields,
   antiSpam: AntiSpamFields,
+  /** OPTIONAL funnel-specific extras (e.g. timeline, client_count) merged into the payload */
+  extra: Record<string, string> = {},
 ): Promise<void> {
   const attribution = getAttribution();
   const payload: LeadPayload = {
@@ -43,6 +45,7 @@ export async function submitLead(
     source_form: sourceForm,
     ...fields,
     ...antiSpam,
+    ...extra,
     page: typeof window !== "undefined" ? window.location.href : "",
     submitted_at: new Date().toISOString(),
     user_agent: typeof navigator !== "undefined" ? navigator.userAgent : "",

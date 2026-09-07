@@ -212,6 +212,53 @@ export const prResellerAe: FunnelConfig = {
     ],
     note: "One rate card, one WhatsApp thread, one AED invoice — wholesale pricing in all three markets. No other UAE partner desk covers all three at source rates.",
   },
+  agencyTypes: {
+    kicker: "WHO THIS IS FOR",
+    title: ["Run One of These?", "PR Is Your Next Line Item."],
+    items: [
+      {
+        icon: "📣",
+        name: "Digital marketing agencies",
+        line: "Add PR to every retainer you already run — same client, bigger invoice.",
+      },
+      {
+        icon: "📍",
+        name: "Local SEO agencies",
+        line: "News backlinks your clients can see, DA your reports can prove.",
+      },
+      {
+        icon: "🏙️",
+        name: "Real estate marketing",
+        line: "Dubai project launches live on press. Sell the coverage, not just the ads.",
+      },
+      {
+        icon: "🪙",
+        name: "Web3 & crypto marketing",
+        line: "Publications that actually accept web3 stories — at wholesale rates.",
+      },
+      {
+        icon: "💻",
+        name: "Web & app dev studios",
+        line: "Launch coverage as an upsell on every build you ship.",
+      },
+      {
+        icon: "🎨",
+        name: "Branding & design studios",
+        line: "The brand you built deserves headlines. Sell them too.",
+      },
+      {
+        icon: "📱",
+        name: "Social media agencies",
+        line: "Turn 'as seen in' features into content your clients repost for months.",
+      },
+      {
+        icon: "🧑‍💼",
+        name: "Independent consultants",
+        line: "No team needed — our desk is your back office, your name on the report.",
+      },
+    ],
+    note: "If clients already trust you with their growth, PR is one collaboration away — an add-on and a booster on the services you sell today. One rate card, your brand, our desk.",
+  },
   socialProofAe: {
     kicker: "SOCIAL PROOF",
     title: ["300+ Agencies Already Resell Our PR.", "UAE Partners Are Next."],
@@ -221,23 +268,30 @@ export const prResellerAe: FunnelConfig = {
       { value: "3", label: "Markets on one rate card" },
       { value: "24–48hr", label: "Avg placement time" },
     ],
-    // [PLACEHOLDER-SCREENSHOT] ×3 — drop in real placement screenshots (browser
-    // frames are already styled; replace the placeholder body with an <img>).
+    // Real captures of each publication (business/news sections). Resting state
+    // shows logo + name over a dimmed shot; hover reveals the page. Swap these
+    // for client-placement screenshots when available for even stronger proof.
     screenshots: [
       {
         outlet: "Khaleej Times",
         url: "khaleejtimes.com/business/…",
-        caption: "Placement screenshot slot — [PLACEHOLDER-SCREENSHOT]",
+        caption: "Business desk coverage",
+        image: "/screenshots/ae/khaleej-times.jpg",
+        logo: "/logos/ae/khaleej-times.svg",
       },
       {
         outlet: "Gulf News",
         url: "gulfnews.com/business/…",
-        caption: "Placement screenshot slot — [PLACEHOLDER-SCREENSHOT]",
+        caption: "Business desk coverage",
+        image: "/screenshots/ae/gulf-news.jpg",
+        logo: "/logos/ae/gulf-news.svg",
       },
       {
         outlet: "Arabian Business",
         url: "arabianbusiness.com/…",
-        caption: "Placement screenshot slot — [PLACEHOLDER-SCREENSHOT]",
+        caption: "Newsroom coverage",
+        image: "/screenshots/ae/arabian-business.jpg",
+        logo: "/logos/ae/arabian-business.png",
       },
     ],
     // [PLACEHOLDER-TESTIMONIAL] ×2 — sample copy; replace with real UAE partner quotes.

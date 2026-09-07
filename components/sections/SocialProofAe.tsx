@@ -35,10 +35,30 @@ export default function SocialProofAe({ config }: { config: FunnelConfig }) {
                 {shot.url}
               </span>
             </div>
-            <figcaption className="flex h-44 flex-col items-center justify-center gap-2 px-6 text-center">
-              <span className="font-serif text-xl font-bold text-white/80">{shot.outlet}</span>
-              <span className="text-xs leading-relaxed text-slate-500">{shot.caption}</span>
-            </figcaption>
+            {shot.image ? (
+              <figcaption className="group relative h-52 overflow-hidden">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src={shot.image}
+                  alt={`${shot.outlet} — live coverage`}
+                  loading="lazy"
+                  className="h-full w-full object-cover object-top opacity-40 blur-[1px] transition-all duration-500 group-hover:opacity-100 group-hover:blur-0"
+                />
+                <span className="pointer-events-none absolute inset-0 flex flex-col items-center justify-center gap-3 bg-gradient-to-b from-navy-950/70 via-navy-950/40 to-navy-950/80 px-6 text-center transition-opacity duration-500 group-hover:opacity-0">
+                  {shot.logo ? (
+                    /* eslint-disable-next-line @next/next/no-img-element */
+                    <img src={shot.logo} alt="" style={{ height: 30 }} className="w-auto brightness-0 invert" />
+                  ) : null}
+                  <span className="font-serif text-xl font-bold text-white/90">{shot.outlet}</span>
+                  <span className="text-[11px] tracking-[0.18em] text-slate-400">HOVER TO VIEW COVERAGE</span>
+                </span>
+              </figcaption>
+            ) : (
+              <figcaption className="flex h-44 flex-col items-center justify-center gap-2 px-6 text-center">
+                <span className="font-serif text-xl font-bold text-white/80">{shot.outlet}</span>
+                <span className="text-xs leading-relaxed text-slate-500">{shot.caption}</span>
+              </figcaption>
+            )}
           </figure>
         ))}
       </div>

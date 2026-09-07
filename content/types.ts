@@ -83,6 +83,10 @@ export interface ScreenshotSlot {
   /** address-bar text, e.g. "khaleejtimes.com/business/…" */
   url: string;
   caption: string;
+  /** real page screenshot shown in the frame; revealed fully on hover */
+  image?: string;
+  /** publication logo overlaid on the resting state (inverted to cream) */
+  logo?: string;
 }
 
 export interface FunnelConfig {
@@ -198,6 +202,13 @@ export interface FunnelConfig {
     stats: Stat[];
     screenshots: ScreenshotSlot[];
     testimonials: Testimonial[];
+  };
+  /** OPTIONAL SECTION: agency verticals this offer upsells for (used by /ae) */
+  agencyTypes?: {
+    kicker: string;
+    title: string[];
+    items: { icon: string; name: string; line: string }[];
+    note: string;
   };
   features: { kicker: string; title: string; cards: IconCard[]; cta: string };
   comparison: {

@@ -6,6 +6,7 @@ import ProblemCards from "@/components/sections/ProblemCards";
 import HowItWorks from "@/components/sections/HowItWorks";
 import MarginMath from "@/components/sections/MarginMath";
 import ThreeMarkets from "@/components/sections/ThreeMarkets";
+import AgencyTypes from "@/components/sections/AgencyTypes";
 import SocialProofAe from "@/components/sections/SocialProofAe";
 import PartnerTiers from "@/components/sections/PartnerTiers";
 import Guarantee from "@/components/sections/Guarantee";
@@ -26,6 +27,7 @@ export default function AePage() {
       <HowItWorks config={funnel} />
       <MarginMath config={funnel} />
       <ThreeMarkets config={funnel} />
+      <AgencyTypes config={funnel} />
       <SocialProofAe config={funnel} />
       <PartnerTiers config={funnel} />
       <Guarantee config={funnel} />

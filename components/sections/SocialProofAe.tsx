@@ -50,7 +50,7 @@ export default function SocialProofAe({ config }: { config: FunnelConfig }) {
                     <img src={shot.logo} alt="" style={{ height: 30 }} className="w-auto brightness-0 invert" />
                   ) : null}
                   <span className="font-serif text-xl font-bold text-white/90">{shot.outlet}</span>
-                  <span className="text-[11px] tracking-[0.18em] text-slate-400">HOVER TO VIEW COVERAGE</span>
+                  <span className="text-[11px] tracking-[0.18em] text-slate-400">TAP TO VIEW COVERAGE</span>
                 </span>
               </figcaption>
             ) : (

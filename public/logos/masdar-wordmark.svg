@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 360 48" role="img" aria-label="Masdar City Free Zone">
+  <g>
+    <circle cx="22" cy="24" r="14" fill="#4ade80"/>
+    <path d="M22 12 l2.6 7.4 7.4 0 -6 4.5 2.3 7.1 -6.3 -4.4 -6.3 4.4 2.3 -7.1 -6 -4.5 7.4 0 z" fill="#050b1d"/>
+  </g>
+  <text x="48" y="21" font-family="Inter, system-ui, -apple-system, sans-serif" font-size="17" font-weight="800" fill="#ffffff" letter-spacing="0.3">MASDAR CITY</text>
+  <text x="48" y="39" font-family="Inter, system-ui, -apple-system, sans-serif" font-size="11" font-weight="600" letter-spacing="4" fill="#60a5fa">FREE ZONE · ABU DHABI</text>
+</svg>

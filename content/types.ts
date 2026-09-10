@@ -83,6 +83,17 @@ export interface FunnelConfig {
     popupSubmitLabel: string;
     privacyNote: string;
     chatPrompt: string;
+    /** "india" (default) = city + agency + +91 phone. "intl" = international
+     *  phone + business-activity + nationality selects (Masdar funnel). */
+    mode?: "india" | "intl";
+    /** intl mode: dial-code dropdown options (defaults to DIAL_COUNTRIES). */
+    countries?: { label: string; dial: string; flag: string }[];
+    /** intl mode: business-activity select. */
+    activityLabel?: string;
+    activities?: string[];
+    /** intl mode: nationality / residence select. */
+    nationalityLabel?: string;
+    nationalities?: string[];
   };
   pressLogos: { title: string; logos: LogoItem[] };
   problem: { kicker: string; title: string[]; cards: IconCard[] };

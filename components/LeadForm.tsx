@@ -5,7 +5,17 @@ import { useRouter } from "next/navigation";
 import type { FunnelConfig } from "@/content/types";
 import { submitLead } from "@/lib/submitLead";
 import { trackLead, dataLayerPush } from "@/lib/track";
-import { INDIAN_MOBILE, EMAIL, sanitizeName, isValidName, normalizePhone, extractDomain } from "@/lib/validate";
+import {
+  INDIAN_MOBILE,
+  EMAIL,
+  sanitizeName,
+  isValidName,
+  normalizePhone,
+  extractDomain,
+  DIAL_COUNTRIES,
+  normalizeIntlLocal,
+  isValidIntlLocal,
+} from "@/lib/validate";
 import { alreadySubmitted, markSubmitted } from "@/lib/dedupe";
 
 interface Props {
@@ -16,19 +26,30 @@ interface Props {
   showWhatsAppButton?: boolean;
 }
 
-type FieldError = "name" | "email" | "phone" | "city" | "agency" | null;
+type FieldError = "name" | "email" | "phone" | "city" | "agency" | "activity" | "nationality" | null;
 
 export default function LeadForm({ config, sourceForm, submitLabel, showWhatsAppButton }: Props) {
   const router = useRouter();
+  const { form } = config;
+  const isIntl = form.mode === "intl";
+  const countries = form.countries && form.countries.length ? form.countries : DIAL_COUNTRIES;
+
   const [status, setStatus] = useState<"idle" | "submitting" | "error" | "duplicate">("idle");
   const [fieldError, setFieldError] = useState<FieldError>(null);
+  const [dial, setDial] = useState<string>(countries[0]?.dial ?? "+971");
   // Anti-spam: timestamp when the form mounted; bots submit near-instantly
   const renderedAt = useRef<number>(0);
   useEffect(() => {
     renderedAt.current = Date.now();
   }, []);
-  const { form } = config;
+
   const waHref = `https://wa.me/${config.whatsapp.number}?text=${encodeURIComponent(config.whatsapp.prefill)}`;
+  const hasWa = !!config.whatsapp.number && config.whatsapp.number.replace(/\D/g, "").length >= 8;
+  const contactEmail = config.footer.email;
+
+  const inputCls =
+    "w-full rounded-lg border border-slate-300 bg-white px-4 py-3 text-[15px] text-slate-900 placeholder:text-slate-400 outline-none transition focus:border-brand-500 focus:ring-2 focus:ring-brand-500/30";
+  const errCls = "border-red-500 ring-2 ring-red-500/30";
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -45,30 +66,52 @@ export default function LeadForm({ config, sourceForm, submitLabel, showWhatsApp
       setFieldError("email");
       return;
     }
-    const rawPhone = normalizePhone(String(fd.get("phone") ?? ""));
-    if (!INDIAN_MOBILE.test(rawPhone)) {
-      setFieldError("phone");
-      return;
-    }
-    const city = String(fd.get("city") ?? "");
-    if (!city) {
-      setFieldError("city");
-      return;
-    }
-    const domain = extractDomain(String(fd.get("agency") ?? ""));
-    if (!domain) {
-      setFieldError("agency");
-      return;
-    }
-    setFieldError(null);
 
-    const fields = {
-      name,
-      email,
-      phone: `+91${rawPhone}`,
-      city,
-      agency: domain,
-    };
+    let fields: Record<string, string>;
+
+    if (isIntl) {
+      const local = normalizeIntlLocal(String(fd.get("phone") ?? "")).replace(/^0+/, "");
+      if (!isValidIntlLocal(local)) {
+        setFieldError("phone");
+        return;
+      }
+      const activity = String(fd.get("activity") ?? "");
+      if (form.activities && form.activities.length && !activity) {
+        setFieldError("activity");
+        return;
+      }
+      const nationality = String(fd.get("nationality") ?? "");
+      if (form.nationalities && form.nationalities.length && !nationality) {
+        setFieldError("nationality");
+        return;
+      }
+      setFieldError(null);
+      fields = {
+        name,
+        email,
+        phone: `${dial}${local}`,
+        business_activity: activity,
+        nationality,
+      };
+    } else {
+      const rawPhone = normalizePhone(String(fd.get("phone") ?? ""));
+      if (!INDIAN_MOBILE.test(rawPhone)) {
+        setFieldError("phone");
+        return;
+      }
+      const city = String(fd.get("city") ?? "");
+      if (!city) {
+        setFieldError("city");
+        return;
+      }
+      const domain = extractDomain(String(fd.get("agency") ?? ""));
+      if (!domain) {
+        setFieldError("agency");
+        return;
+      }
+      setFieldError(null);
+      fields = { name, email, phone: `+91${rawPhone}`, city, agency: domain };
+    }
 
     // Block re-submit with the same phone/email from this browser (shared with popup)
     if (alreadySubmitted(fields.phone, fields.email)) {
@@ -92,10 +135,6 @@ export default function LeadForm({ config, sourceForm, submitLabel, showWhatsApp
     }
   }
 
-  const inputCls =
-    "w-full rounded-lg border border-slate-300 bg-white px-4 py-3 text-[15px] text-slate-900 placeholder:text-slate-400 outline-none transition focus:border-brand-500 focus:ring-2 focus:ring-brand-500/30";
-  const errCls = "border-red-500 ring-2 ring-red-500/30";
-
   return (
     <form onSubmit={handleSubmit} className="flex flex-col gap-3" noValidate={false}>
       {/* Honeypot — hidden from real users; bots that fill it are dropped */}
@@ -105,6 +144,7 @@ export default function LeadForm({ config, sourceForm, submitLabel, showWhatsApp
           <input name="website" type="text" tabIndex={-1} autoComplete="off" defaultValue="" />
         </label>
       </div>
+
       <input
         name="name"
         type="text"
@@ -121,6 +161,7 @@ export default function LeadForm({ config, sourceForm, submitLabel, showWhatsApp
       {fieldError === "name" && (
         <p className="-mt-1 text-xs font-medium text-red-600">Please enter your name (letters only).</p>
       )}
+
       <input
         name="email"
         type="email"
@@ -133,63 +174,158 @@ export default function LeadForm({ config, sourceForm, submitLabel, showWhatsApp
       {fieldError === "email" && (
         <p className="-mt-1 text-xs font-medium text-red-600">Please enter a valid email address.</p>
       )}
-      <div className="flex">
-        <span className="inline-flex items-center rounded-l-lg border border-r-0 border-slate-300 bg-slate-50 px-3 text-[15px] font-medium text-slate-600">
-          🇮🇳 +91
-        </span>
-        <input
-          name="phone"
-          type="tel"
-          required
-          inputMode="numeric"
-          placeholder={form.phonePlaceholder}
-          className={`${inputCls} rounded-l-none ${fieldError === "phone" ? errCls : ""}`}
-          autoComplete="tel-national"
-          onChange={(e) => {
-            const clean = e.target.value.replace(/[^\d\s]/g, "");
-            if (clean !== e.target.value) e.target.value = clean;
-            if (fieldError === "phone") setFieldError(null);
-          }}
-        />
-      </div>
-      {fieldError === "phone" && (
-        <p className="-mt-1 text-xs font-medium text-red-600">
-          Please enter a valid 10-digit Indian mobile number (starts with 6–9).
-        </p>
+
+      {/* Phone — international (intl mode) or India-only */}
+      {isIntl ? (
+        <>
+          <div className="flex">
+            <select
+              name="dial"
+              value={dial}
+              onChange={(e) => {
+                setDial(e.target.value);
+                if (fieldError === "phone") setFieldError(null);
+              }}
+              aria-label="Country code"
+              className="rounded-l-lg border border-r-0 border-slate-300 bg-slate-50 px-2 text-[15px] font-medium text-slate-700 outline-none focus:border-brand-500"
+            >
+              {countries.map((c) => (
+                <option key={`${c.label}${c.dial}`} value={c.dial}>
+                  {c.flag} {c.dial}
+                </option>
+              ))}
+            </select>
+            <input
+              name="phone"
+              type="tel"
+              required
+              inputMode="numeric"
+              placeholder={form.phonePlaceholder}
+              className={`${inputCls} rounded-l-none ${fieldError === "phone" ? errCls : ""}`}
+              autoComplete="tel-national"
+              onChange={(e) => {
+                const clean = e.target.value.replace(/[^\d\s]/g, "");
+                if (clean !== e.target.value) e.target.value = clean;
+                if (fieldError === "phone") setFieldError(null);
+              }}
+            />
+          </div>
+          {fieldError === "phone" && (
+            <p className="-mt-1 text-xs font-medium text-red-600">Please enter a valid mobile number.</p>
+          )}
+
+          {form.activities && form.activities.length > 0 && (
+            <>
+              <select
+                name="activity"
+                defaultValue=""
+                required
+                className={`${inputCls} text-slate-600 ${fieldError === "activity" ? errCls : ""}`}
+                onChange={() => fieldError === "activity" && setFieldError(null)}
+              >
+                <option value="" disabled>
+                  {form.activityLabel ?? "-- Business activity --"}
+                </option>
+                {form.activities.map((a) => (
+                  <option key={a} value={a}>
+                    {a}
+                  </option>
+                ))}
+              </select>
+              {fieldError === "activity" && (
+                <p className="-mt-1 text-xs font-medium text-red-600">Please select your business activity.</p>
+              )}
+            </>
+          )}
+
+          {form.nationalities && form.nationalities.length > 0 && (
+            <>
+              <select
+                name="nationality"
+                defaultValue=""
+                required
+                className={`${inputCls} text-slate-600 ${fieldError === "nationality" ? errCls : ""}`}
+                onChange={() => fieldError === "nationality" && setFieldError(null)}
+              >
+                <option value="" disabled>
+                  {form.nationalityLabel ?? "-- Nationality --"}
+                </option>
+                {form.nationalities.map((n) => (
+                  <option key={n} value={n}>
+                    {n}
+                  </option>
+                ))}
+              </select>
+              {fieldError === "nationality" && (
+                <p className="-mt-1 text-xs font-medium text-red-600">Please select your nationality.</p>
+              )}
+            </>
+          )}
+        </>
+      ) : (
+        <>
+          <div className="flex">
+            <span className="inline-flex items-center rounded-l-lg border border-r-0 border-slate-300 bg-slate-50 px-3 text-[15px] font-medium text-slate-600">
+              🇮🇳 +91
+            </span>
+            <input
+              name="phone"
+              type="tel"
+              required
+              inputMode="numeric"
+              placeholder={form.phonePlaceholder}
+              className={`${inputCls} rounded-l-none ${fieldError === "phone" ? errCls : ""}`}
+              autoComplete="tel-national"
+              onChange={(e) => {
+                const clean = e.target.value.replace(/[^\d\s]/g, "");
+                if (clean !== e.target.value) e.target.value = clean;
+                if (fieldError === "phone") setFieldError(null);
+              }}
+            />
+          </div>
+          {fieldError === "phone" && (
+            <p className="-mt-1 text-xs font-medium text-red-600">
+              Please enter a valid 10-digit Indian mobile number (starts with 6–9).
+            </p>
+          )}
+
+          <select
+            name="city"
+            defaultValue=""
+            required
+            className={`${inputCls} text-slate-600 ${fieldError === "city" ? errCls : ""}`}
+            onChange={() => fieldError === "city" && setFieldError(null)}
+          >
+            <option value="" disabled>
+              {form.cityLabel}
+            </option>
+            {form.cities.map((c) => (
+              <option key={c} value={c}>
+                {c}
+              </option>
+            ))}
+          </select>
+          {fieldError === "city" && (
+            <p className="-mt-1 text-xs font-medium text-red-600">Please select your city.</p>
+          )}
+
+          <input
+            name="agency"
+            type="text"
+            required
+            placeholder={form.agencyPlaceholder}
+            className={`${inputCls} ${fieldError === "agency" ? errCls : ""}`}
+            autoComplete="url"
+            onChange={() => fieldError === "agency" && setFieldError(null)}
+          />
+          {fieldError === "agency" && (
+            <p className="-mt-1 text-xs font-medium text-red-600">
+              Please enter your agency&apos;s website domain, e.g. <span className="font-semibold">myagency.com</span>
+            </p>
+          )}
+        </>
       )}
-      <select
-        name="city"
-        defaultValue=""
-        required
-        className={`${inputCls} text-slate-600 ${fieldError === "city" ? errCls : ""}`}
-        onChange={() => fieldError === "city" && setFieldError(null)}
-      >
-        <option value="" disabled>
-          {form.cityLabel}
-        </option>
-        {form.cities.map((c) => (
-          <option key={c} value={c}>
-            {c}
-          </option>
-        ))}
-      </select>
-      {fieldError === "city" && (
-        <p className="-mt-1 text-xs font-medium text-red-600">Please select your city.</p>
-      )}
-      <input
-        name="agency"
-        type="text"
-        required
-        placeholder={form.agencyPlaceholder}
-        className={`${inputCls} ${fieldError === "agency" ? errCls : ""}`}
-        autoComplete="url"
-        onChange={() => fieldError === "agency" && setFieldError(null)}
-      />
-      {fieldError === "agency" && (
-        <p className="-mt-1 text-xs font-medium text-red-600">
-          Please enter your agency&apos;s website domain, e.g. <span className="font-semibold">myagency.com</span>
-        </p>
-      )}
+
       <button
         type="submit"
         disabled={status === "submitting"}
@@ -197,7 +333,8 @@ export default function LeadForm({ config, sourceForm, submitLabel, showWhatsApp
       >
         {status === "submitting" ? "Sending…" : (submitLabel ?? form.submitLabel)}
       </button>
-      {showWhatsAppButton && (
+
+      {showWhatsAppButton && hasWa && (
         <a
           href={waHref}
           target="_blank"
@@ -211,20 +348,32 @@ export default function LeadForm({ config, sourceForm, submitLabel, showWhatsApp
           Chat on WhatsApp Instead
         </a>
       )}
+
       {status === "duplicate" && (
         <p className="text-center text-sm text-amber-600">
-          You&apos;ve already submitted these details — we&apos;ve got them.{" "}
-          <a href={waHref} className="font-semibold underline" target="_blank" rel="noopener">
-            Message us on WhatsApp →
-          </a>
+          You&apos;ve already submitted these details — we&apos;ve got them.
+          {hasWa && (
+            <>
+              {" "}
+              <a href={waHref} className="font-semibold underline" target="_blank" rel="noopener">
+                Message us on WhatsApp →
+              </a>
+            </>
+          )}
         </p>
       )}
       {status === "error" && (
         <p className="text-center text-sm text-red-600">
           Something went wrong.{" "}
-          <a href={waHref} className="font-semibold underline" target="_blank" rel="noopener">
-            Message us on WhatsApp instead →
-          </a>
+          {hasWa ? (
+            <a href={waHref} className="font-semibold underline" target="_blank" rel="noopener">
+              Message us on WhatsApp instead →
+            </a>
+          ) : (
+            <a href={`mailto:${contactEmail}`} className="font-semibold underline">
+              Email us instead →
+            </a>
+          )}
         </p>
       )}
       <p className="text-center text-xs text-slate-500">🔒 {form.privacyNote}</p>

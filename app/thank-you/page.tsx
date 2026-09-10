@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
 import ThankYouClient from "./ThankYouClient";
-import { prReseller as funnel } from "@/content/funnels/pr-reseller";
+import { masdar as funnel } from "@/content/funnels/masdar";
 
 export const metadata: Metadata = {
-  title: "Thank You | Rankkking",
+  title: "Thank You | Masdar City Free Zone",
   robots: { index: false },
 };
 

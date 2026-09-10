@@ -15,7 +15,7 @@ export interface AntiSpamFields {
   form_seconds: number;
 }
 
-export interface LeadPayload extends LeadFields {
+export interface LeadPayload {
   funnel: string;
   source_form: string;
   page: string;
@@ -34,7 +34,7 @@ export async function submitLead(
   webhookUrl: string,
   funnelId: string,
   sourceForm: string,
-  fields: LeadFields,
+  fields: LeadFields | Record<string, string>,
   antiSpam: AntiSpamFields,
 ): Promise<void> {
   const attribution = getAttribution();

@@ -18,7 +18,7 @@ export const masdar: FunnelConfig = {
     description:
       "Launch your company in Abu Dhabi's Masdar City Free Zone — 100% foreign ownership, 0% tax on qualifying income, licence in days, plus residency & freelancer visas. Get a free setup quote.",
     ogImage: "/og-masdar.png",
-    url: "https://masdar-city-freezone.netlify.app",
+    url: "https://masdar-city-freezone-setup.netlify.app",
   },
   tracking: {
     gtmId: "TODO-GTM-ID",

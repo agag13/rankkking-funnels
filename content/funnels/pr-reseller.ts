@@ -45,6 +45,14 @@ export const prReseller: FunnelConfig = {
     emailPlaceholder: "Email ID",
     phonePlaceholder: "WhatsApp Number",
     agencyPlaceholder: "Agency Website (e.g. myagency.com)",
+    serviceLabel: "--What do you need?--",
+    services: [
+      "Press release distribution",
+      "Guest posts & backlinks",
+      "Crypto / Web3 PR",
+      "White-label for my agency",
+      "Something else",
+    ],
     cityLabel: "--Select your city--",
     cities: [
       "Mumbai",

@@ -7,6 +7,7 @@ import { submitLead } from "@/lib/submitLead";
 import { trackLead, dataLayerPush } from "@/lib/track";
 import { INDIAN_MOBILE, sanitizeName, isValidName, normalizePhone, extractDomain } from "@/lib/validate";
 import { alreadySubmitted, markSubmitted } from "@/lib/dedupe";
+import { fieldCls, errCls, Label, FieldError } from "@/components/form-ui";
 
 type FieldError = "name" | "email" | "phone" | "agency" | null;
 
@@ -70,7 +71,7 @@ export default function LeadMagnetForm({ config }: { config: FunnelConfig }) {
         config.webhookUrl,
         lm.funnelId,
         "leadmagnet-popup",
-        { name, email, phone, city: "", agency: agencyValue },
+        { name, email, phone, service: "", city: "", agency: agencyValue },
         {
           website: String(fd.get("website") ?? ""),
           form_seconds: renderedAt.current ? Math.round((Date.now() - renderedAt.current) / 1000) : 60,
@@ -84,10 +85,6 @@ export default function LeadMagnetForm({ config }: { config: FunnelConfig }) {
     }
   }
 
-  const inputCls =
-    "w-full rounded-lg border border-slate-300 bg-white px-4 py-3 text-[15px] text-slate-900 placeholder:text-slate-400 outline-none transition focus:border-brand-500 focus:ring-2 focus:ring-brand-500/30";
-  const errCls = "border-red-500 ring-2 ring-red-500/30";
-
   return (
     <form onSubmit={handleSubmit} className="flex flex-col gap-3">
       <div aria-hidden="true" className="absolute -left-[9999px] top-auto h-px w-px overflow-hidden">
@@ -96,12 +93,16 @@ export default function LeadMagnetForm({ config }: { config: FunnelConfig }) {
           <input name="website" type="text" tabIndex={-1} autoComplete="off" defaultValue="" />
         </label>
       </div>
+      <Label htmlFor="lm-name">Your name</Label>
       <input
+        id="lm-name"
         name="name"
         type="text"
         required
         placeholder={lm.namePlaceholder}
-        className={`${inputCls} ${fieldError === "name" ? errCls : ""}`}
+        aria-invalid={fieldError === "name"}
+        aria-describedby={fieldError === "name" ? "lm-name-err" : undefined}
+        className={`${fieldCls} ${fieldError === "name" ? errCls : ""}`}
         autoComplete="name"
         onChange={(e) => {
           const clean = sanitizeName(e.target.value);
@@ -110,31 +111,42 @@ export default function LeadMagnetForm({ config }: { config: FunnelConfig }) {
         }}
       />
       {fieldError === "name" && (
-        <p className="-mt-1 text-xs font-medium text-red-600">Please enter your name (letters only).</p>
+        <FieldError id="lm-name-err">Please enter your name (letters only).</FieldError>
       )}
+      <Label htmlFor="lm-email">Email address</Label>
       <input
+        id="lm-email"
         name="email"
         type="email"
         required
         placeholder={lm.emailPlaceholder}
-        className={`${inputCls} ${fieldError === "email" ? errCls : ""}`}
+        aria-invalid={fieldError === "email"}
+        aria-describedby={fieldError === "email" ? "lm-email-err" : undefined}
+        className={`${fieldCls} ${fieldError === "email" ? errCls : ""}`}
         autoComplete="email"
         onChange={() => fieldError === "email" && setFieldError(null)}
       />
       {fieldError === "email" && (
-        <p className="-mt-1 text-xs font-medium text-red-600">Please enter a valid email address.</p>
+        <FieldError id="lm-email-err">Please enter a valid email address.</FieldError>
       )}
+      <Label htmlFor="lm-phone">WhatsApp number</Label>
       <div className="flex">
-        <span className="inline-flex items-center rounded-l-lg border border-r-0 border-slate-300 bg-slate-50 px-3 text-[15px] font-medium text-slate-600">
+        <span
+          aria-hidden="true"
+          className="inline-flex items-center rounded-l-lg border border-r-0 border-slate-300 bg-slate-50 px-3 text-base font-medium text-slate-600"
+        >
           🇮🇳 +91
         </span>
         <input
+          id="lm-phone"
           name="phone"
           type="tel"
           required
           inputMode="numeric"
           placeholder={lm.phonePlaceholder}
-          className={`${inputCls} rounded-l-none ${fieldError === "phone" ? errCls : ""}`}
+          aria-invalid={fieldError === "phone"}
+          aria-describedby={fieldError === "phone" ? "lm-phone-err" : undefined}
+          className={`${fieldCls} rounded-l-none ${fieldError === "phone" ? errCls : ""}`}
           autoComplete="tel-national"
           onChange={(e) => {
             const clean = e.target.value.replace(/[^\d\s]/g, "");
@@ -144,28 +156,36 @@ export default function LeadMagnetForm({ config }: { config: FunnelConfig }) {
         />
       </div>
       {fieldError === "phone" && (
-        <p className="-mt-1 text-xs font-medium text-red-600">
+        <FieldError id="lm-phone-err">
           Please enter a valid 10-digit Indian mobile number (starts with 6–9).
-        </p>
+        </FieldError>
       )}
+      <Label htmlFor="lm-agency">
+        {(config.form.agencyMode ?? "domain") === "domain"
+          ? "Your agency website"
+          : "Name, brand or link you're concerned about (optional)"}
+      </Label>
       <input
+        id="lm-agency"
         name="agency"
         type="text"
         required={(config.form.agencyMode ?? "domain") === "domain"}
         placeholder={config.form.agencyPlaceholder}
-        className={`${inputCls} ${fieldError === "agency" ? errCls : ""}`}
-        autoComplete="url"
+        className={`${fieldCls} ${fieldError === "agency" ? errCls : ""}`}
+        aria-invalid={fieldError === "agency"}
+        aria-describedby={fieldError === "agency" ? "lm-agency-err" : undefined}
+        autoComplete={(config.form.agencyMode ?? "domain") === "domain" ? "url" : "off"}
         onChange={() => fieldError === "agency" && setFieldError(null)}
       />
       {fieldError === "agency" && (
-        <p className="-mt-1 text-xs font-medium text-red-600">
+        <FieldError id="lm-agency-err">
           Please enter your agency&apos;s website domain, e.g. <span className="font-semibold">myagency.com</span>
-        </p>
+        </FieldError>
       )}
       <button
         type="submit"
         disabled={status === "submitting"}
-        className="mt-1 rounded-lg bg-accent-500 px-6 py-3.5 text-base font-bold text-white shadow-md transition hover:bg-accent-400 disabled:cursor-wait disabled:opacity-70"
+        className="mt-1 rounded-lg bg-accent-500 px-6 py-3.5 text-base font-bold text-white shadow-md transition hover:bg-accent-400 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-500 disabled:cursor-wait disabled:opacity-70"
       >
         {status === "submitting" ? "Unlocking…" : lm.submitLabel}
       </button>

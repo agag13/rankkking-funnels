@@ -4,6 +4,8 @@ export interface LeadFields {
   name: string;
   email: string;
   phone: string;
+  /** what the visitor picked in the service/problem dropdown */
+  service: string;
   city: string;
   agency: string;
 }

@@ -87,10 +87,17 @@ export interface FunnelConfig {
      * "text-optional" — optional free text (e.g. ORM: name/brand/link of concern).
      */
     agencyMode?: "domain" | "text-optional";
+    /** Problem/service selector — the primary qualifier on ORM funnels */
+    serviceLabel: string;
+    services: string[];
     cityLabel: string;
     cities: string[];
+    /** true = city is collected for routing only and never blocks a submit */
+    cityOptional?: boolean;
     submitLabel: string;
     popupSubmitLabel: string;
+    /** SLA + risk-reversal line shown under the submit button */
+    slaNote?: string;
     privacyNote: string;
     chatPrompt: string;
   };

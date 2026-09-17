@@ -42,3 +42,6 @@ next-env.d.ts
 
 # Local Netlify folder
 .netlify
+
+# downloaded font cache for scripts/make-ae-og-image.py
+/.cache/

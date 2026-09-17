@@ -26,12 +26,13 @@ export const metadata: Metadata = {
     url: funnel.meta.url,
     siteName: "01Wire",
     type: "website",
-    // [PLACEHOLDER-OG-IMAGE] add a 01Wire-branded image here once designed
+    images: [{ url: funnel.meta.ogImage, width: 1200, height: 630, alt: funnel.meta.title }],
   },
   twitter: {
-    card: "summary",
+    card: "summary_large_image",
     title: funnel.meta.title,
     description: funnel.meta.description,
+    images: [funnel.meta.ogImage],
   },
 };
 

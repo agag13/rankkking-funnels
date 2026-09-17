@@ -9,7 +9,7 @@ export default function HowItWorks({ config }: { config: FunnelConfig }) {
         <Kicker>{howItWorks.kicker}</Kicker>
         <SectionTitle lines={howItWorks.title} />
       </div>
-      <div className="mt-12 grid gap-6 sm:grid-cols-3">
+      <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
         {howItWorks.steps.map((step) => (
           <div key={step.number} className="relative rounded-2xl border border-white/10 bg-white/5 p-7">
             <span className="absolute -top-5 left-7 text-5xl font-extrabold text-brand-600/30">{step.number}</span>

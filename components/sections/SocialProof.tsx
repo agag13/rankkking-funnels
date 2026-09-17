@@ -4,6 +4,11 @@ import LogoStrip from "./LogoStrip";
 
 export default function SocialProof({ config }: { config: FunnelConfig }) {
   const { socialProof: sp } = config;
+  // Real proof only. Without testimonials, a case study or partner logos
+  // this section repeats the numbers already in the hero proof bar, so it
+  // stays out of the page entirely until those land.
+  const hasProof = sp.testimonials.length > 0 || Boolean(sp.caseStudy.quote) || sp.partnerLogos.length > 0;
+  if (!hasProof) return null;
   return (
     <Section className="section-gradient">
       <div className="text-center">

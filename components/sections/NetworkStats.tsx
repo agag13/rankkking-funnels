@@ -10,7 +10,7 @@ export default function NetworkStats({ config }: { config: FunnelConfig }) {
         <Kicker>{network.kicker}</Kicker>
         <SectionTitle lines={network.title} />
       </div>
-      <div className="mx-auto mt-12 grid max-w-4xl gap-4 sm:grid-cols-3">
+      <div className="mx-auto mt-12 grid max-w-4xl gap-4 sm:grid-cols-2 lg:grid-cols-4">
         {network.stats.map((stat) => (
           <div key={stat.label} className="rounded-2xl border border-white/10 bg-white/5 p-7 text-center">
             <p className="text-4xl font-extrabold text-brand-400">{stat.value}</p>

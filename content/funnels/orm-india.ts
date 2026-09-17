@@ -139,6 +139,63 @@ export const ormIndia: FunnelConfig = {
       },
     ],
   },
+  segments: {
+    kicker: "WHERE PEOPLE USUALLY START",
+    title: ["Find your situation,", "get a straight answer on it"],
+    cards: [
+      {
+        icon: "⚖️",
+        title: "A court case showing in search",
+        body:
+          "A case report or legal record ranks for your name. Depending on the platform's policy, the jurisdiction, and how the matter ended, some listings may be eligible for de-indexing or removal — and many are not. The audit tells you which bucket yours falls in, and what the suppression route looks like if removal isn't available.",
+      },
+      {
+        icon: "🏢",
+        title: "Glassdoor & AmbitionBox reviews",
+        body:
+          "Ex-employee reviews are costing you candidates. Reviews that break the platform's own policy can be reported through its process; genuine ones cannot be deleted by anyone. We work both sides — reporting what qualifies, and rebuilding the rating with real, current employees.",
+      },
+      {
+        icon: "📰",
+        title: "Negative news & articles",
+        body:
+          "An old story outranks everything else for your name. Where the facts support it we approach the publisher for a correction, an update, or a de-index request. Where they don't, we build and rank truthful content until the story is no longer the first thing people see.",
+      },
+      {
+        icon: "🚨",
+        title: "Crisis — it's happening right now",
+        body:
+          "A story is breaking, a review bomb has started, or something is spreading today. Crisis response runs 24×7. Call or message us and we start on it directly, then send the written assessment after.",
+        action: "crisis",
+      },
+    ],
+  },
+  platforms: {
+    kicker: "PLATFORMS WE WORK ON",
+    items: [
+      "Google Search",
+      "Google Reviews",
+      "Glassdoor",
+      "AmbitionBox",
+      "Justdial",
+      "MouthShut",
+      "IndiaMART",
+      "Trustpilot",
+      "YouTube",
+      "News portals",
+    ],
+    note: "Don't see your platform?",
+  },
+  honesty: {
+    title: "We tell you what CAN'T be fixed",
+    points: [
+      "Factual, lawful, policy-compliant content usually stays up — no agency can change that, and we won't pretend otherwise.",
+      "Genuine negative reviews can't be deleted. There we work on your response strategy and on earning better reviews from real customers.",
+      "Nobody can promise a removal outcome. Removal depends on platform policies and legal eligibility, which is why the audit comes before the invoice.",
+      "If we can't move anything on your list, we say so in the audit — and you've paid nothing to find out.",
+    ],
+    note: "Every engagement starts with the honest version. That is also why our pricing is tied to the work we agree on, not to an outcome we can't control.",
+  },
   howItWorks: {
     kicker: "HOW IT WORKS",
     title: ["Honest process,", "no false promises"],

@@ -3,9 +3,11 @@ import AnnouncementBar from "@/components/sections/AnnouncementBar";
 import Hero from "@/components/sections/Hero";
 import ProofBar from "@/components/sections/ProofBar";
 import ProblemCards from "@/components/sections/ProblemCards";
+import SegmentCards from "@/components/sections/SegmentCards";
 import HowItWorks from "@/components/sections/HowItWorks";
 import MarginMath from "@/components/sections/MarginMath";
 import NetworkStats from "@/components/sections/NetworkStats";
+import HonestOutcomes from "@/components/sections/HonestOutcomes";
 import SocialProof from "@/components/sections/SocialProof";
 import FeatureGrid from "@/components/sections/FeatureGrid";
 import ComparisonTable from "@/components/sections/ComparisonTable";
@@ -22,9 +24,11 @@ export default function Home() {
       <Hero config={funnel} />
       <ProofBar config={funnel} />
       <ProblemCards config={funnel} />
+      <SegmentCards config={funnel} />
       <HowItWorks config={funnel} />
       <MarginMath config={funnel} />
       <NetworkStats config={funnel} />
+      <HonestOutcomes config={funnel} />
       <SocialProof config={funnel} />
       <FeatureGrid config={funnel} />
       <ComparisonTable config={funnel} />

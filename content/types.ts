@@ -12,6 +12,12 @@ export interface IconCard {
   body: string;
 }
 
+export interface SegmentCard extends IconCard {
+  /** "crisis" renders call + WhatsApp buttons instead of the form anchor */
+  action?: "form" | "crisis";
+  ctaLabel?: string;
+}
+
 export interface Step {
   number: string;
   label: string;
@@ -111,6 +117,12 @@ export interface FunnelConfig {
   /** numeric strip under the hero — cleared claims only */
   proofBar: Stat[];
   problem: { kicker: string; title: string[]; cards: IconCard[] };
+  /** high-intent entry points, one per ad-group theme */
+  segments: { kicker: string; title: string[]; cards: SegmentCard[] };
+  /** platform chip wall — where we work, named */
+  platforms: { kicker: string; items: string[]; note: string };
+  /** the "what we can't fix" strip — this is the compliance centrepiece */
+  honesty: { title: string; points: string[]; note: string };
   howItWorks: { kicker: string; title: string[]; steps: Step[]; cta: string };
   math: {
     kicker: string;

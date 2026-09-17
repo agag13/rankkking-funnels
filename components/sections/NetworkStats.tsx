@@ -1,9 +1,9 @@
 import type { FunnelConfig } from "@/content/types";
 import { CtaButton, Kicker, Section, SectionTitle } from "@/components/ui";
-import LogoStrip from "./LogoStrip";
+import PlatformChips from "./PlatformChips";
 
 export default function NetworkStats({ config }: { config: FunnelConfig }) {
-  const { network, pressLogos } = config;
+  const { network } = config;
   return (
     <Section>
       <div className="text-center">
@@ -18,8 +18,8 @@ export default function NetworkStats({ config }: { config: FunnelConfig }) {
           </div>
         ))}
       </div>
-      <LogoStrip title={network.logosTitle} logos={pressLogos.logos} />
-      <div className="text-center">
+      <PlatformChips config={config} />
+      <div className="mt-12 text-center">
         <CtaButton>{network.cta}</CtaButton>
       </div>
     </Section>

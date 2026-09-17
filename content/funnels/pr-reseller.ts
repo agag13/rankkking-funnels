@@ -110,6 +110,9 @@ export const prReseller: FunnelConfig = {
       },
     ],
   },
+  segments: { kicker: "", title: [], cards: [] },
+  platforms: { kicker: "", items: [], note: "" },
+  honesty: { title: "", points: [], note: "" },
   howItWorks: {
     kicker: "HOW IT WORKS",
     title: ["Resell PR Under Your Brand.", "We Do Everything Else."],

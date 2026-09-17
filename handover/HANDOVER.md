@@ -5,6 +5,8 @@
 **Date:** 2026-09-17
 **Goal:** Finalize v2 of the FameNinja ORM lead-gen landing page and deploy it, so Google Ads campaigns can be reactivated on it.
 
+> **Build progress against §4 is tracked in [STATUS.md](STATUS.md).** This document stays as written.
+
 ---
 
 ## 1. What this project is

@@ -17,8 +17,9 @@ export const prResellerAe: FunnelConfig = {
     title: "White-Label PR Partner Program for UAE Agencies | 01Wire",
     description:
       "Resell PR under your own brand — Khaleej Times and Gulf News-class placements across Dubai & GCC, international and Indian media. AED wholesale rates, AED invoicing, AED 950–1,950 margin per placement.",
-    // [PLACEHOLDER-OG-IMAGE] No 01Wire OG image yet — this is the Rankkking one. Replace before launch.
-    ogImage: "/logos/og-image.png",
+    // 1200x630, 01Wire dark brand. Regenerate with scripts/make-ae-og-image.py
+    // whenever the hero headline changes.
+    ogImage: "/logos/ae/og-image.png",
     // [PLACEHOLDER-URL] Final domain pending — ae.01wire.com assumed.
     url: "https://ae.01wire.com",
   },
@@ -31,11 +32,12 @@ export const prResellerAe: FunnelConfig = {
     number: WHATSAPP_NUMBER,
     prefill: "Hi 01Wire! I run an agency in the UAE and want the AED wholesale rate card.",
   },
-  // [PLACEHOLDER-WEBHOOK] Same env-override pattern as the India funnel, but a
-  // DEDICATED webhook path: the India n8n workflow drops any phone that is not a
-  // 10-digit Indian mobile, so +971 leads would be silently lost. Duplicate the
-  // "Rankkking LP — Lead Capture" workflow, set the path to 01wire-ae-lead, and
-  // relax its phone check to accept +9715XXXXXXXX before going live.
+  // Dedicated AE pipeline — the India workflow drops any phone that is not a
+  // 10-digit Indian mobile, so +971 leads would be silently lost there.
+  // n8n workflow "01Wire AE — Lead Capture" (4Frt564hkcEPaeD9, active) accepts
+  // ^\+9715[0-9]{8}$, stores to data table "01Wire AE Leads" (F4az0GffOpRKJvDL)
+  // and appends to the "AE Leads" tab of the pr-reseller data sheet.
+  // Override per-build with NEXT_PUBLIC_AE_LEAD_WEBHOOK_URL.
   webhookUrl:
     process.env.NEXT_PUBLIC_AE_LEAD_WEBHOOK_URL ??
     "https://n8n-main-u34424.vm.elestio.app/webhook/01wire-ae-lead",

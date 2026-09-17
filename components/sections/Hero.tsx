@@ -1,4 +1,4 @@
-import Image from "next/image";
+/* eslint-disable @next/next/no-img-element */
 import type { FunnelConfig } from "@/content/types";
 import LeadForm from "@/components/LeadForm";
 import PhoneLink from "@/components/PhoneLink";
@@ -8,7 +8,15 @@ export default function Hero({ config }: { config: FunnelConfig }) {
   return (
     <div className="hero-gradient">
       <header className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-5 pt-6">
-        <Image src={logo.src} alt={logo.alt} width={160} height={40} className="h-9 w-auto" priority />
+        <img
+          src={logo.src}
+          alt={logo.alt}
+          width={160}
+          height={40}
+          fetchPriority="high"
+          decoding="async"
+          className="h-9 w-auto"
+        />
         <PhoneLink
           config={config}
           source="header"

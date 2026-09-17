@@ -1,4 +1,4 @@
-import Image from "next/image";
+/* eslint-disable @next/next/no-img-element */
 import type { FunnelConfig } from "@/content/types";
 import PhoneLink from "@/components/PhoneLink";
 
@@ -8,7 +8,7 @@ export default function SiteFooter({ config }: { config: FunnelConfig }) {
     <footer className="border-t border-white/10 bg-navy-950 px-5 py-14">
       <div className="mx-auto grid max-w-6xl gap-10 sm:grid-cols-3">
         <div>
-          <Image src={logo.src} alt={logo.alt} width={140} height={36} className="h-8 w-auto" />
+          <img src={logo.src} alt={logo.alt} width={140} height={36} loading="lazy" decoding="async" className="h-8 w-auto" />
           <p className="mt-4 text-sm leading-relaxed text-slate-400">{footer.about}</p>
         </div>
         <div>

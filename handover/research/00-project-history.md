@@ -1,0 +1,70 @@
+---
+name: fameninja-google-ads-orm
+description: "FameNinja TWO Google Ads accounts (6749277358 + 9045755621) — full history, keywords, CPAs, policy status read via Ryze MCP on 2026-09-06; relaunch pending competitor + landing-page study."
+metadata: 
+  node_type: memory
+  type: project
+  originSessionId: a995ffe9-33be-4571-b836-59d0ee2871d2
+  modified: 2026-09-10T07:09:17.073Z
+---
+
+# FameNinja Google Ads — ORM niche (read 2026-09-06 via Ryze MCP)
+
+## Account access
+- Ryze workspace has 3 Google Ads connections: pffdelhiina@gmail.com (primary, seafood/PFF account), kesariananta@gmail.com (KESHARI GRIH UDYOG 9311490580), **ppc@rankkking.net** (connection_id `95a1b253-fc0d-4e09-9158-f6e914bf7c56`).
+- **TWO FameNinja accounts**, both under the ppc@rankkking.net connection: **6749277358 "Fameninja"** (2024 era + Feb 2026-onward; inside "Rankkking - MCC 26" 3702100492) and **9045755621 "Fame Ninja"** (Jul 2025–Jan 2026 era; standalone). Always pass connection_id + customerId; the primary connection is the wrong (seafood) account.
+- Timeline: acct 1 ran 2024 ORM/removal → spend shifted to acct 2 Jul 2025–Jan 2026 (~₹2.31L, ~203 conv; peak Aug 2025 ₹73k/94 conv, Jan 2026 ₹7.9k/0 conv then stopped) → back to acct 1 from Feb 2026 (current enabled campaigns). Other Rankkking client accts: BPM, Better Loan, Rankkkings, KA Branding ×2, Ka Brand Consulting, PR coverage online, PR Coverage hub, Dr. Sushrut Singh, vk nardep, website leads; ~9 old customer IDs deactivated (CUSTOMER_NOT_ENABLED).
+- Meta Ads also connected in Ryze ("R Rahul", connection_id `513c1c4a-3ed4-477d-a60a-74f07d8443e8`) — user plans Meta launch after Google.
+
+## Status (as of 2026-09-06)
+- 7 ORM-niche campaigns PAUSED; 6 removal/ORM campaigns ENABLED (IN Search Removal Core ₹3,000/d, IN ORM Services 02-26 ₹600/d, IN ORM City-Specific DKI ₹2,000/d, Publication Removals DKI ₹1,000/d, Review Gen ₹500/d, Review Removal ₹500/d).
+- User decision: do NOT reactivate yet. Plan = review ORM India history → landing-page problems → market/competitor study → then push ads. Never enable campaigns without explicit go-ahead (real spend).
+
+## ORM India campaign 21517815547 (the winner, Jul–Dec 2024)
+- Lifetime: ₹52,735 spend, 2,889 clicks, 101 conv, CTR 11.3%, CPC ₹18.25, CPA ₹522. Budget ₹1,500/day (SHARED budget resource 13988738863 with "ORM India top cities All" 21643114276).
+- Ad groups: **"All keyword" (PAUSED at ad-group level) drove 82/101 conv at CPA ₹177** (phrase match, cheap CPCs ~₹6); "Service" (exact) burned ₹26,347 for 11 conv (CPA ₹2,395, CPC up to ₹102); "Agency" 6 conv @ ₹1,450; "company" 2 conv @ ₹1,601.
+- Best keywords: "reputation management services" phrase (1,928 clicks, 36 conv, CPA ₹297); "business reputation management" broad (42 conv, CPA ₹59 — was REMOVED, worth re-adding); "orm agency in mumbai", "orm service provider" exact converted 2 each.
+- Wasters: "reputation management firms" phrase (₹724, 0 conv); exact "orm online reputation management services" (₹14,324, 5 conv); junk search terms = CRM/software intent ("crm marketing", "reputation management platform/tools/software") → need negatives.
+- Ad copy (same RSA in all 4 groups): pinned H1 "#1 ORM Agency In India"; headlines "Guaranteed ORM Results", "Free Reputation Audit", "24/7 Crisis Response"; landing https://fameninja.com/online-reputation-management.
+
+## Policy landmines
+- "Remove Negative Images" headline + "Get Permanent Removal Services Now!" description assets are disapproved (stale). The three 2026 campaigns (ORM Services City DKI 23699160606, UAE 23760722387 & 23780247981, landing agency.fameninja.com) have ALL ads DISAPPROVED for **ENABLING_DISHONEST_BEHAVIOR** — Google prohibits ads promising paid removal of negative content/reviews. Relaunch copy must avoid removal promises; page copy is already compliant-toned ("remove what is lawfully removable, suppress what is not").
+- Old 2024 ads mostly STALE_DISAPPROVAL (auto re-review on reactivation); ORM India/top cities/USA each still have 1 APPROVED_LIMITED ad that can serve.
+
+## Landing page
+- https://fameninja.com/online-reputation-management : HTTP 200, ~1.3s, new Next.js build, proper title/meta/canonical/Org schema, phone +91-7042341907. Minor: ads final URL lacks trailing slash vs canonical with slash.
+
+Other paused ORM campaigns lifetime: top cities ₹13,779/10.5 conv; ORM USA 21567414626 ₹2,386/1 conv; ORM Dubai 21761162041 ₹2,079/1 conv (all ads stale-disapproved).
+
+## Account 2: "Fame Ninja" 9045755621 (Jul 2025–Jan 2026, INR)
+- 18 campaigns, ALL paused/removed now. Niche = Negative Content Removal + ORM lead gen; landing pages on agency.fameninja.com (/negative-online-content-removal, /negative-article-removal, /online-content-resolution, /review-management, /online-reputation-management).
+- Top campaigns: **Negative Content Removal (19-09-2025) 23030147454 = best: ₹50,840, 606 clicks, 36 conv, CPA ₹1,412**; India Compiled safe Keywords 23303376422 ₹36,156/15 conv CPA ₹2,410 (Nov 2025, ALL ads APPROVED — soft-keyword compliant build: "online content help", "online reputation help", "online identity protection", landing /online-content-resolution); Lead Gen (29-07) PMax ₹9,001/102 conv CPA ₹88 (cheap but PMax lead quality suspect); Fame Ninja Lead Gen (09-09-2025) ₹15,261/14 conv CPA ₹1,090.
+- International = money pit: Lead Gen USA/AUS/UK ₹34,889/4 conv (CPA ₹8,722; "Negative Reviews Removal" phrase alone burned ₹26,055 for 1 conv); Lead Gen UAE ₹33,178/2 conv (CPA ₹16,589).
+- Best converting keywords: "Negative Content Removal" phrase (converts in every campaign, ~26 conv total across 5 campaigns); "content removal" phrase (11 conv, CPA ₹1,364); "remove content" (8 conv); "online identity protection" (5 conv, CPA ₹1,262); "online content help" (6 conv).
+- Policy pattern: /negative-article-removal/ ads = APPROVED; /negative-online-content-removal/ ads = mostly APPROVED_LIMITED (ENABLING_DISHONEST_BEHAVIOR topic, limited serving); nothing hard-DISAPPROVED here unlike acct 1's 2026 campaigns. "India Compiled safe Keywords" campaign is the compliance template that worked.
+
+## Relaunch study (2026-09-06, pre-reactivation; reactivation planned week of 2026-09-07)
+- Decision input: use ACCOUNT 1 (6749277358) for relaunch; acct 2 stays paused as reference. LP = agency.fameninja.com/online-content-resolution/ template (only page whose ads were ALL approved; lowest risky-word count 14, highest compliant count 46, full tracking GTM+AW-17388770213+Meta pixel 784877987247242).
+- LP audit criticals: (1) fameninja.com/online-reputation-management has ZERO tracking (no gtag/GTM/AW/GA4/pixel — verified in HTML+13 JS chunks) — best-CPA page unusable for paid until fixed; (2) all agency.fameninja.com Elementor forms have "Your Mobile Numer" typo AND phone input named form_fields[message]; (3) /review-management/ has no H1, meta desc = raw .mp4 URL; (4) leaked internal spec copy visible on pages ("Do not guarantee removal of truthful or lawful content…"); (5) Dubai page = 57 risky words, 12 affirmative guarantees ("Written Removal Guarantee", "AED 1,100/link") — exact disapproval profile, no AW tag. Fetched HTML at scratchpad/audit/ (session a995ffe9).
+- Google India competitors ACTUALLY running ads (Ad Transparency, checked 2026-09-06): Value4Brand (10 text ads, evergreen since Jun 2024, copy = "15+ Years, 20+ industries" authority angle, NO removal promise, display URL value4brand.com/orm/listening); Ksquare99 (16 ads but current wave = SEO offers, not removal); onlinereputationbuilders.in "Kamini Singh" (3 ads since Jul 2026, copy = "Unfair reviews destroying your sales? We legally remove fake reviews fast" — legal+fake-scoped framing passes policy); Techmagnate (17 ads, broad DM). ZERO India ads: reputation.in, unosearch.io, sevenstarwebsolutions, mediatrenz, maximaticmedia, removenewsarticle.com, removify.
+- Meta+LinkedIn India ORM ad space ≈ EMPTY (verified via Ryze Ad Library + ScrapeCreators): no India ORM/removal agency on Meta; LinkedIn only Veritas Reputation PR (CXO profile mgmt angle, 3 creatives). Removal players (SERPutation, Igniyte, ORMA) exclude India. Open inventory for FameNinja. ScrapeCreators credits left: ~20.
+- Keyword Planner India (Aug'25–Jul'26): "reputation management services"/"...company" 880/mo avg, bids ₹117–650, comp LOW; "business reputation management" + "online reputation management company" 720 avg but spiked 1,900→5,400/mo Jun–Jul 2026, bids ₹59–237 (historic CPA ₹59 on broad match — biggest opportunity); "google review removal" 590/mo ₹65–725; "orm services" 260; removal long-tails 10–70/mo each; "online content help" ≈ zero volume (acct-2 conversions came via phrase expansion).
+- Compliance rule (observed, not theory): approval tracks absence of affirmative guarantees + removal wrapped in legal/eligibility qualifiers ("resolution", "suppress", "lawfully removable") in title/meta/H1 + ad copy. Keyword targeting removal terms is fine; PROMISING removal is what dies. User explicitly wants white-hat only.
+
+## LP revamp (2026-09-06)
+- Decision: revamp on the rankkking-funnels stack (github.com/agag13/rankkking-funnels — Next.js 16 static export + Netlify + n8n leads). Measured: lp.rankkking.com TTFB 0.6–1.3s / 1 CSS / 0 third-party vs agency.fameninja.com (WP+Elementor) TTFB 3.7s / 32 CSS / 14 third-party.
+- Built + pushed branch **`fameninja`** (commit "ORM India funnel"): content/funnels/orm-india.ts renders at root; PR route removed on branch; Analytics ga4Id/clarityId now per-funnel config (Rankkking ids no longer hardcoded); new form.agencyMode="text-optional" (ORM concern field optional free text; PR keeps domain validation); FameNinja logo/OG in public/logos/. User plans per-category LPs (brand/SaaS/etc.) as more funnels on this branch; deploy target = new Netlify site (lp-fameninja.netlify.app style) now, lp.fameninja.com later.
+- DEPLOYED 2026-09-06: **https://lp-fameninja.netlify.app** (Netlify project lp-fameninja, ID 791b5be8-7be3-4caf-8f2d-c71ca05c99b6, admin https://app.netlify.com/projects/lp-fameninja; CLI-deployed from `out/`, user's Netlify login hi@ankushgupta.xyz). Redeploy = `npm run build && netlify deploy --prod --dir=out --site 791b5be8-...` from the fameninja branch.
+- Pending before ads: real testimonials (placeholders marked in config, visible on live site), n8n workflow duplicate (path fameninja-orm-lead), verify AW-17388770213 conversion fires on /thank-you/ via GTM-NSLJ8GG3, footer email/GSTIN, later CNAME lp.fameninja.com.
+
+## Lead magnet research (2026-09-06)
+- Market study (live-fetched 12 ORM companies): **instant scan/score tool is the dominant format** — BrandYourself Free Risk Scan, ReputationDefender Report Card (scan.reputationdefender.com), NetReputation Score Calculator, Birdeye (4 grader tools), Podium grader. Removal specialists (Removify, Guaranteed Removals) use free-quote + SLA + platform pre-qualification, with "pay on success" as pricing structure not ad promise. India players (Value4Brand, ORB) have ONLY consultation forms — no tool = open gap. Ebooks ≈ absent as primary magnet in this niche. Evidence: HubSpot grader (1M→4M grades 2009-11), BrandYourself 25k users May 2012→~500k by 2014, Demand Metric interactive 70% vs passive 36%, Unbounce baseline 6.6%/6.3% legal.
+- User's court-record scanner idea = **already fully validated in session local_220360b1 "Open India Law repository research" (2026-09-05, cwd ~/fameninjav2)**: repo github.com/vaquill-AI/open-india-law (CC BY 4.0, SC+25 HCs, 54.4GB judgments parquet, petitioner/respondent columns ~100% filled → ~2-3GB name index; NO district courts); white space confirmed; keywords "indian kanoon" 110k/mo, "ecourts case status" 110k/mo, case-search family ~5k+ no ads; guardrails: self-lookup+OTP, noindex results, victim/juvenile redaction, no removal guarantees (Delhi HC May 2026 RTBF framework under appeal, SC pending); v1 est 2-3 weeks; plan incl. DataForSEO Google-visibility check + Reputation Exposure Score; US market next.
+- Decision direction: flagship magnet = instant Reputation Score scan (court records + Google visibility v1; Reddit/Twitter API sentiment signals v2 — user has both APIs, reddit-radar-engine repo exists); DIY guide/ebook demoted to post-scan nurture content, not primary magnet.
+
+## LP v2 research + mockup (2026-09-10)
+- 12-agent workflow: our-LP tech audit (FAILs: zero JSON-LD/canonical, placeholder testimonials live, empty mailto, 15px inputs iOS zoom, no labels, Clarity id empty, exposed n8n webhook, 200KB gz JS) + CRO audit (6/10; trust layer broken) + ad-library diff (India Google unchanged since Sep 6; NEW found: RepIndia ~500 ads but sells perf-marketing, Prime Reputation Online Pro (removal copy, went dark Sep 2), Reputation House/checkmyrisks.com AI-monitoring UAE, A2Z Reputation (dark since Jul), Removify evergreen AE since 2022 "Glassdoor Fully Removed or You Don't Pay", Media Watcher on LinkedIn UAE now; ScrapeCreators credits ~6,970 left) + Dubai patterns (WhatsApp primary 7/8, +971+district address, budget dropdowns AED, proposal>audit, Arabic rare) + India teardown (ORB service-dropdown #1 driver, 8 tel links, urgency WA prefill; SevenStar visible $ pricing + AW tag).
+- Full reports: /private/tmp/claude-501/-Users-ankushgupta-paid-ninja/a995ffe9-33be-4571-b836-59d0ee2871d2/tasks/wdm2u94ez.output (synthesis = 3-angle table + 22-item gap list + Top-10 build list).
+- v2 mockup published (Claude Design canvas, desktop 1440 + mobile 390 artboards): https://claude.ai/code/artifact/cab7927c-2f50-41ac-ad48-fb8c70dafd0c — key changes: keyword-verbatim H1, service-type dropdown replaces required city, tel: links added (header/crisis card/footer), SLA+success-fee line, platform chip wall, segment cards (court case/RTBF, Glassdoor-AmbitionBox, news, crisis fast-lane), FAQ+pricing+court-case, mobile sticky CTA bar, compact mobile announcement, bracketed placeholders for testimonials/email/GSTIN/year. Working files: scratchpad/design-workdir/ (session a995ffe9). After user approval → implement in rankkking-funnels fameninja branch → redeploy lp-fameninja.netlify.app.
+
+Related: [[services-ad-radar]]

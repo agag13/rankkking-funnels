@@ -3,6 +3,7 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import { ormIndia as funnel } from "@/content/funnels/orm-india";
 import Analytics from "@/components/Analytics";
+import { SITE_URL } from "@/lib/siteUrl";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -11,13 +12,14 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL(funnel.meta.url),
+  metadataBase: new URL(SITE_URL),
   title: funnel.meta.title,
   description: funnel.meta.description,
+  alternates: { canonical: "/" },
   openGraph: {
     title: funnel.meta.title,
     description: funnel.meta.description,
-    url: funnel.meta.url,
+    url: "/",
     siteName: funnel.meta.title,
     type: "website",
     images: [{ url: funnel.meta.ogImage }],

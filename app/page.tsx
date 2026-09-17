@@ -17,6 +17,7 @@ import SiteFooter from "@/components/sections/SiteFooter";
 import LeadPopup from "@/components/LeadPopup";
 import WhatsAppFloat from "@/components/WhatsAppFloat";
 import StickyCta from "@/components/StickyCta";
+import StructuredData from "@/components/StructuredData";
 
 export default function Home() {
   return (
@@ -39,6 +40,7 @@ export default function Home() {
       <LeadPopup config={funnel} />
       <WhatsAppFloat config={funnel} />
       <StickyCta config={funnel} />
+      <StructuredData config={funnel} />
     </main>
   );
 }

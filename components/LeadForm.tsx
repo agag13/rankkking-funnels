@@ -7,6 +7,7 @@ import { submitLead } from "@/lib/submitLead";
 import { trackLead, dataLayerPush } from "@/lib/track";
 import { INDIAN_MOBILE, EMAIL, sanitizeName, isValidName, normalizePhone, extractDomain } from "@/lib/validate";
 import { alreadySubmitted, markSubmitted } from "@/lib/dedupe";
+import Turnstile from "@/components/Turnstile";
 import { fieldCls, errCls, selectCls, Label, FieldError } from "@/components/form-ui";
 
 interface Props {
@@ -95,6 +96,7 @@ export default function LeadForm({ config, sourceForm, submitLabel, showWhatsApp
     const antiSpam = {
       website: String(fd.get("website") ?? ""), // honeypot
       form_seconds: renderedAt.current ? Math.round((Date.now() - renderedAt.current) / 1000) : 60,
+      turnstile_token: String(fd.get("cf-turnstile-response") ?? ""),
     };
     setStatus("submitting");
     dataLayerPush("lead_form_submit_attempt", { source_form: sourceForm, service });
@@ -259,6 +261,7 @@ export default function LeadForm({ config, sourceForm, submitLabel, showWhatsApp
         </>
       )}
 
+      <Turnstile siteKey={config.turnstileSiteKey} />
       <button
         type="submit"
         disabled={status === "submitting"}

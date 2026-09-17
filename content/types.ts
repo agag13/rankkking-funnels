@@ -75,6 +75,8 @@ export interface FunnelConfig {
     tel: string;
   };
   webhookUrl: string;
+  /** Cloudflare Turnstile site key. Empty = widget off, honeypot only. */
+  turnstileSiteKey?: string;
   announcement: {
     text: string;
     /** one-line version for phones — the full line wraps to three there */

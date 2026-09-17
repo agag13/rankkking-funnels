@@ -51,6 +51,11 @@ export const ormIndia: FunnelConfig = {
   webhookUrl:
     process.env.NEXT_PUBLIC_LEAD_WEBHOOK_URL ??
     "https://n8n-main-u34424.vm.elestio.app/webhook/fameninja-orm-lead",
+  // Blocked on Ankush: create the Turnstile site+secret key pair, put the
+  // site key here (or in NEXT_PUBLIC_TURNSTILE_SITE_KEY) and verify the
+  // token in n8n with the secret. Empty = honeypot and timer only, which
+  // is all that currently guards a webhook URL visible in page source.
+  turnstileSiteKey: process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY ?? "",
   announcement: {
     text: "Free, confidential reputation audit — know exactly what can and can't be fixed",
     textShort: "Free, confidential reputation audit",

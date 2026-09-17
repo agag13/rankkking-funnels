@@ -15,6 +15,9 @@ export interface AntiSpamFields {
   website: string;
   /** seconds between form render and submit */
   form_seconds: number;
+  /** Cloudflare Turnstile token; empty when the widget is not configured.
+   *  n8n must verify it against the secret key — sending it is not enough. */
+  turnstile_token?: string;
 }
 
 export interface LeadPayload extends LeadFields {
@@ -25,7 +28,8 @@ export interface LeadPayload extends LeadFields {
   user_agent: string;
   website: string;
   form_seconds: number;
-  [key: string]: string | number;
+  turnstile_token?: string;
+  [key: string]: string | number | undefined;
 }
 
 /**

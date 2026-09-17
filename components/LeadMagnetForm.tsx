@@ -7,6 +7,7 @@ import { submitLead } from "@/lib/submitLead";
 import { trackLead, dataLayerPush } from "@/lib/track";
 import { INDIAN_MOBILE, sanitizeName, isValidName, normalizePhone, extractDomain } from "@/lib/validate";
 import { alreadySubmitted, markSubmitted } from "@/lib/dedupe";
+import Turnstile from "@/components/Turnstile";
 import { fieldCls, errCls, Label, FieldError } from "@/components/form-ui";
 
 type FieldError = "name" | "email" | "phone" | "agency" | null;
@@ -75,6 +76,7 @@ export default function LeadMagnetForm({ config }: { config: FunnelConfig }) {
         {
           website: String(fd.get("website") ?? ""),
           form_seconds: renderedAt.current ? Math.round((Date.now() - renderedAt.current) / 1000) : 60,
+          turnstile_token: String(fd.get("cf-turnstile-response") ?? ""),
         },
       );
       trackLead(lm.funnelId, { source_form: "leadmagnet-popup" });
@@ -182,6 +184,7 @@ export default function LeadMagnetForm({ config }: { config: FunnelConfig }) {
           Please enter your agency&apos;s website domain, e.g. <span className="font-semibold">myagency.com</span>
         </FieldError>
       )}
+      <Turnstile siteKey={config.turnstileSiteKey} />
       <button
         type="submit"
         disabled={status === "submitting"}

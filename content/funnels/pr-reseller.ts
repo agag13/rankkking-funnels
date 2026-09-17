@@ -21,6 +21,7 @@ export const prReseller: FunnelConfig = {
     number: WHATSAPP_NUMBER,
     prefill: "Hi Rankkking! I want to know more.",
   },
+  phone: { display: "+91 86303 22204", tel: "+918630322204" },
   webhookUrl:
     process.env.NEXT_PUBLIC_LEAD_WEBHOOK_URL ??
     "https://n8n-main-u34424.vm.elestio.app/webhook/rankkking-lead",
@@ -73,6 +74,7 @@ export const prReseller: FunnelConfig = {
     privacyNote: "100% confidential · We never contact your clients",
     chatPrompt: "Prefer to chat?",
   },
+  proofBar: [],
   pressLogos: {
     title: "TRUSTED BY INDIA'S LEADING MEDIA & PR NETWORKS",
     logos: [

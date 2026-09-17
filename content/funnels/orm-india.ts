@@ -28,6 +28,7 @@ import type { FunnelConfig } from "../types";
  */
 
 const WHATSAPP_NUMBER = "917042341907";
+const PHONE_E164 = "+917042341907";
 
 export const ormIndia: FunnelConfig = {
   id: "orm-india",
@@ -44,8 +45,9 @@ export const ormIndia: FunnelConfig = {
   },
   whatsapp: {
     number: WHATSAPP_NUMBER,
-    prefill: "Hi FameNinja! I need help with my online reputation.",
+    prefill: "Hi, I need urgent confidential help with my online reputation.",
   },
+  phone: { display: "+91 70423 41907", tel: PHONE_E164 },
   webhookUrl:
     process.env.NEXT_PUBLIC_LEAD_WEBHOOK_URL ??
     "https://n8n-main-u34424.vm.elestio.app/webhook/fameninja-orm-lead",
@@ -56,8 +58,8 @@ export const ormIndia: FunnelConfig = {
   logo: { src: "/logos/fameninja-logo.png", alt: "FameNinja" },
   hero: {
     badge: "ONLINE REPUTATION MANAGEMENT · INDIA",
-    titlePre: "Take Back Control of ",
-    titleHighlight: "Your Search Results",
+    titlePre: "Online Reputation Management ",
+    titleHighlight: "that takes back your search results",
     titlePost: "",
     subtitle:
       "Negative news, unfair reviews or old content showing up when people search your name or brand? We remove what is lawfully removable, suppress what is not, and rebuild what people see — with an honest assessment first, not hype.",
@@ -110,6 +112,12 @@ export const ormIndia: FunnelConfig = {
     title: "We manage reputations across Google Search, news portals, review platforms and social media",
     logos: [],
   },
+  proofBar: [
+    { value: "500+", label: "Brands & individuals helped" },
+    { value: "24×7", label: "Crisis response" },
+    { value: "1 day", label: "Audit reply on WhatsApp" },
+    { value: "100%", label: "Confidential" },
+  ],
   problem: {
     kicker: "SOUNDS FAMILIAR?",
     title: ["One bad search result", "can cost you real business"],

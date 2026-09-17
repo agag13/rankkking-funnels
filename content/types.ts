@@ -62,6 +62,12 @@ export interface FunnelConfig {
     number: string; // digits only, with country code
     prefill: string;
   };
+  phone: {
+    /** how the number reads on screen */
+    display: string;
+    /** E.164, used in tel: links */
+    tel: string;
+  };
   webhookUrl: string;
   announcement: { text: string; cta: string };
   logo: { src: string; alt: string };
@@ -102,6 +108,8 @@ export interface FunnelConfig {
     chatPrompt: string;
   };
   pressLogos: { title: string; logos: LogoItem[] };
+  /** numeric strip under the hero — cleared claims only */
+  proofBar: Stat[];
   problem: { kicker: string; title: string[]; cards: IconCard[] };
   howItWorks: { kicker: string; title: string[]; steps: Step[]; cta: string };
   math: {

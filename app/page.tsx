@@ -1,7 +1,7 @@
 import { ormIndia as funnel } from "@/content/funnels/orm-india";
 import AnnouncementBar from "@/components/sections/AnnouncementBar";
 import Hero from "@/components/sections/Hero";
-import LogoStrip from "@/components/sections/LogoStrip";
+import ProofBar from "@/components/sections/ProofBar";
 import ProblemCards from "@/components/sections/ProblemCards";
 import HowItWorks from "@/components/sections/HowItWorks";
 import MarginMath from "@/components/sections/MarginMath";
@@ -20,7 +20,7 @@ export default function Home() {
     <main>
       <AnnouncementBar config={funnel} />
       <Hero config={funnel} />
-      <LogoStrip title={funnel.pressLogos.title} logos={funnel.pressLogos.logos} className="border-y border-white/5" />
+      <ProofBar config={funnel} />
       <ProblemCards config={funnel} />
       <HowItWorks config={funnel} />
       <MarginMath config={funnel} />

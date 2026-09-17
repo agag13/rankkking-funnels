@@ -1,5 +1,6 @@
 import Image from "next/image";
 import type { FunnelConfig } from "@/content/types";
+import PhoneLink from "@/components/PhoneLink";
 
 export default function SiteFooter({ config }: { config: FunnelConfig }) {
   const { footer, logo } = config;
@@ -12,12 +13,19 @@ export default function SiteFooter({ config }: { config: FunnelConfig }) {
         </div>
         <div>
           <p className="text-xs font-semibold tracking-[0.25em] text-slate-500">CONTACT</p>
-          <a href={`mailto:${footer.email}`} className="mt-3 block text-sm text-slate-300 hover:text-white">
-            {footer.email}
-          </a>
+          <PhoneLink
+            config={config}
+            source="footer"
+            className="mt-3 block text-sm font-semibold text-white hover:text-brand-400"
+          />
+          {footer.email && (
+            <a href={`mailto:${footer.email}`} className="mt-2 block text-sm text-slate-300 hover:text-white">
+              {footer.email}
+            </a>
+          )}
           <p className="mt-4 text-xs font-semibold tracking-[0.25em] text-slate-500">OFFICE</p>
           <p className="mt-3 text-sm text-slate-400">{footer.office}</p>
-          <p className="mt-1 text-sm text-slate-400">{footer.gstin}</p>
+          {footer.gstin && <p className="mt-1 text-sm text-slate-400">GSTIN: {footer.gstin}</p>}
         </div>
         <div>
           <p className="text-xs font-semibold tracking-[0.25em] text-slate-500">LEGAL</p>

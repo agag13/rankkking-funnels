@@ -36,15 +36,19 @@ export default function SocialProofAe({ config }: { config: FunnelConfig }) {
               </span>
             </div>
             {shot.image ? (
-              <figcaption className="group relative h-52 overflow-hidden">
+              <figcaption
+                className="group relative h-52 overflow-hidden outline-none focus-visible:ring-2 focus-visible:ring-brand-500/60"
+                tabIndex={0}
+                aria-label={`${shot.outlet} — tap to view the coverage screenshot`}
+              >
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
                   src={shot.image}
                   alt={`${shot.outlet} — live coverage`}
                   loading="lazy"
-                  className="h-full w-full object-cover object-top opacity-40 blur-[1px] transition-all duration-500 group-hover:opacity-100 group-hover:blur-0"
+                  className="h-full w-full object-cover object-top opacity-40 blur-[1px] transition-all duration-500 group-hover:opacity-100 group-hover:blur-[0px] group-focus:opacity-100 group-focus:blur-[0px]"
                 />
-                <span className="pointer-events-none absolute inset-0 flex flex-col items-center justify-center gap-3 bg-gradient-to-b from-navy-950/70 via-navy-950/40 to-navy-950/80 px-6 text-center transition-opacity duration-500 group-hover:opacity-0">
+                <span className="pointer-events-none absolute inset-0 flex flex-col items-center justify-center gap-3 bg-gradient-to-b from-navy-950/70 via-navy-950/40 to-navy-950/80 px-6 text-center transition-opacity duration-500 group-hover:opacity-0 group-focus:opacity-0">
                   {shot.logo ? (
                     /* eslint-disable-next-line @next/next/no-img-element */
                     <img src={shot.logo} alt="" style={{ height: 30 }} className="w-auto brightness-0 invert" />

@@ -75,7 +75,13 @@ export interface FunnelConfig {
     tel: string;
   };
   webhookUrl: string;
-  announcement: { text: string; cta: string };
+  announcement: {
+    text: string;
+    /** one-line version for phones — the full line wraps to three there */
+    textShort: string;
+    cta: string;
+  };
+  stickyCta: { formLabel: string; whatsappLabel: string };
   logo: { src: string; alt: string };
   hero: {
     badge: string;
@@ -154,7 +160,14 @@ export interface FunnelConfig {
     rows: ComparisonRow[];
   };
   faq: { kicker: string; title: string; items: FaqItem[] };
-  finalCta: { title: string[]; subtitle: string; note: string; cta: string };
+  finalCta: {
+    title: string[];
+    subtitle: string;
+    note: string;
+    cta: string;
+    /** heading above the compact second form */
+    formHeading: string;
+  };
   footer: {
     about: string;
     email: string;

@@ -16,10 +16,11 @@ import FinalCta from "@/components/sections/FinalCta";
 import SiteFooter from "@/components/sections/SiteFooter";
 import LeadPopup from "@/components/LeadPopup";
 import WhatsAppFloat from "@/components/WhatsAppFloat";
+import StickyCta from "@/components/StickyCta";
 
 export default function Home() {
   return (
-    <main>
+    <main className="pb-[76px] sm:pb-0">
       <AnnouncementBar config={funnel} />
       <Hero config={funnel} />
       <ProofBar config={funnel} />
@@ -37,6 +38,7 @@ export default function Home() {
       <SiteFooter config={funnel} />
       <LeadPopup config={funnel} />
       <WhatsAppFloat config={funnel} />
+      <StickyCta config={funnel} />
     </main>
   );
 }

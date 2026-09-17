@@ -53,8 +53,10 @@ export const ormIndia: FunnelConfig = {
     "https://n8n-main-u34424.vm.elestio.app/webhook/fameninja-orm-lead",
   announcement: {
     text: "Free, confidential reputation audit — know exactly what can and can't be fixed",
+    textShort: "Free, confidential reputation audit",
     cta: "Get Free Audit",
   },
+  stickyCta: { formLabel: "Get Free Audit", whatsappLabel: "WhatsApp" },
   logo: { src: "/logos/fameninja-logo.png", alt: "FameNinja" },
   hero: {
     badge: "ONLINE REPUTATION MANAGEMENT · INDIA",
@@ -365,6 +367,7 @@ export const ormIndia: FunnelConfig = {
       "Get your free, confidential reputation audit. We'll show you what can be removed, what can be suppressed, and exactly how we'd do it.",
     note: "No obligation. 100% confidential.",
     cta: "Get My Free Audit",
+    formHeading: "Start with the free audit",
   },
   footer: {
     about:

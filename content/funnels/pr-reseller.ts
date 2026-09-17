@@ -27,8 +27,10 @@ export const prReseller: FunnelConfig = {
     "https://n8n-main-u34424.vm.elestio.app/webhook/rankkking-lead",
   announcement: {
     text: "300+ Indian agencies already reselling PR — limited slots per city",
+    textShort: "300+ Indian agencies already reselling PR — limited slots per city",
     cta: "Get Started",
   },
+  stickyCta: { formLabel: "Get Rate Card", whatsappLabel: "WhatsApp" },
   logo: { src: "/logos/rankkking-logo.png", alt: "Rankkking" },
   hero: {
     badge: "WHITE-LABEL PR · FOR AGENCIES IN INDIA",
@@ -300,6 +302,7 @@ export const prReseller: FunnelConfig = {
       "10 minutes to set up. Zero contracts. Zero minimums. Join 300+ agencies already in.",
     note: "Replies in < 15 minutes during business hours",
     cta: "Join as a Partner Agency",
+    formHeading: "Get the wholesale rate card",
   },
   footer: {
     about:

@@ -51,9 +51,34 @@ HANDOVER.md stays as Ankush wrote it.
 Lighthouse mobile ≥ 90 needs the public URL, and the deploy needs Netlify
 access. Conversion firing needs GTM access.
 
-## Note for whoever creates the n8n workflow
+## n8n workflow — built, switched OFF
 
-The payload gained two fields: `service` (the dropdown choice) and
-`turnstile_token`. `source_form` now also takes the value `footer`.
-The webhook node needs the production origin in its allowed origins, or
-the browser will block the response even when the workflow is live.
+Workflow **"FameNinja ORM — Lead Capture"**, id `1kn0KeroW3YcPGy0`, on
+the same instance as the Rankkking one. Built from
+"Rankkking LP — Lead Capture" (`ryhZR7Ct3ZxNJoE3`) and validated clean:
+12 nodes, 0 errors. **It is inactive** — the webhook still answers 404,
+so nothing about today's behaviour has changed. Ankush reviews it and
+flips the toggle.
+
+What differs from the workflow it was copied from:
+
+- Its own data table, **"FameNinja ORM Leads"** (`zwQHxbslYFeq774r`), so
+  FameNinja leads are not mixed into the Rankkking table.
+- `service` and `turnstile_token` are read off the payload; `service` is
+  stored and appears in the Chat alert, `turnstile_token` is not stored —
+  it is a one-time proof, not lead data.
+- `allowedOrigins` is scoped to `lp-fameninja.netlify.app` and
+  `lp.fameninja.com` instead of `*`. **Any other host must be added here
+  or the browser blocks the response even though the workflow ran.**
+- A **disabled** "Verify Turnstile" node is staged as a side branch, with
+  the full switch-on procedure in its node note. It does nothing yet:
+  the page sends a token and nothing checks it until the key pair exists.
+- Both Chat alerts fire after the webhook has already responded, so a
+  slow notification can never push the visitor onto the WhatsApp
+  fallback. The reference workflow had one alert node wired to both
+  branches of its "Is New Lead" check and another not wired at all; here
+  new and repeat leads each get their own.
+
+**Decide before activating:** both alerts post to the same Google Chat
+space as the Rankkking leads (`AAQASzcoL9I`). Change the URL on the two
+notify nodes if FameNinja leads belong somewhere else.

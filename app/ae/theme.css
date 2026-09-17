@@ -78,7 +78,6 @@
   background: linear-gradient(180deg, #1e1a13 0%, #15120d 100%);
 }
 
-/* Official 01Wire logo is dark ink on transparent — render it cream on the dark theme */
-.theme-ae img[alt="01Wire"] {
-  filter: brightness(0) invert(0.94);
-}
+/* The dark-theme logo is a real asset (scripts/make-ae-dark-logo.py), not a CSS
+   filter. brightness(0) invert() flattens every pixel to one tone, which merged
+   the coral disc and the white "ONE" into a solid blob. */

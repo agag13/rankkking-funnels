@@ -28,7 +28,8 @@ MUTED = (150, 141, 124)
 W, H = 1200, 630
 
 KICKER = "WHITE-LABEL PR  ·  FOR AGENCIES IN THE UAE"
-HEADLINE = [("Add ", INK), ("AED 15–40K Monthly Revenue", CORAL)]
+# highlight colour matches the hero <span> on the page (--ae-wire-blue)
+HEADLINE = [("Add ", INK), ("AED 15–40K Monthly Revenue", WIRE_BLUE)]
 HEADLINE_2 = "Without Hiring a PR Team"
 CHIPS = ["No join fee", "AED invoicing", "Pay per placement"]
 OUTLETS = "Khaleej Times · Gulf News · Arabian Business · Forbes Middle East"
@@ -39,7 +40,7 @@ FONTS = {
 }
 FONT_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", ".cache", "fonts")
 ROOT = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..")
-LOGO = os.path.join(ROOT, "public", "logos", "ae", "01wire.png")
+LOGO = os.path.join(ROOT, "public", "logos", "ae", "01wire-dark.png")
 OUT = os.path.join(ROOT, "public", "logos", "ae", "og-image.png")
 
 
@@ -92,13 +93,11 @@ def main():
     # coral rule down the left edge
     draw.rectangle([0, 0, 7, H], fill=CORAL)
 
-    # logo, rendered cream exactly like theme.css `brightness(0) invert(.94)`
+    # same dark-theme logo asset the page uses
     logo = Image.open(LOGO).convert("RGBA")
     target_h = 46
     logo = logo.resize((round(logo.width * target_h / logo.height), target_h), Image.LANCZOS)
-    cream = Image.new("RGBA", logo.size, (240, 240, 240, 255))
-    cream.putalpha(logo.getchannel("A"))
-    img.alpha_composite(cream, (72, 62))
+    img.alpha_composite(logo, (72, 62))
 
     f_kicker = font("Manrope.ttf", 21, 700)
     f_sub = font("Manrope.ttf", 25, 500)

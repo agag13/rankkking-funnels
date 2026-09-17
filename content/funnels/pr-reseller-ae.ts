@@ -45,9 +45,10 @@ export const prResellerAe: FunnelConfig = {
     text: "Q4 cohort — we onboard 5 UAE partner agencies per quarter · 3 slots left",
     cta: "Claim a Slot",
   },
-  // Official 01Wire logo pulled from 01wire.com (dark ink on transparent —
-  // theme.css inverts it to cream on the dark /ae theme).
-  logo: { src: "/logos/ae/01wire.png", alt: "01Wire" },
+  // Dark-theme build of the official 01Wire logo: coral disc and white "ONE"
+  // kept, black ink recoloured to cream. Regenerate from the original with
+  // scripts/make-ae-dark-logo.py.
+  logo: { src: "/logos/ae/01wire-dark.png", alt: "01Wire" },
   hero: {
     badge: "WHITE-LABEL PR · FOR AGENCIES IN THE UAE",
     titlePre: "Add ",

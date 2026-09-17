@@ -7,6 +7,6 @@ export const metadata: Metadata = {
   robots: { index: false },
 };
 
-export default function AeThankYouPage() {
+export default function DubaiThankYouPage() {
   return <ThankYouClient config={funnel} />;
 }

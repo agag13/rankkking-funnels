@@ -20,8 +20,9 @@ export const prResellerAe: FunnelConfig = {
     // 1200x630, 01Wire dark brand. Regenerate with scripts/make-ae-og-image.py
     // whenever the hero headline changes.
     ogImage: "/logos/ae/og-image.png",
-    // [PLACEHOLDER-URL] Final domain pending — ae.01wire.com assumed.
-    url: "https://ae.01wire.com",
+    // Confirmed 2026-09-18: this page ships as a subpage of the existing
+    // lp.01wire.com funnel, not on its own subdomain.
+    url: "https://lp.01wire.com/dubai",
   },
   tracking: {
     // Same GTM container + Meta Pixel as the India funnel.
@@ -88,7 +89,7 @@ export const prResellerAe: FunnelConfig = {
       label: "Clients who'd buy PR from you",
       options: ["1–2", "3–5", "6+"],
     },
-    thankYouPath: "/ae/thank-you/",
+    thankYouPath: "/dubai/thank-you/",
   },
   pressLogos: {
     title: "PLACEMENTS YOUR CLIENTS WILL RECOGNISE",
@@ -508,9 +509,9 @@ export const prResellerAe: FunnelConfig = {
     disclaimer:
       "Revenue figures are based on partner-reported averages across markets. Individual results vary.",
   },
-  // The /ae route does not render the lead-magnet popup — these two blocks are
-  // required by the FunnelConfig type and only take effect if LeadPopup is ever
-  // added to app/ae/page.tsx.
+  // The /dubai route does not render the lead-magnet popup — these two blocks
+  // are required by the FunnelConfig type and only take effect if LeadPopup is
+  // ever added to app/dubai/page.tsx.
   popup: { heading: "Get the AED Wholesale Rate Card", delaySeconds: 14 },
   leadMagnet: {
     funnelId: "pr-reseller-ae-magnet",
@@ -527,7 +528,7 @@ export const prResellerAe: FunnelConfig = {
     phonePlaceholder: "WhatsApp Number",
     submitLabel: "Send Me the Rate Card →",
     privacyNote: "100% confidential · We never contact your clients",
-    deliveryPath: "/ae/thank-you/",
+    deliveryPath: "/dubai/thank-you/",
     page: {
       title: "AED Wholesale Rate Card | 01Wire",
       metaDescription: "AED wholesale PR rate card for UAE partner agencies.",
@@ -543,6 +544,6 @@ export const prResellerAe: FunnelConfig = {
     subtitle:
       "Your AED wholesale rate card is on its way. If WhatsApp didn't open automatically, tap the green button below to message us directly.",
     whatsappCta: "Open WhatsApp",
-    backHref: "/ae/",
+    backHref: "/dubai/",
   },
 };

@@ -17,7 +17,7 @@ import FinalCta from "@/components/sections/FinalCta";
 import SiteFooter from "@/components/sections/SiteFooter";
 import WhatsAppFloat from "@/components/WhatsAppFloat";
 
-export default function AePage() {
+export default function DubaiPage() {
   return (
     <main>
       <AnnouncementBar config={funnel} />

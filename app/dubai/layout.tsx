@@ -17,7 +17,9 @@ const manrope = Manrope({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL(funnel.meta.url),
+  // Origin, not the page URL: metadataBase with a path would resolve
+  // "/logos/ae/og-image.png" to lp.01wire.com/dubai/logos/... and 404.
+  metadataBase: new URL(new URL(funnel.meta.url).origin),
   title: funnel.meta.title,
   description: funnel.meta.description,
   openGraph: {
@@ -36,7 +38,7 @@ export const metadata: Metadata = {
   },
 };
 
-export default function AeLayout({
+export default function DubaiLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;

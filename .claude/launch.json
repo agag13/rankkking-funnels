@@ -5,7 +5,6 @@
       "name": "funnel-dev",
       "runtimeExecutable": "npm",
       "runtimeArgs": ["run", "dev"],
-      "cwd": "/Users/ankushgupta/rankkking whitelable agency/rankkking-funnels",
       "port": 3000
     }
   ]

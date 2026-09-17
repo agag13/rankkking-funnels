@@ -259,21 +259,12 @@ export const ormIndia: FunnelConfig = {
       { value: "24/7", label: "Crisis response" },
       { value: "100%", label: "Confidential handling" },
     ],
-    testimonials: [
-      {
-        quote:
-          "[PLACEHOLDER — replace with a real client quote, with permission, before launch]",
-        name: "[Client name]",
-        company: "[Company]",
-        initials: "??",
-      },
-    ],
-    caseStudy: {
-      stats: [],
-      quote:
-        "[PLACEHOLDER — replace with a real, verifiable case summary before launch]",
-      author: "[Client, with permission]",
-    },
+    // Empty on purpose. The testimonial and case-study blocks do not render
+    // at all while these are empty, which is the required state until real
+    // quotes arrive WITH WRITTEN PERMISSION. Never put sample text here:
+    // v1 shipped "[PLACEHOLDER]" quotes to production under paid traffic.
+    testimonials: [],
+    caseStudy: { stats: [], quote: "", author: "" },
     logosTitle: "",
     partnerLogos: [],
   },
@@ -359,6 +350,14 @@ export const ormIndia: FunnelConfig = {
         q: "What will you NOT do?",
         a: "We don't post fake reviews, fake takedown notices, or use hacking/black-hat tactics — these can backfire legally and make your search results worse. Everything we do can survive scrutiny.",
       },
+      {
+        q: "How much does online reputation management cost in India?",
+        a: "It depends on how many items are involved, which platforms they sit on, and which route each one needs — a policy report, a legal notice, publisher outreach or suppression. That is exactly what the free audit prices: you get a written scope and a figure before you commit, and you pay for the work agreed in that scope, not for an outcome nobody can control.",
+      },
+      {
+        q: "Can a court case be removed from search results?",
+        a: "Sometimes, and often not. It depends on the platform's policy, the jurisdiction, how the matter concluded, and whether any right-to-be-forgotten route applies to you — some listings may be eligible for de-indexing or removal, many are not. We check yours in the audit and tell you honestly which it is. Where removal isn't available, the plan is suppression: ranking accurate, current content above it.",
+      },
     ],
   },
   finalCta: {
@@ -385,19 +384,21 @@ export const ormIndia: FunnelConfig = {
   },
   popup: {
     heading: "Before you go — get your free reputation audit",
-    delaySeconds: 15,
+    minSecondsOnPage: 20,
   },
   leadMagnet: {
     funnelId: "orm-india-audit",
-    badge: "FREE & CONFIDENTIAL",
-    heading: "Free Reputation Audit",
+    badge: "3-POINT SELF-AUDIT",
+    heading: "Check your own search results in 3 steps",
     subheading:
-      "We'll map what shows up for your name or brand and tell you honestly what can be fixed — on WhatsApp, within one working day.",
+      "Do this before you talk to any agency — including us. It takes about ten minutes and tells you how bad the problem actually is.",
     bullets: [
-      "Every negative item, classified: removable / suppressible / neither",
-      "The exact route we'd use for each (policy, legal, or suppression)",
-      "Realistic timeline and cost — before you commit to anything",
+      "Search your name and your brand in an incognito window, on mobile and desktop. The first ten results are what clients, investors and employers see.",
+      "List every harmful item and note where it sits: a review platform, a news site, a court or government record, or social media. The platform decides which routes even exist.",
+      "For each one ask: is it factual and lawful? If yes, plan on suppression. If it breaks a platform policy or the law, it may be eligible for removal.",
     ],
+    checklistCta:
+      "Want the same list back with what's actually removable in your case, and what it would cost? Send it to us — the audit is free and confidential.",
     namePlaceholder: "Your Name",
     emailPlaceholder: "Email ID",
     phonePlaceholder: "WhatsApp Number",

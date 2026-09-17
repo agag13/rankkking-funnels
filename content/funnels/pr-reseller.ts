@@ -318,7 +318,7 @@ export const prReseller: FunnelConfig = {
     disclaimer:
       "Income figures based on partner-reported averages. Individual results vary.",
   },
-  popup: { heading: "Get the Free Wholesale Rate Card", delaySeconds: 14 },
+  popup: { heading: "Get the Free Wholesale Rate Card", minSecondsOnPage: 20 },
   leadMagnet: {
     funnelId: "free-listing-sites",
     badge: "FREE DOWNLOAD · WORTH ₹15,000 IN AGENCY HOURS",

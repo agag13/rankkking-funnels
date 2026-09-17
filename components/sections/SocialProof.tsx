@@ -20,6 +20,7 @@ export default function SocialProof({ config }: { config: FunnelConfig }) {
         ))}
       </div>
 
+      {sp.testimonials.length > 0 && (
       <div className="mt-10 grid gap-6 lg:grid-cols-3">
         {sp.testimonials.map((t) => (
           <figure key={t.name} className="flex flex-col rounded-2xl border border-white/10 bg-white/5 p-7">
@@ -41,7 +42,9 @@ export default function SocialProof({ config }: { config: FunnelConfig }) {
           </figure>
         ))}
       </div>
+      )}
 
+      {sp.caseStudy.quote && (
       <div className="mx-auto mt-10 max-w-4xl rounded-2xl border border-brand-500/30 bg-brand-600/10 p-8 sm:p-10">
         <div className="grid grid-cols-3 gap-4 text-center">
           {sp.caseStudy.stats.map((stat) => (
@@ -56,8 +59,9 @@ export default function SocialProof({ config }: { config: FunnelConfig }) {
         </blockquote>
         <p className="mt-4 text-center text-sm font-semibold text-white">{sp.caseStudy.author}</p>
       </div>
+      )}
 
-      <LogoStrip title={sp.logosTitle} logos={sp.partnerLogos} />
+      {sp.partnerLogos.length > 0 && <LogoStrip title={sp.logosTitle} logos={sp.partnerLogos} />}
     </Section>
   );
 }

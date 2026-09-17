@@ -1,18 +1,30 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import type { FunnelConfig } from "@/content/types";
 import LeadMagnetForm from "./LeadMagnetForm";
+import { dataLayerPush } from "@/lib/track";
 
 const SEEN_KEY = "lead_popup_seen";
 
 /**
- * Timed + exit-intent popup offering the free listings lead magnet
- * (email + WhatsApp gate). Shows once per session.
+ * Exit-intent popup carrying the 3-point self-audit checklist.
+ *
+ * It is deliberately NOT a second copy of the hero form: the checklist is
+ * readable without giving anything up, and the form underneath is the
+ * optional next step. v1 fired a duplicate of the hero form on a 15-second
+ * timer, which interrupted readers without offering them anything new.
+ *
+ * Exit is detected differently per device. On desktop, the pointer leaving
+ * through the top of the viewport. On touch, a decisive scroll back up
+ * after the visitor has read most of the page — phones have no pointer to
+ * watch. Either way it waits for popup.minSecondsOnPage first, so a
+ * visitor who bounces in three seconds is left alone.
  */
 export default function LeadPopup({ config }: { config: FunnelConfig }) {
   const [open, setOpen] = useState(false);
   const { leadMagnet: lm } = config;
+  const dialogRef = useRef<HTMLDivElement>(null);
 
   const show = useCallback(() => {
     try {
@@ -22,19 +34,47 @@ export default function LeadPopup({ config }: { config: FunnelConfig }) {
       /* private mode — show at most once per page load instead */
     }
     setOpen(true);
-  }, []);
+    dataLayerPush("exit_intent_popup_shown", { funnel_id: config.id });
+  }, [config.id]);
 
   useEffect(() => {
-    const timer = window.setTimeout(show, config.popup.delaySeconds * 1000);
+    const armedAt = Date.now() + config.popup.minSecondsOnPage * 1000;
+    const engaged = () => Date.now() >= armedAt;
+
+    // Desktop: pointer leaves through the top of the window.
     const onMouseOut = (e: MouseEvent) => {
-      if (e.relatedTarget === null && e.clientY <= 0) show();
+      if (engaged() && e.relatedTarget === null && e.clientY <= 0) show();
     };
+
+    // Touch: read most of the page, then scroll decisively back up.
+    let lastY = window.scrollY;
+    let deepest = 0;
+    const onScroll = () => {
+      const y = window.scrollY;
+      const depth = (y + window.innerHeight) / document.documentElement.scrollHeight;
+      deepest = Math.max(deepest, depth);
+      if (engaged() && deepest > 0.6 && lastY - y > 400) show();
+      lastY = y;
+    };
+
     document.addEventListener("mouseout", onMouseOut);
+    window.addEventListener("scroll", onScroll, { passive: true });
     return () => {
-      window.clearTimeout(timer);
       document.removeEventListener("mouseout", onMouseOut);
+      window.removeEventListener("scroll", onScroll);
     };
-  }, [config.popup.delaySeconds, show]);
+  }, [config.popup.minSecondsOnPage, show]);
+
+  // Escape closes; focus moves into the dialog when it opens.
+  useEffect(() => {
+    if (!open) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setOpen(false);
+    };
+    document.addEventListener("keydown", onKey);
+    dialogRef.current?.focus();
+    return () => document.removeEventListener("keydown", onKey);
+  }, [open]);
 
   if (!open) return null;
 
@@ -44,11 +84,15 @@ export default function LeadPopup({ config }: { config: FunnelConfig }) {
       onClick={(e) => {
         if (e.target === e.currentTarget) setOpen(false);
       }}
-      role="dialog"
-      aria-modal="true"
-      aria-label={lm.heading}
     >
-      <div className="relative max-h-[92vh] w-full max-w-md overflow-y-auto rounded-2xl bg-white p-6 shadow-2xl sm:p-8">
+      <div
+        ref={dialogRef}
+        tabIndex={-1}
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="popup-heading"
+        className="relative max-h-[92vh] w-full max-w-md overflow-y-auto rounded-2xl bg-white p-6 shadow-2xl outline-none sm:p-8"
+      >
         <button
           onClick={() => setOpen(false)}
           aria-label="Close"
@@ -59,15 +103,25 @@ export default function LeadPopup({ config }: { config: FunnelConfig }) {
         <span className="inline-block rounded-full bg-accent-500/15 px-3 py-1 text-[10px] font-bold tracking-[0.15em] text-emerald-700">
           {lm.badge}
         </span>
-        <h2 className="mt-3 pr-6 text-xl font-extrabold leading-snug text-slate-900">{lm.heading}</h2>
+        <h2 id="popup-heading" className="mt-3 pr-6 text-xl font-extrabold leading-snug text-slate-900">
+          {lm.heading}
+        </h2>
         <p className="mt-2 text-sm leading-relaxed text-slate-600">{lm.subheading}</p>
-        <ul className="mt-3 space-y-1.5">
-          {lm.bullets.map((b) => (
-            <li key={b} className="flex gap-2 text-[13px] leading-snug text-slate-700">
-              <span className="text-emerald-600">✓</span> {b}
+        <ol className="mt-4 space-y-3">
+          {lm.bullets.map((b, i) => (
+            <li key={b} className="flex gap-3 text-[13px] leading-snug text-slate-700">
+              <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-brand-600 text-[11px] font-bold text-white">
+                {i + 1}
+              </span>
+              {b}
             </li>
           ))}
-        </ul>
+        </ol>
+        {lm.checklistCta && (
+          <p className="mt-5 border-t border-slate-200 pt-4 text-[13px] font-medium leading-snug text-slate-700">
+            {lm.checklistCta}
+          </p>
+        )}
         <div className="mt-4">
           <LeadMagnetForm config={config} />
         </div>

@@ -177,7 +177,11 @@ export interface FunnelConfig {
     copyright: string;
     disclaimer: string;
   };
-  popup: { heading: string; delaySeconds: number };
+  popup: {
+    heading: string;
+    /** engagement floor — the popup never fires before this, even on exit */
+    minSecondsOnPage: number;
+  };
   leadMagnet: {
     /** internal funnel id sent to the webhook so n8n can branch on it */
     funnelId: string;
@@ -185,6 +189,8 @@ export interface FunnelConfig {
     heading: string;
     subheading: string;
     bullets: string[];
+    /** bridge line between the free checklist and the form */
+    checklistCta?: string;
     namePlaceholder: string;
     emailPlaceholder: string;
     phonePlaceholder: string;

@@ -51,19 +51,26 @@ HANDOVER.md stays as Ankush wrote it.
 Lighthouse mobile ≥ 90 needs the public URL, and the deploy needs Netlify
 access. Conversion firing needs GTM access.
 
-## n8n workflow — built, switched OFF
+## n8n workflow — LIVE
 
 Workflow **"FameNinja ORM — Lead Capture"**, id `1kn0KeroW3YcPGy0`, on
 the same instance as the Rankkking one. Built from
-"Rankkking LP — Lead Capture" (`ryhZR7Ct3ZxNJoE3`) and validated clean:
-12 nodes, 0 errors. **It is inactive** — the webhook still answers 404,
-so nothing about today's behaviour has changed. Ankush reviews it and
-flips the toggle.
+"Rankkking LP — Lead Capture" (`ryhZR7Ct3ZxNJoE3`), validated clean and
+**activated on 2026-09-18**. The webhook answers 200 instead of 404, so
+the live v1 page now delivers to n8n as well, instead of depending on
+the WhatsApp fallback the way it has since launch.
 
 What differs from the workflow it was copied from:
 
 - Its own data table, **"FameNinja ORM Leads"** (`zwQHxbslYFeq774r`), so
-  FameNinja leads are not mixed into the Rankkking table.
+  FameNinja leads are not mixed into the Rankkking table. Every lead,
+  new and repeat, is also appended to the Google Sheet **"FameNinja ORM
+  Leads"**, `1CSiZCDBI3vNXqG-8EJFm6noyopiBkInciYXt5Lke3Fk`. The data
+  table is the system of record; the sheet is the human-readable copy.
+  The Sheets node runs after the webhook has responded and continues on
+  error, so neither a slow sheet nor a Google outage can lose a lead.
+  Its cell format is RAW — without that, Sheets strips the leading `+`
+  off every phone number.
 - `service` and `turnstile_token` are read off the payload; `service` is
   stored and appears in the Chat alert, `turnstile_token` is not stored —
   it is a one-time proof, not lead data.
@@ -79,6 +86,29 @@ What differs from the workflow it was copied from:
   branches of its "Is New Lead" check and another not wired at all; here
   new and repeat leads each get their own.
 
-**Decide before activating:** both alerts post to the same Google Chat
-space as the Rankkking leads (`AAQASzcoL9I`). Change the URL on the two
-notify nodes if FameNinja leads belong somewhere else.
+**Two things to revisit:**
+
+1. Both alerts post to the same Google Chat space as the Rankkking leads
+   (`AAQASzcoL9I`). Change the URL on the two notify nodes if FameNinja
+   leads belong somewhere else.
+2. The leads sheet is shared **anyone-with-link = editor**, which is how
+   both existing Rankkking lead sheets are already set up: n8n writes
+   with the "Mayur" Google credential, which does not otherwise have
+   access to a sheet owned by another account. It means anyone holding
+   the URL can read and edit lead names, emails and phone numbers. The
+   tighter fix is to share the sheet with just that credential's Google
+   account and then revoke link access.
+
+## End-to-end test, 2026-09-18
+
+Submitted the real v2 hero form at 1280px with ad parameters on the URL.
+It reached `/thank-you/`, and the row carried the service choice
+("Glassdoor / AmbitionBox reviews"), `source_form: hero`, and the full
+attribution set — utm_source, utm_medium, utm_campaign and gclid.
+
+Anti-spam holds: honeypot filled, sub-5-second fill, malformed phone and
+a disposable-email domain each returned 200 and **none were stored**.
+Dedupe holds: a second submit on the same phone stored as
+`status: duplicate` and raised the repeat alert instead of the new-lead
+one. Three test leads are still in the table and the sheet; clear them
+before the campaign starts.

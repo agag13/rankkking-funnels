@@ -17,7 +17,7 @@ import type { FunnelConfig } from "../types";
  *   Do NOT add new numbers/claims without a source.
  *
  * TODO(user) before deploy:
- * - tracking.gtmId: GTM-NSLJ8GG3 is the container running on
+ * - tracking.gtmIds: GTM-NSLJ8GG3 is the container running on
  *   agency.fameninja.com — confirm the AW-17388770213 conversion tag inside
  *   it fires on /thank-you/ of this new domain.
  * - webhookUrl: duplicate the n8n "Rankkking LP — Lead Capture" workflow
@@ -40,7 +40,11 @@ export const ormIndia: FunnelConfig = {
     url: "https://lp-fameninja.netlify.app",
   },
   tracking: {
-    gtmId: "GTM-NSLJ8GG3",
+    // NSLJ8GG3 is the container that already runs on agency.fameninja.com
+    // and is meant to hold the AW-17388770213 conversion; MKJ248GJ was
+    // added for this landing page. Both load — see STATUS.md before
+    // removing either, or conversions stop being recorded.
+    gtmIds: ["GTM-NSLJ8GG3", "GTM-MKJ248GJ"],
     metaPixelId: "784877987247242",
   },
   whatsapp: {

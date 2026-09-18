@@ -41,16 +41,19 @@ export default function RootLayout({
     <html lang="en" className={`${inter.variable} h-full antialiased`}>
       <body className="min-h-full">
         <noscript>
-          <iframe
-            src={`https://www.googletagmanager.com/ns.html?id=${funnel.tracking.gtmId}`}
-            height="0"
-            width="0"
-            style={{ display: "none", visibility: "hidden" }}
-          />
+          {funnel.tracking.gtmIds.map((id) => (
+            <iframe
+              key={id}
+              src={`https://www.googletagmanager.com/ns.html?id=${id}`}
+              height="0"
+              width="0"
+              style={{ display: "none", visibility: "hidden" }}
+            />
+          ))}
         </noscript>
         {children}
         <Analytics
-          gtmId={funnel.tracking.gtmId}
+          gtmIds={funnel.tracking.gtmIds}
           metaPixelId={funnel.tracking.metaPixelId}
           ga4Id={funnel.tracking.ga4Id}
           clarityId={funnel.tracking.clarityId}

@@ -57,7 +57,8 @@ export interface FunnelConfig {
     url: string;
   };
   tracking: {
-    gtmId: string;
+    /** every GTM container to load, in order */
+    gtmIds: string[];
     metaPixelId: string;
     /** GA4 measurement id (G-XXXX); omit to skip the direct gtag snippet */
     ga4Id?: string;

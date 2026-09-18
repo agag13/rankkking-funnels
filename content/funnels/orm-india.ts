@@ -22,7 +22,7 @@ import type { FunnelConfig } from "../types";
  *   it fires on /thank-you/ of this new domain.
  * - webhookUrl: duplicate the n8n "Rankkking LP — Lead Capture" workflow
  *   as "FameNinja ORM — Lead Capture" with path fameninja-orm-lead.
- * - footer.email / footer.gstin: fill FameNinja's real values.
+ * - footer.email / footer.office / footer.gstin: supplied 2026-09-18.
  * - socialProof.testimonials: replace with REAL client quotes (with
  *   permission). Placeholders are clearly marked and must not go live.
  */
@@ -385,9 +385,10 @@ export const ormIndia: FunnelConfig = {
   footer: {
     about:
       "FameNinja is an online reputation management agency for individuals and businesses across India and the UAE. We remove what is lawfully removable, suppress what is not, and rebuild what people see when they search for you.",
-    email: "",
-    office: "India",
-    gstin: "",
+    email: "contact@01wire.com",
+    office:
+      "HOUSE NO 1, SARAI MEER KHAN CHOWK, ALLAHABAD CITY, Allahabad, Uttar Pradesh, 211003",
+    gstin: "09FPPPK1285E1ZJ",
     legal: [
       { label: "Privacy Policy", href: "https://fameninja.com/privacy-policy" },
       { label: "Terms", href: "https://fameninja.com/terms" },

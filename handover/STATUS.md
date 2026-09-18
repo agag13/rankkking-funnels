@@ -37,7 +37,7 @@ HANDOVER.md stays as Ankush wrote it.
 | 8 | Protect the exposed webhook | Half done | Turnstile is wired into all three forms and sends `turnstile_token`, but renders nothing until a site key is set. n8n must verify the token with the secret key — that half needs n8n access. |
 | 9 | JS diet | Done, limited | 195.6 → 191.3 KB gz by dropping `next/image`, which does nothing under `images.unoptimized`. The remaining ~147 KB is React + react-dom + the App Router runtime; the audit's suspected animation library does not exist. Re-encoding the oversized logo made it larger, so it was left alone. |
 | 10 | `autoComplete="url"` on the concern field | Done | |
-| 11 | Footer email / GSTIN / address | **Blocked** | Rows stay hidden until real values arrive, instead of rendering an empty `mailto:`. |
+| 11 | Footer email / GSTIN / address | Done | Supplied 2026-09-18: contact@01wire.com, the Allahabad registered address, GSTIN 09FPPPK1285E1ZJ. Email and phone are live `mailto:`/`tel:` links. Still outstanding: the "since [YEAR]" claim. **Ankush to confirm** that a FameNinja-branded page should carry an `@01wire.com` contact address rather than an `@fameninja.com` one — it is the operating entity's domain, but a visitor comparing the two may read it as a mismatch.
 
 ## Verified locally
 

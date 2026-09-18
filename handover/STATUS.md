@@ -21,7 +21,7 @@ HANDOVER.md stays as Ankush wrote it.
 | 8 | Numeric proof bar | Done | 500+ / 24×7 / 1 day / 100% — all pre-cleared claims, no new numbers. |
 | 9 | Two new FAQs | Done | ORM cost in India (no figures quoted — none are cleared) and court-case removal. The original six are untouched, so there are eight. |
 | 10 | Honest-outcomes strip, second form, sticky mobile bar, compact announcement | Done | Second form is compact: name, email, WhatsApp, service. |
-| 11 | Exit-intent popup with incremental value | Done | Real exit intent, not a timer: pointer leaving through the top on desktop, a decisive scroll back up after 60% depth on touch, both behind a 20-second engagement floor. Carries a readable 3-point self-audit checklist above the form. |
+| 11 | Exit-intent popup with incremental value | Done | Real exit intent, not a timer. Three leave signals: the pointer leaving through the top (desktop), a decisive scroll back up after 60% depth (touch), and the tab being hidden (tab or window switch). All behind a 20-second engagement floor. Carries a readable 3-point self-audit checklist above the form. **To view it:** it shows once per tab session, so after it has appeared once the `lead_popup_seen` flag suppresses it — open a new tab, or load the page with `?popup=1` to force it open and skip both the flag and the delay. |
 
 ## §4B — Technical fixes
 

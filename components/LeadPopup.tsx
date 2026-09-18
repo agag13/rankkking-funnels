@@ -15,11 +15,20 @@ const SEEN_KEY = "lead_popup_seen";
  * optional next step. v1 fired a duplicate of the hero form on a 15-second
  * timer, which interrupted readers without offering them anything new.
  *
- * Exit is detected differently per device. On desktop, the pointer leaving
- * through the top of the viewport. On touch, a decisive scroll back up
- * after the visitor has read most of the page — phones have no pointer to
- * watch. Either way it waits for popup.minSecondsOnPage first, so a
- * visitor who bounces in three seconds is left alone.
+ * Three leave signals, because no single one covers every device:
+ *   - the pointer leaving through the top of the viewport (desktop);
+ *   - a decisive scroll back up after reading most of the page (touch,
+ *     which has no pointer to watch);
+ *   - the tab being hidden — switching tabs or windows is a real exit,
+ *     and it is the one a keyboard-driven visitor actually performs.
+ * All three wait out popup.minSecondsOnPage first, so someone who
+ * bounces in three seconds is left alone.
+ *
+ * It shows once per tab session. That is deliberate, and it is also why
+ * it can look broken while you are testing: once it has appeared, the
+ * `lead_popup_seen` flag suppresses it for the rest of that tab. Open a
+ * new tab, or load the page with ?popup=1 to force it open and ignore
+ * both the flag and the delay.
  */
 export default function LeadPopup({ config }: { config: FunnelConfig }) {
   const [open, setOpen] = useState(false);
@@ -38,6 +47,12 @@ export default function LeadPopup({ config }: { config: FunnelConfig }) {
   }, [config.id]);
 
   useEffect(() => {
+    // ?popup=1 — for review and QA: skip the delay and the seen flag.
+    if (new URLSearchParams(window.location.search).has("popup")) {
+      setOpen(true);
+      return;
+    }
+
     const armedAt = Date.now() + config.popup.minSecondsOnPage * 1000;
     const engaged = () => Date.now() >= armedAt;
 
@@ -57,11 +72,18 @@ export default function LeadPopup({ config }: { config: FunnelConfig }) {
       lastY = y;
     };
 
+    // Leaving for another tab or window counts as leaving.
+    const onHidden = () => {
+      if (engaged() && document.visibilityState === "hidden") show();
+    };
+
     document.addEventListener("mouseout", onMouseOut);
     window.addEventListener("scroll", onScroll, { passive: true });
+    document.addEventListener("visibilitychange", onHidden);
     return () => {
       document.removeEventListener("mouseout", onMouseOut);
       window.removeEventListener("scroll", onScroll);
+      document.removeEventListener("visibilitychange", onHidden);
     };
   }, [config.popup.minSecondsOnPage, show]);
 

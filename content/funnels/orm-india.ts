@@ -395,6 +395,12 @@ export const ormIndia: FunnelConfig = {
     copyright: `© ${new Date().getFullYear()} FameNinja. All rights reserved.`,
     disclaimer:
       "We do not remove factual, lawful, or policy-compliant content, and we do not guarantee removal outcomes. Every engagement starts with an honest assessment of what is and isn't possible under platform policies and applicable law.",
+    poweredBy: {
+      label: "Powered by",
+      href: "https://rankkking.com",
+      logo: "/logos/rankkking-logo.png",
+      logoAlt: "Rankkking",
+    },
   },
   popup: {
     heading: "Before you go — get your free reputation audit",

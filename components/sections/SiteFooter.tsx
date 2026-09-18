@@ -43,6 +43,29 @@ export default function SiteFooter({ config }: { config: FunnelConfig }) {
       <div className="mx-auto mt-12 max-w-6xl border-t border-white/10 pt-6 text-center">
         <p className="text-xs text-slate-500">{footer.copyright}</p>
         <p className="mt-2 text-xs text-slate-600">{footer.disclaimer}</p>
+        {footer.poweredBy && (
+          <a
+            href={footer.poweredBy.href}
+            target="_blank"
+            rel="noopener nofollow"
+            className="mt-6 inline-flex items-center gap-2 text-[11px] font-medium tracking-wide text-slate-500 transition hover:text-slate-300"
+          >
+            {footer.poweredBy.label}
+            {footer.poweredBy.logo ? (
+              <img
+                src={footer.poweredBy.logo}
+                alt={footer.poweredBy.logoAlt ?? ""}
+                width={96}
+                height={28}
+                loading="lazy"
+                decoding="async"
+                className="h-4 w-auto opacity-70 transition hover:opacity-100"
+              />
+            ) : (
+              <span className="font-semibold">{footer.poweredBy.logoAlt}</span>
+            )}
+          </a>
+        )}
       </div>
     </footer>
   );

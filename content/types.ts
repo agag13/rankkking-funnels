@@ -183,6 +183,8 @@ export interface FunnelConfig {
     legal: { label: string; href: string }[];
     copyright: string;
     disclaimer: string;
+    /** build credit; omit on funnels that are Rankkking's own */
+    poweredBy?: { label: string; href: string; logo?: string; logoAlt?: string };
   };
   popup: {
     heading: string;

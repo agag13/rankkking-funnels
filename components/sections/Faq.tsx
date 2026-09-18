@@ -4,7 +4,7 @@ import { Kicker, Section, SectionTitle } from "@/components/ui";
 export default function Faq({ config }: { config: FunnelConfig }) {
   const { faq } = config;
   return (
-    <Section>
+    <Section id="faq">
       <div className="text-center">
         <Kicker>{faq.kicker}</Kicker>
         <SectionTitle lines={faq.title} />

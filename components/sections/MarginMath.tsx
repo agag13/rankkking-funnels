@@ -4,7 +4,7 @@ import { Kicker, Section, SectionTitle } from "@/components/ui";
 export default function MarginMath({ config }: { config: FunnelConfig }) {
   const { math } = config;
   return (
-    <Section className="section-gradient">
+    <Section id="margins" className="section-gradient">
       <div className="text-center">
         <Kicker>{math.kicker}</Kicker>
         <SectionTitle lines={math.title} />

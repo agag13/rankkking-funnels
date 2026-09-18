@@ -85,6 +85,11 @@ export interface FunnelConfig {
   };
   stickyCta: { formLabel: string; whatsappLabel: string };
   logo: { src: string; alt: string };
+  nav: {
+    /** in-page anchors shown in the header */
+    items: { label: string; href: string }[];
+    cta: string;
+  };
   hero: {
     badge: string;
     /** parts of the H1; `highlight` gets accent color */

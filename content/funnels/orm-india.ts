@@ -63,6 +63,15 @@ export const ormIndia: FunnelConfig = {
   },
   stickyCta: { formLabel: "Get Free Audit", whatsappLabel: "WhatsApp" },
   logo: { src: "/logos/fameninja-logo.png", alt: "FameNinja" },
+  nav: {
+    items: [
+      { label: "Your situation", href: "#segments" },
+      { label: "How it works", href: "#how-it-works" },
+      { label: "Platforms", href: "#where-we-work" },
+      { label: "FAQ", href: "#faq" },
+    ],
+    cta: "Get Free Audit",
+  },
   hero: {
     badge: "ONLINE REPUTATION MANAGEMENT · INDIA",
     titlePre: "Online Reputation Management ",

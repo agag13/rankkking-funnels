@@ -18,6 +18,7 @@ import LeadPopup from "@/components/LeadPopup";
 import WhatsAppFloat from "@/components/WhatsAppFloat";
 import StickyCta from "@/components/StickyCta";
 import StructuredData from "@/components/StructuredData";
+import AnchorScroll from "@/components/AnchorScroll";
 
 export default function Home() {
   return (
@@ -41,6 +42,7 @@ export default function Home() {
       <WhatsAppFloat config={funnel} />
       <StickyCta config={funnel} />
       <StructuredData config={funnel} />
+      <AnchorScroll />
     </main>
   );
 }

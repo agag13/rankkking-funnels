@@ -4,7 +4,7 @@ import { CtaButton, Kicker, Section, SectionTitle } from "@/components/ui";
 export default function HowItWorks({ config }: { config: FunnelConfig }) {
   const { howItWorks } = config;
   return (
-    <Section>
+    <Section id="how-it-works">
       <div className="text-center">
         <Kicker>{howItWorks.kicker}</Kicker>
         <SectionTitle lines={howItWorks.title} />

@@ -32,6 +32,14 @@ export const prReseller: FunnelConfig = {
   },
   stickyCta: { formLabel: "Get Rate Card", whatsappLabel: "WhatsApp" },
   logo: { src: "/logos/rankkking-logo.png", alt: "Rankkking" },
+  nav: {
+    items: [
+      { label: "How it works", href: "#how-it-works" },
+      { label: "Margins", href: "#margins" },
+      { label: "FAQ", href: "#faq" },
+    ],
+    cta: "Get Rate Card",
+  },
   hero: {
     badge: "WHITE-LABEL PR · FOR AGENCIES IN INDIA",
     titlePre: "Add ",

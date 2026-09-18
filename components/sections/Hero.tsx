@@ -1,34 +1,12 @@
-/* eslint-disable @next/next/no-img-element */
 import type { FunnelConfig } from "@/content/types";
 import LeadForm from "@/components/LeadForm";
-import PhoneLink from "@/components/PhoneLink";
+import SiteHeader from "@/components/SiteHeader";
 
 export default function Hero({ config }: { config: FunnelConfig }) {
-  const { hero, form, logo } = config;
+  const { hero, form } = config;
   return (
-    <div className="hero-gradient">
-      <header className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-5 pt-6">
-        <img
-          src={logo.src}
-          alt={logo.alt}
-          width={160}
-          height={40}
-          fetchPriority="high"
-          decoding="async"
-          className="h-9 w-auto"
-        />
-        <PhoneLink
-          config={config}
-          source="header"
-          className="inline-flex items-center gap-2 rounded-lg border border-white/15 px-3 py-2 text-sm font-semibold text-white transition hover:border-brand-500/60 hover:bg-white/5"
-        >
-          <svg viewBox="0 0 24 24" className="h-4 w-4 fill-current text-accent-400" aria-hidden="true">
-            <path d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.24c1.1.37 2.3.57 3.5.57a1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.2.2 2.4.57 3.5a1 1 0 0 1-.25 1l-2.2 2.3Z" />
-          </svg>
-          <span className="hidden sm:inline">{config.phone.display}</span>
-          <span className="sm:hidden">Call us</span>
-        </PhoneLink>
-      </header>
+    <div id="top" className="hero-gradient">
+      <SiteHeader config={config} />
 
       <div className="mx-auto grid max-w-6xl grid-cols-1 items-center gap-12 px-5 pb-20 pt-10 sm:pt-14 lg:grid-cols-[1.15fr_0.85fr]">
         <div className="animate-fade-up">

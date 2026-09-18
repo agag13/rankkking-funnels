@@ -5,7 +5,7 @@ import PlatformChips from "./PlatformChips";
 export default function NetworkStats({ config }: { config: FunnelConfig }) {
   const { network } = config;
   return (
-    <Section>
+    <Section id="where-we-work">
       <div className="text-center">
         <Kicker>{network.kicker}</Kicker>
         <SectionTitle lines={network.title} />

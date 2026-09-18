@@ -50,7 +50,7 @@ export function Section({
   children: ReactNode;
 }) {
   return (
-    <section id={id} className={`px-5 py-16 sm:py-20 ${className}`}>
+    <section id={id} className={`scroll-mt-6 px-5 py-16 sm:py-20 ${className}`}>
       <div className="mx-auto w-full max-w-6xl">{children}</div>
     </section>
   );

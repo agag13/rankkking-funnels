@@ -99,6 +99,22 @@ What differs from the workflow it was copied from:
    tighter fix is to share the sheet with just that credential's Google
    account and then revoke link access.
 
+## Known: ad attribution is first-touch and session-sticky
+
+`lib/attribution.ts` stores the first set of ad parameters it sees and
+lets later page views only fill in keys it does not already have. One
+visitor, one visit, one click — correct. But a visitor who clicks a
+second ad in the same tab is still reported under the first click's
+`gclid` and campaign, and a test run that reuses one tab across several
+URLs produces rows whose `gclid`/`utm_campaign` do not match the `page`
+column they arrived on. The `page` column always holds the landing URL,
+so it is the field to trust when the two disagree.
+
+This is inherited from the PR funnel on `main` and is shared code, so it
+has been left as is. Worth a decision before offline conversion import:
+Google Ads wants the click that produced the conversion, which is
+last-touch, not first.
+
 ## End-to-end test, 2026-09-18
 
 Submitted the real v2 hero form at 1280px with ad parameters on the URL.

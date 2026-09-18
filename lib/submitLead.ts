@@ -33,8 +33,21 @@ export interface LeadPayload extends LeadFields {
 }
 
 /**
- * POST the lead to the n8n webhook. Throws on network/HTTP failure so the
- * form can show the WhatsApp fallback — a lead must never be silently lost.
+ * How long to wait for the webhook before giving up on it.
+ *
+ * Without this the fetch waits as long as the browser will allow. When the
+ * n8n instance stopped answering its /webhook/* routes while the API stayed
+ * healthy, the button sat on "Sending…" indefinitely and the visitor never
+ * reached the WhatsApp fallback — the one thing that must not happen. A
+ * lead is worth more than a tidy request, so an unanswered webhook is
+ * treated as a failure and the visitor is handed the fallback.
+ */
+const WEBHOOK_TIMEOUT_MS = 12_000;
+
+/**
+ * POST the lead to the n8n webhook. Throws on network failure, HTTP failure
+ * or timeout so the form can show the WhatsApp fallback — a lead must never
+ * be silently lost.
  */
 export async function submitLead(
   webhookUrl: string,
@@ -57,11 +70,20 @@ export async function submitLead(
     ),
   };
 
-  const res = await fetch(webhookUrl, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(payload),
-  });
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), WEBHOOK_TIMEOUT_MS);
+  let res: Response;
+  try {
+    res = await fetch(webhookUrl, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload),
+      signal: controller.signal,
+      keepalive: true,
+    });
+  } finally {
+    clearTimeout(timer);
+  }
   if (!res.ok) {
     throw new Error(`Lead webhook responded ${res.status}`);
   }
